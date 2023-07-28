@@ -288,7 +288,7 @@ const InvoiceQR = ({ navigation, route }) => {
   return (
     <View style={styles.mainContainer}>
       <PaymentModal />
-      <TopNavigationBar backIcon={true} middleLabel={"Invoice"}  />
+      <TopNavigationBar backIcon={true} middleLabel={"Invoice"} onPressBack={() => navigation.goBack()}  />
       {/* <TopNavBack middleLabel={"Invoice"} /> */}
       <ScrollView style={{}} showsVerticalScrollIndicator={false}>
         {/* Top Invoice Componsnt */}

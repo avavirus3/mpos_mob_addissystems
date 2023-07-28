@@ -58,5 +58,6 @@ export const containerStyles = {
   },
   bodyContainer: {
     flex: 1,
+    paddingHorizontal: 15,
   },
 }

@@ -1,21 +1,21 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SelectProduct from './SelectProduct';
-import CreateSale from './CreateSale';
+import CreateSale from './create_sale/CreateSale';
 import CustomerList from './CustomerList';
 import SaleHome from './SaleHome';
 import AllOrders from './AllOrders';
 import AllSales from './AllSales';
 import Draft from './Draft';
 import InvoiceQR from './InvoiceQR';
+import Payment from './payment/Payment';
 const Stack = createNativeStackNavigator();
 
 const SaleStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="main"
-      >
+      initialRouteName="sale-home">
       <Stack.Screen name="sale-home" component={SaleHome} />
       <Stack.Screen name="all-sales" component={AllSales} />
       <Stack.Screen name="all-orders" component={AllOrders} />
@@ -24,7 +24,7 @@ const SaleStack = () => {
       <Stack.Screen name="create-sale" component={CreateSale} />
       <Stack.Screen name="customer-list" component={CustomerList} />
       <Stack.Screen name="invoice-qr" component={InvoiceQR} />
-      {/* <Stack.Screen name="payment" component={Payment} /> */}
+      <Stack.Screen name="payment" component={Payment} />
     </Stack.Navigator>
   );
 };

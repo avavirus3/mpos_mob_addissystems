@@ -50,7 +50,6 @@ const MainTabNavigation = () => {
           },
         })}>
         <Tab.Screen name="Home" component={HomeStack} />
-        {/* <Tab.Screen name="Sale" component={SaleStack} /> */}
         <Tab.Screen
           name="Sale"
           component={SaleStack}

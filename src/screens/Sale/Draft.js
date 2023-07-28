@@ -26,8 +26,8 @@ const Draft = ({ navigation }) => {
     }
   });
 
-  console.log("data:", data);
-  console.log("Local Draft:", localDraft);
+  // console.log("data:", data);
+  // console.log("Local Draft:", localDraft);
 
   const SALES_INVOICE = [
     {
@@ -220,8 +220,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 12,
     backgroundColor: "white",
-    // borderWidth: 1,
-    // alignSelf: 'center',
     borderColor: "red",
   },
 });

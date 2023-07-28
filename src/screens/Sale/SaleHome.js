@@ -52,7 +52,6 @@ const SaleHome = ({navigation}) => {
         <TopNavigationBar
           backLabel={'Sale'}
           thirdIcon={true}
-          onPressBack={null}
           onPressGo={() => navigation.navigate('create-sale')}
         />
         <SearchBar placeholder={'Search for sales'} />
@@ -61,7 +60,7 @@ const SaleHome = ({navigation}) => {
         <View
           style={{
             backgroundColor: color.lightGray,
-            padding: 15,
+            paddingVertical: 15,
             marginTop: 15,
             borderRadius: 10,
           }}>
