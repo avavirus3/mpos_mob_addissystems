@@ -5,9 +5,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {color} from '../styles/Styles';
 import ProductStack from '../screens/Products/ProductStack';
-import SettingStack from '../screens/Setting/SettingStack';
+// import SettingStack from '../routes/SettingStack';
 import HomeStack from '../screens/Home/HomeStack';
 import SaleStack from '../screens/Sale/SaleStack';
+import Setting from '../screens/Setting/Setting';
+import SettingStack from '../screens/Setting/SettingStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,7 +52,6 @@ const MainTabNavigation = () => {
           },
         })}>
         <Tab.Screen name="Home" component={HomeStack} />
-        {/* <Tab.Screen name="Sale" component={SaleStack} /> */}
         <Tab.Screen
           name="Sale"
           component={SaleStack}
