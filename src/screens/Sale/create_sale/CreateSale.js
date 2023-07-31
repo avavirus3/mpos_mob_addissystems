@@ -9,7 +9,6 @@ import React, {useState, useEffect, useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {color, textStyles} from '../../../styles/Styles';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import Button from '../../../components/button/Button';
@@ -36,7 +35,7 @@ const CreateSale = ({route}) => {
   const [discount, setDiscount] = useState(0);
   const currentTime = new Date();
 
-  // console.log('incomingData:', incomingData);
+  console.log('incomingData:', incomingData);
 
   function isEqual(obj1, obj2) {
     return obj1.id === obj2.id;
@@ -44,14 +43,13 @@ const CreateSale = ({route}) => {
 
   useEffect(() => {
     const newUpcomingProduct =
-      incomingData?.hasOwnProperty('data_from_select_product_screen') &&
-      incomingData?.data_from_select_product_screen.filter(
+      incomingData?.hasOwnProperty('passed_selected_product') &&
+      incomingData?.passed_selected_product.filter(
         obj2 => !passedData.some(obj1 => isEqual(obj1, obj2)),
       );
 
     try {
-      incomingData &&
-      incomingData?.hasOwnProperty('data_from_select_product_screen')
+      incomingData && incomingData?.hasOwnProperty('passed_selected_product')
         ? setPassedData(passedData.concat(newUpcomingProduct))
         : incomingData?.hasOwnProperty('selected_Customer')
         ? setCustomer(incomingData.selected_Customer || customer)

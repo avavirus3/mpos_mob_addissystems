@@ -1,8 +1,10 @@
 import {
   View,
+  Text,
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState, useRef, useContext} from 'react';
 import SearchBar from '../../../components/search/SearchBar';
@@ -16,6 +18,10 @@ const Home = ({navigation}) => {
   const [CurrentProduct, setCurrentProduct] = useState('All');
   const {ProductStore, setProductStore} = useContext(AuthContext);
   const [fetchedProduct, setFetchedProduct] = useState([]);
+
+  const selectedProducts = fetchedProduct.filter(product => product.qty > 0);
+
+  // console.log(selectedProducts)
 
   useEffect(() => {
     try {
@@ -64,7 +70,7 @@ const Home = ({navigation}) => {
             />
           </View>
         </TouchableWithoutFeedback>
-
+          
         {/* Main Body Container */}
         <View style={styles.bodyContainer}>
           {/* Heading Component */}
@@ -81,6 +87,8 @@ const Home = ({navigation}) => {
               handleQtyDecrement={handleQtyDecrement}
               handleQtyIncrement={handleQtyIncrement}
               handleQuantityInput={handleQuantityInput}
+              selectedProducts={selectedProducts}
+              navigation={navigation}
               activeMakeSale
             />
           )}

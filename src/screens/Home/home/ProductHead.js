@@ -10,7 +10,13 @@ import Button from '../../../components/button/Button';
 import {color, textStyles} from '../../../styles/Styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-const ProductHead = ({CurrentProduct, setCurrentProduct, activeMakeSale}) => {
+const ProductHead = ({
+  CurrentProduct,
+  setCurrentProduct,
+  activeMakeSale,
+  selectedProducts,
+  navigation,
+}) => {
   const scrollViewRef = useRef(null);
   const productCategory = [
     'All',
@@ -97,7 +103,12 @@ const ProductHead = ({CurrentProduct, setCurrentProduct, activeMakeSale}) => {
         </TouchableOpacity>
       </View>
       <View style={{flex: 1, maxWidth: 150}}>
-        <Button label={'Make Sale'} height={50} btnBG={activeMakeSale ? color.primary : color.gray} />
+        <Button
+          label={'Make Sale'}
+          height={50}
+          btnBG={activeMakeSale ? color.primary : color.gray}
+          onPress={() => navigation.navigate('Sale', {screen: 'create-sale', params: {"passed_selected_product": selectedProducts} })}
+        />
       </View>
     </View>
   );

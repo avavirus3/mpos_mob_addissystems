@@ -6,7 +6,7 @@ import ProductHead from './ProductHead'
 
 
 
-const MainComponent = ({data, CurrentProduct, setCurrentProduct, ProductStore, search, handleQtyDecrement, handleQtyIncrement, handleQuantityInput, activeMakeSale}) => {
+const MainComponent = ({data, CurrentProduct, setCurrentProduct, ProductStore, search, handleQtyDecrement, handleQtyIncrement, handleQuantityInput,selectedProducts, activeMakeSale, navigation}) => {
   return (
     <View style={{flex: 1}}>
               {/* Product Top Bar */}
@@ -14,6 +14,8 @@ const MainComponent = ({data, CurrentProduct, setCurrentProduct, ProductStore, s
                 CurrentProduct={CurrentProduct}
                 setCurrentProduct={setCurrentProduct}
                 activeMakeSale={activeMakeSale}
+                navigation={navigation}
+                selectedProducts={selectedProducts}
               />
 
               {/* Product List */}

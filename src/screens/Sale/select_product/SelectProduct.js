@@ -63,7 +63,7 @@ const SelectProduct = ({navigation}) => {
   const handleOnDone = () => {
     if (selectedProducts.length > 0) {
       const updatedProduct = ProductStore.filter(item => item.qty > 0);
-      navigation.navigate('create-sale', {data_from_select_product_screen: selectedProducts});
+      navigation.navigate('create-sale', {passed_selected_product: selectedProducts});
     }
   };
 
