@@ -15,8 +15,6 @@ const RenderItem = ({
 }) => {
   const {name, price, qty, image, category, id} = item;
 
-  console.log(id)
-
   const noImage = require('../../../assets/images/no-image.jpg');
 
   return (

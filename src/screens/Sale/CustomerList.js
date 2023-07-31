@@ -22,7 +22,7 @@ const CustomerList = ({navigation}) => {
   console.log('Selected Customer:', selectedCustomer);
 
   const handleAddCustomer = () => {
-    navigation.navigate('create-sale', {selectedCustomer});
+    navigation.navigate('create-sale', {"selected_Customer": selectedCustomer});
   };
 
   const renderItem = ({item}) => {

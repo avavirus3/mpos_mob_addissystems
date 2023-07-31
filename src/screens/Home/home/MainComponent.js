@@ -13,7 +13,7 @@ const MainComponent = ({data, CurrentProduct, setCurrentProduct, ProductStore, s
               <ProductHead
                 CurrentProduct={CurrentProduct}
                 setCurrentProduct={setCurrentProduct}
-                activeMakeSale
+                activeMakeSale={activeMakeSale}
               />
 
               {/* Product List */}

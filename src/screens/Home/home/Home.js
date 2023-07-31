@@ -1,11 +1,10 @@
 import {
   View,
   StyleSheet,
-  FlatList,
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import React, {useState, useRef, useContext} from 'react';
+import React, {useEffect, useState, useRef, useContext} from 'react';
 import SearchBar from '../../../components/search/SearchBar';
 import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import HomeHeading from './HomeHeading';
@@ -16,32 +15,39 @@ const Home = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [CurrentProduct, setCurrentProduct] = useState('All');
   const {ProductStore, setProductStore} = useContext(AuthContext);
-  const [homeProducts, setHomeProducts] = useState([...ProductStore]);
+  const [fetchedProduct, setFetchedProduct] = useState([]);
 
-  homeProducts[0].name = 'Ella'
+  useEffect(() => {
+    try {
+      const productWithZeroQty = ProductStore.map(item => ({...item, qty: 0}));
+      setFetchedProduct(productWithZeroQty);
+    } catch (error) {
+      console.log('There is an Error @ fething the data, Error msg:', error);
+    }
+  }, [ProductStore]);
 
-  console.log('InitailProducts:', ProductStore);
-  console.log('HomeProducts:', homeProducts);
+  // console.log('Product Store:', ProductStore);
+  // console.log('Selected Product:', fetchedProduct);
 
   const handleQuantityInput = (id, num) => {
-    const updatedProduct = ProductStore.filter(item => item.id == id)[0];
+    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
     updatedProduct.qty = parseInt(num);
     // console.log('OnPress Output:', updatedProduct);
-    setProductStore([...ProductStore]);
+    setFetchedProduct([...fetchedProduct]);
   };
 
   const handleQtyIncrement = id => {
-    const updatedProduct = ProductStore.filter(item => item.id == id)[0];
+    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
     updatedProduct.qty += 1;
     // console.log('OnPress Output:', updatedProduct);
-    setProductStore([...ProductStore]);
+    setFetchedProduct([...fetchedProduct]);
   };
 
   const handleQtyDecrement = id => {
-    const updatedProduct = ProductStore.filter(item => item.id == id)[0];
+    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
     updatedProduct.qty = updatedProduct.qty == 0 ? 0 : updatedProduct.qty - 1;
     // console.log('OnPress Output:', updatedProduct);
-    setProductStore([...ProductStore]);
+    setFetchedProduct([...fetchedProduct]);
   };
 
   /* Main Function Return */
@@ -70,11 +76,12 @@ const Home = ({navigation}) => {
             <MainComponent
               CurrentProduct={CurrentProduct}
               setCurrentProduct={setCurrentProduct}
-              ProductStore={homeProducts}
+              ProductStore={fetchedProduct}
               search={search}
               handleQtyDecrement={handleQtyDecrement}
               handleQtyIncrement={handleQtyIncrement}
               handleQuantityInput={handleQuantityInput}
+              activeMakeSale
             />
           )}
         </View>
