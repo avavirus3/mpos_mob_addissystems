@@ -16,9 +16,12 @@ const Home = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [CurrentProduct, setCurrentProduct] = useState('All');
   const {ProductStore, setProductStore} = useContext(AuthContext);
-  const [selectedProduct, setSelectedProduct] = useState([]);
+  const [homeProducts, setHomeProducts] = useState([...ProductStore]);
 
-  console.log(selectedProduct);
+  homeProducts[0].name = 'Ella'
+
+  console.log('InitailProducts:', ProductStore);
+  console.log('HomeProducts:', homeProducts);
 
   const handleQuantityInput = (id, num) => {
     const updatedProduct = ProductStore.filter(item => item.id == id)[0];
@@ -67,7 +70,7 @@ const Home = ({navigation}) => {
             <MainComponent
               CurrentProduct={CurrentProduct}
               setCurrentProduct={setCurrentProduct}
-              ProductStore={ProductStore}
+              ProductStore={homeProducts}
               search={search}
               handleQtyDecrement={handleQtyDecrement}
               handleQtyIncrement={handleQtyIncrement}
