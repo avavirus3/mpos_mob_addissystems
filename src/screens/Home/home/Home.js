@@ -1,17 +1,24 @@
-import {View, StyleSheet, FlatList} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import React, {useState, useRef, useContext} from 'react';
-import SearchBar from '../../../components/SearchBar';
+import SearchBar from '../../../components/search/SearchBar';
 import {AuthContext} from '../../../hooks/useContext/AuthContext';
-import ProductCard from '../../../components/card/ProductCard';
 import HomeHeading from './HomeHeading';
-import ProductHead from './ProductHead';
 import InitialHomeComponent from './InitialHomeComponent';
+import MainComponent from './MainComponent';
 
 const Home = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [CurrentProduct, setCurrentProduct] = useState('All');
-  const {user, data, setUser, ProductStore, setProductStore} =
-    useContext(AuthContext);
+  const {ProductStore, setProductStore} = useContext(AuthContext);
+  const [selectedProduct, setSelectedProduct] = useState([]);
+
+  console.log(selectedProduct);
 
   const handleQuantityInput = (id, num) => {
     const updatedProduct = ProductStore.filter(item => item.id == id)[0];
@@ -39,67 +46,33 @@ const Home = ({navigation}) => {
     <View style={styles.mainContainer}>
       <View style={{flex: 1, borderWidth: 0, borderColor: 'green'}}>
         {/* Search Bar */}
-        <View style={{marginTop: 35, marginHorizontal: 10}}>
-          <SearchBar
-            placeholder={'Search'}
-            search={search}
-            setSearch={setSearch}
-          />
-        </View>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <View style={{paddingTop: 35, marginHorizontal: 10}}>
+            <SearchBar
+              placeholder={'Search'}
+              search={search}
+              setSearch={setSearch}
+            />
+          </View>
+        </TouchableWithoutFeedback>
 
         {/* Main Body Container */}
         <View style={styles.bodyContainer}>
           {/* Heading Component */}
           <HomeHeading user={'Abebe Kebede'} sale={'50,000'} />
 
-          {true ? (
+          {false ? (
             <InitialHomeComponent navigation={navigation} />
           ) : (
-            <View style={{flex: 1}}>
-              {/* Product Top Bar */}
-              <ProductHead
-                CurrentProduct={CurrentProduct}
-                setCurrentProduct={setCurrentProduct}
-              />
-
-              {/* Product List */}
-              <FlatList
-                columnWrapperStyle={{
-                  justifyContent: 'space-between',
-                  marginHorizontal: 5,
-                  gap: 15,
-                }}
-                contentContainerStyle={{
-                  gap: 15,
-                  paddingBottom: 80,
-                  borderWidth: 0,
-                  borderColor: 'red',
-                  animated: true,
-                }}
-                data={
-                  CurrentProduct === 'All'
-                    ? ProductStore.filter(product =>
-                        new RegExp(search, 'gi').test(product.name),
-                      )
-                    : ProductStore.filter(
-                        item =>
-                          item.category === CurrentProduct.toLowerCase() &&
-                          new RegExp(search, 'gi').test(item.name),
-                      )
-                }
-                numColumns={2}
-                renderItem={({item}) => (
-                  <ProductCard
-                    item={item}
-                    handleQtyDecrement={handleQtyDecrement}
-                    handleQtyIncrement={handleQtyIncrement}
-                    handleQuantityInput={handleQuantityInput}
-                  />
-                )}
-                keyExtractor={item => item.id}
-                showsVerticalScrollIndicator={false}
-              />
-            </View>
+            <MainComponent
+              CurrentProduct={CurrentProduct}
+              setCurrentProduct={setCurrentProduct}
+              ProductStore={ProductStore}
+              search={search}
+              handleQtyDecrement={handleQtyDecrement}
+              handleQtyIncrement={handleQtyIncrement}
+              handleQuantityInput={handleQuantityInput}
+            />
           )}
         </View>
       </View>

@@ -1,88 +1,88 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
-import React, { useState } from "react";
-import TopNavigationBar from "../../components/top_navigation/TopNavigationBar";
-import HeadSelector from "../../components/HeadSelector";
-import SearchBar from "../../components/SearchBar";
-import { color } from "../../styles/Styles";
+import {View, Text, StyleSheet, FlatList} from 'react-native';
+import React, {useState} from 'react';
+import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
+import HeadSelector from '../../components/HeadSelector';
+import SearchBar from '../../components/search/SearchBar';
+import {color} from '../../styles/Styles';
 
-const AllOrders = ({ navigation }) => {
-  const [search, setSearch] = useState("");
-  const [selectedHead, setSelectedHead] = useState("Paid");
+const AllOrders = ({navigation}) => {
+  const [search, setSearch] = useState('');
+  const [selectedHead, setSelectedHead] = useState('Paid');
 
-  console.log("Search:", search);
+  console.log('Search:', search);
 
   const SALES_INVOICE = [
     {
-      name: "Abebe Kebede",
+      name: 'Abebe Kebede',
       id: 1,
-      time: "12:45:06 AM",
+      time: '12:45:06 AM',
       qty: 14,
       price: 74100,
-      status: "Draft",
+      status: 'Draft',
     },
     {
-      name: "Elyas Kebede",
+      name: 'Elyas Kebede',
       id: 2,
-      time: "11:48:06 AM",
+      time: '11:48:06 AM',
       qty: 29,
       price: 81900,
-      status: "Paid",
+      status: 'Paid',
     },
     {
-      name: "Habtom Kebede",
+      name: 'Habtom Kebede',
       id: 3,
-      time: "02:51:06 PM",
+      time: '02:51:06 PM',
       qty: 5,
       price: 57100,
-      status: "Draft",
+      status: 'Draft',
     },
     {
-      name: "Habtom Kebede",
+      name: 'Habtom Kebede',
       id: 4,
-      time: "02:51:06 PM",
+      time: '02:51:06 PM',
       qty: 5,
       price: 57100,
-      status: "Draft",
+      status: 'Draft',
     },
     {
-      name: "Habtom Kebede",
+      name: 'Habtom Kebede',
       id: 6,
-      time: "02:51:06 PM",
+      time: '02:51:06 PM',
       qty: 14,
       price: 34100,
-      status: "Paid",
+      status: 'Paid',
     },
     {
-      name: "Habtom Kebede",
+      name: 'Habtom Kebede',
       id: 7,
-      time: "02:51:06 PM",
+      time: '02:51:06 PM',
       qty: 14,
       price: 34100,
-      status: "Paid",
+      status: 'Paid',
     },
     {
-      name: "Habtom Kebede",
+      name: 'Habtom Kebede',
       id: 8,
-      time: "02:51:06 PM",
+      time: '02:51:06 PM',
       qty: 16,
       price: 32100,
-      status: "Paid",
+      status: 'Paid',
     },
   ];
 
   const PAID_INVOICE = SALES_INVOICE.filter(
-    (invoice) => invoice.status === "Paid"
+    invoice => invoice.status === 'Paid',
   );
   const DRAFT_INVOICE = SALES_INVOICE.filter(
-    (invoice) => invoice.status === "Draft"
+    invoice => invoice.status === 'Draft',
   );
 
   const dataSwitcher = () => {
     switch (selectedHead) {
-      case "Paid":
+      case 'Paid':
         return PAID_INVOICE;
         break;
-      case "Draft":
+      case 'Draft':
         return DRAFT_INVOICE;
         break;
       default:
@@ -92,8 +92,8 @@ const AllOrders = ({ navigation }) => {
 
   //   console.log(PAID_INVOICE);
 
-  const renderData = ({ item }) => {
-    const { name, time, qty, price, status } = item;
+  const renderData = ({item}) => {
+    const {name, time, qty, price, status} = item;
     return (
       <View
         style={{
@@ -102,59 +102,48 @@ const AllOrders = ({ navigation }) => {
           padding: 15,
           borderRadius: 10,
           gap: 5,
-        }}
-      >
+        }}>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
           <Text
             style={{
               fontSize: 19,
-              fontWeight: "600",
+              fontWeight: '600',
               color: color.normal,
-            }}
-          >
+            }}>
             {name}
           </Text>
-          <Text
-            style={{ fontSize: 16, fontWeight: "600", color: color.gray }}
-          >
+          <Text style={{fontSize: 16, fontWeight: '600', color: color.gray}}>
             {time}
           </Text>
         </View>
-        <Text
-          style={{ fontSize: 17, color: color.gray, fontWeight: "500" }}
-        >
+        <Text style={{fontSize: 17, color: color.gray, fontWeight: '500'}}>
           {qty} Items
         </Text>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
           <Text
             style={{
               fontSize: 19,
-              fontWeight: "600",
+              fontWeight: '600',
               color: color.normal,
-            }}
-          >
+            }}>
             {price}
           </Text>
           <Text
             style={{
               fontSize: 18,
-              fontWeight: "600",
-              color:
-                status === "Draft" ? color.secondary : color.green,
-            }}
-          >
+              fontWeight: '600',
+              color: status === 'Draft' ? color.secondary : color.green,
+            }}>
             {status}
           </Text>
         </View>
@@ -167,40 +156,40 @@ const AllOrders = ({ navigation }) => {
     <View style={styles.mainContainer}>
       <TopNavigationBar
         backIcon={true}
-        middleLabel={"All Orders"}
+        middleLabel={'All Orders'}
         thirdIcon={true}
         onPressBack={() => navigation.goBack()}
-        onPressGo={() => navigation.navigate("create-sale")}
+        onPressGo={() => navigation.navigate('create-sale')}
       />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <HeadSelector
-          label={"Paid"}
+          label={'Paid'}
           state={selectedHead}
           setState={setSelectedHead}
         />
         <HeadSelector
-          label={"Draft"}
+          label={'Draft'}
           state={selectedHead}
           setState={setSelectedHead}
         />
       </View>
-      <View style={{ marginVertical: 15 }}>
+      <View style={{marginVertical: 15}}>
         <SearchBar
-          placeholder={"Search for sales"}
+          placeholder={'Search for sales'}
           search={search}
           setSearch={setSearch}
         />
       </View>
       <HeadSelector
-        label={"Saturday May 26, 2023"}
-        state={"Saturday May 26, 2023"}
+        label={'Saturday May 26, 2023'}
+        state={'Saturday May 26, 2023'}
         py={10}
       />
-      <View style={{ marginTop: 15, flex: 1, paddingBottom: 10 }}>
+      <View style={{marginTop: 15, flex: 1, paddingBottom: 10}}>
         <FlatList
-          contentContainerStyle={{ gap: 12, marginTop: 5, paddingBottom: 50 }}
-          data={dataSwitcher().filter((invoice) =>
-            new RegExp(search, "gi").test(invoice.name)
+          contentContainerStyle={{gap: 12, marginTop: 5, paddingBottom: 50}}
+          data={dataSwitcher().filter(invoice =>
+            new RegExp(search, 'gi').test(invoice.name),
           )}
           renderItem={renderData}
         />
@@ -213,11 +202,11 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     paddingHorizontal: 12,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     // paddingTop: 25,
     // borderWidth: 1,
     // alignSelf: 'center',
-    borderColor: "red",
+    borderColor: 'red',
   },
 });
 

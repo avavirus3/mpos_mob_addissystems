@@ -6,13 +6,14 @@ import ProductHead from './ProductHead'
 
 
 
-const MainComponent = ({data, CurrentProduct, setCurrentProduct, search, handleQtyDecrement, handleQtyIncrement, handleQuantityInput}) => {
+const MainComponent = ({data, CurrentProduct, setCurrentProduct, ProductStore, search, handleQtyDecrement, handleQtyIncrement, handleQuantityInput, activeMakeSale}) => {
   return (
     <View style={{flex: 1}}>
               {/* Product Top Bar */}
               <ProductHead
                 CurrentProduct={CurrentProduct}
                 setCurrentProduct={setCurrentProduct}
+                activeMakeSale
               />
 
               {/* Product List */}
@@ -23,6 +24,7 @@ const MainComponent = ({data, CurrentProduct, setCurrentProduct, search, handleQ
                   gap: 15,
                 }}
                 contentContainerStyle={{
+                  marginTop: 10,
                   gap: 15,
                   paddingBottom: 80,
                   borderWidth: 0,

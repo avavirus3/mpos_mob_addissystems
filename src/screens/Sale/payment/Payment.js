@@ -4,122 +4,43 @@ import {
   StyleSheet,
   Modal,
   TouchableOpacity,
-  Image,
-  FlatList,
   TextInput,
   Keyboard,
-  ToastAndroid,
   TouchableWithoutFeedback,
   Linking,
 } from 'react-native';
 import React, {useState} from 'react';
-import InvoiceButtons from '../../../components/InvoiceButtons';
+import InvoiceButtons from '../../../components/top_navigation/InvoiceButtons';
 import Button from '../../../components/button/Button';
 import {RadioButton} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { color } from '../../../styles/Styles';
+import {color} from '../../../styles/Styles';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import SuccessFailModal from '../../../components/modal/SuccessFailModal';
+import QRModalComponent from './QRModalComponent';
+import PaymentLinkComponent from './PaymentLinkComponent';
+import CardPayment from './CardPayment';
 
 const Payment = ({navigation}) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('Cash');
   const paymentMethod = ['Cash', 'Bank', 'QR', 'Card'];
   const [modalVisible, setModalVisible] = useState(false);
-  const [successFailModal, setSuccessFailModal] = useState(false)
+  const [successFailModal, setSuccessFailModal] = useState(false);
   const [TrNumber, setTrNumber] = useState();
   const [successModal, setSuccessModal] = useState(false);
 
-  const BANKS = [
-    {
-      name: 'Abyssinia',
-      logo: require('../../../assets/images/abisinia.png'),
-    },
-    {
-      name: 'Wegagen',
-      logo: require('../../../assets/images/wegagen.png'),
-    },
-    {
-      name: 'Awash',
-      logo: require('../../../assets/images/awash.png'),
-    },
-    {
-      name: 'Amhara',
-      logo: require('../../../assets/images/amhara.png'),
-    },
-    {
-      name: 'CBE',
-      logo: require('../../../assets/images/cbe.png'),
-    },
-    {
-      name: 'Buna',
-      logo: require('../../../assets/images/buna.png'),
-    },
-    {
-      name: 'Hibret',
-      logo: require('../../../assets/images/hibret.png'),
-    },
-  ];
-
-  const PAYMENT_LINK_DATA = [
-    {
-      name: 'Message',
-      link: 'sms',
-      image: require('../../../assets/images/sms.png'),
-    },
-    {
-      name: 'Facebook',
-      link: 'fb',
-      image: require('../../../assets/images/facebook.png'),
-    },
-    {
-      name: 'Instagram',
-      link: 'ig',
-      image: require('../../../assets/images/instagram.png'),
-    },
-    {
-      name: 'Linkedin',
-      link: 'linkedin',
-      image: require('../../../assets/images/linkedin.png'),
-    },
-    {
-      name: 'SnapChat',
-      link: '',
-      image: require('../../../assets/images/snapchat.png'),
-    },
-    {
-      name: 'Twitter',
-      link: '',
-      image: require('../../../assets/images/twitter.png'),
-    },
-    {
-      name: 'Telegram',
-      link: 'tg',
-      image: require('../../../assets/images/telegram.png'),
-    },
-    {
-      name: 'Viber',
-      link: '',
-      image: require('../../../assets/images/viber.png'),
-    },
-    {
-      name: 'WhatsApp',
-      link: 'whatsapp',
-      image: require('../../../assets/images/whatsapp.png'),
-    },
-    {
-      name: 'Copy URL',
-      link: '',
-      image: require('../../../assets/images/link.png'),
-    },
-  ];
-
   const handleRadioCheck = radio => {
-    const pattern = /Bank|QR|Payment Link/gi;
+    const pattern = /Bank|QR|Card/gi;
     setSelectedPaymentMethod(radio);
 
     pattern.test(radio) && setModalVisible(true);
+  };
+
+  const handleShare = () => {
+    setSelectedPaymentMethod('Share');
+    setModalVisible(true);
   };
 
   const handlePayment = () => {
@@ -128,11 +49,6 @@ const Payment = ({navigation}) => {
       setSuccessModal(false);
       navigation.navigate('sale-home');
     }, 1500);
-  };
-
-  const handleCopy = async textTobeCopied => {
-    await Clipboard.setString(textTobeCopied);
-    ToastAndroid.show('Copied!', ToastAndroid.SHORT);
   };
 
   const handleOpenApps = async (link, app) => {
@@ -288,121 +204,9 @@ const Payment = ({navigation}) => {
     );
   };
 
-  const linkItem = ({item}) => {
-    const {name, image} = item;
-    return (
-      <TouchableOpacity
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          paddingVertical: 5,
-          justifyContent: 'center',
-          // borderWidth: 1,
-        }}
-        key={name}
-        onPress={() =>
-          handleOpenApps(
-            'I_am_Coppied_Text_from_react_native_project',
-            item.name,
-          )
-        }>
-        {image && <Image source={image} />}
-        <Text style={{fontSize: 18, marginTop: 10}}>{name}</Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const bankItem = ({item}) => {
-    const {name, logo} = item;
-    return (
-      <TouchableOpacity
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          // borderWidth: 1,
-          // width: "100%",
-          // maxWidth: 150,
-          // height: 100,
-          paddingVertical: 5,
-          justifyContent: 'center',
-        }}>
-        {logo && <Image style={{resizeMode: 'contain', width: '100%'}} source={logo} />}
-      </TouchableOpacity>
-    );
-  };
-
-  const PaymentLinkComponent = () => {
-    return (
-      <View>
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: '600',
-            textAlign: 'center',
-          }}>
-          Payment Link
-        </Text>
-        <FlatList
-          columnWrapperStyle={{
-            justifyContent: 'space-between',
-            marginHorizontal: 5,
-            gap: 15,
-          }}
-          contentContainerStyle={{
-            gap: 15,
-            marginTop: 25,
-            paddingBottom: 20,
-          }}
-          data={PAYMENT_LINK_DATA}
-          numColumns={3}
-          renderItem={linkItem}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-    );
-  };
-
-  const QRMethodComponent = () => {
-    return (
-      <View>
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: '600',
-            textAlign: 'center',
-          }}>
-          Choose Bank
-        </Text>
-        <FlatList
-          columnWrapperStyle={{
-            justifyContent: 'space-between',
-            marginHorizontal: 5,
-            gap: 15,
-          }}
-          contentContainerStyle={{
-            gap: 15,
-            marginTop: 25,
-            paddingBottom: 20,
-          }}
-          data={BANKS}
-          numColumns={3}
-          renderItem={bankItem}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-    );
-  };
-
   const PaymentModal = () => {
     return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        // onRequestClose={() => {
-        //   null;
-        // }}
-      >
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
         {/* Outer Modal Part  */}
         <TouchableWithoutFeedback
           onPress={() => {
@@ -429,7 +233,6 @@ const Payment = ({navigation}) => {
                   padding: 25,
                 }}>
                 {payment_Method_Switcher(selectedPaymentMethod)}
-                {/* <QRMethodComponent /> */}
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -443,11 +246,14 @@ const Payment = ({navigation}) => {
       case 'Bank':
         return <BankButtonComponent />;
         break;
-      case 'Payment Link':
+      case 'Share':
         return <PaymentLinkComponent />;
         break;
       case 'QR':
-        return <QRMethodComponent />;
+        return <QRModalComponent />;
+        break;
+      case 'Card':
+        return <CardPayment />;
         break;
       default:
         return null;
@@ -459,10 +265,18 @@ const Payment = ({navigation}) => {
   return (
     <View style={styles.mainContainer}>
       {/* Top Navigation */}
-      <TopNavigationBar backIcon={true} middleLabel={'Payment'} onPressBack={() => navigation.goBack()} />
-      <InvoiceButtons />
+      <TopNavigationBar
+        backIcon={true}
+        middleLabel={'Payment'}
+        onPressBack={() => navigation.goBack()}
+      />
+      <InvoiceButtons onSharePress={() => handleShare()} />
       <PaymentModal />
-      <SuccessFailModal modalVisibility={successFailModal} setModalVisibility={setSuccessFailModal} message={"Payment Successfull!"}/>
+      <SuccessFailModal
+        modalVisibility={successModal}
+        setModalVisibility={setSuccessModal}
+        message={'Payment Successfull!'}
+      />
       <View style={{marginTop: 35}}>
         <Text style={{fontSize: 20, fontWeight: '600'}}>Payment Method</Text>
         <View>
@@ -512,7 +326,7 @@ const Payment = ({navigation}) => {
         </TouchableOpacity>
       </View>
 
-      {/* Payment Method */}
+      {/* Payment Submit Button */}
       <View style={{marginVertical: 35}}>
         <Button
           label={'Payment'}
@@ -557,8 +371,6 @@ const styles = StyleSheet.create({
     backgroundColor: color.lightGray,
     borderRadius: 10,
     padding: 20,
-    // width: '100%',
-    // minWidth: 250,
   },
 });
 

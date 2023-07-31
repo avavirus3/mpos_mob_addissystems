@@ -7,7 +7,7 @@ import SaleHome from './SaleHome';
 import AllOrders from './AllOrders';
 import AllSales from './AllSales';
 import Draft from './Draft';
-import InvoiceQR from './InvoiceQR';
+import InvoiceQR from './invoice_qr/InvoiceQR';
 import Payment from './payment/Payment';
 const Stack = createNativeStackNavigator();
 

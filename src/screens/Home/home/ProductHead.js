@@ -10,7 +10,7 @@ import Button from '../../../components/button/Button';
 import {color, textStyles} from '../../../styles/Styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-const ProductHead = ({CurrentProduct, setCurrentProduct}) => {
+const ProductHead = ({CurrentProduct, setCurrentProduct, activeMakeSale}) => {
   const scrollViewRef = useRef(null);
   const productCategory = [
     'All',
@@ -97,7 +97,7 @@ const ProductHead = ({CurrentProduct, setCurrentProduct}) => {
         </TouchableOpacity>
       </View>
       <View style={{flex: 1, maxWidth: 150}}>
-        <Button label={'Make Sale'} height={50} btnBG={color.gray} />
+        <Button label={'Make Sale'} height={50} btnBG={activeMakeSale ? color.primary : color.gray} />
       </View>
     </View>
   );
