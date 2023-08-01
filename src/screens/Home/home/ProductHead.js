@@ -14,8 +14,7 @@ const ProductHead = ({
   CurrentProduct,
   setCurrentProduct,
   activeMakeSale,
-  selectedProducts,
-  navigation,
+  handleMakeSale
 }) => {
   const scrollViewRef = useRef(null);
   const productCategory = [
@@ -107,7 +106,7 @@ const ProductHead = ({
           label={'Make Sale'}
           height={50}
           btnBG={activeMakeSale ? color.primary : color.gray}
-          onPress={() => navigation.navigate('Sale', {screen: 'create-sale', params: {"passed_selected_product": selectedProducts} })}
+          onPress={() => handleMakeSale()}
         />
       </View>
     </View>

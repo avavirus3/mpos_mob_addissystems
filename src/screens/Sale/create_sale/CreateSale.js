@@ -20,10 +20,11 @@ import SuccessFailModal from '../../../components/modal/SuccessFailModal';
 import CustomerComponent from './CustomerComponent';
 import SubTotal from './SubTotal';
 import ItemsList from './ItemsList';
+import { G } from 'react-native-svg';
 
 /* Main Function */
 const CreateSale = ({route}) => {
-  const {data, setData} = useContext(AuthContext);
+  const {data, setData, ProductStore, setProductStore } = useContext(AuthContext);
   const navigation = useNavigation();
   const incomingData = route.params;
   const [passedData, setPassedData] = useState([]);
@@ -35,7 +36,7 @@ const CreateSale = ({route}) => {
   const [discount, setDiscount] = useState(0);
   const currentTime = new Date();
 
-  console.log('incomingData:', incomingData);
+  // console.log('incomingData:', incomingData);
 
   function isEqual(obj1, obj2) {
     return obj1.id === obj2.id;
@@ -72,6 +73,7 @@ const CreateSale = ({route}) => {
             items: passedData,
             totalPrice: TOTAL_PRODUCT_PRICE,
             time: moment(currentTime).format('h:mm:ss a'),
+            transaction_completed: false
           })
         : (newDraftData.draft = [
             ...data.draft,
@@ -80,6 +82,7 @@ const CreateSale = ({route}) => {
               items: passedData,
               totalPrice: TOTAL_PRODUCT_PRICE,
               time: moment(currentTime).format('h:mm:ss a'),
+              transaction_completed: false
             },
           ]);
     }
@@ -89,6 +92,9 @@ const CreateSale = ({route}) => {
     setTimeout(() => {
       setDraftModal(false);
       navigation.navigate('sale-home');
+      setPassedData([]);
+      setCustomer({name: 'Guest'})
+      setDiscount(0)
     }, 1500);
   };
 
@@ -123,11 +129,57 @@ const CreateSale = ({route}) => {
   };
 
   const handleTransaction = () => {
+
+    const deductedProducts = ProductStore.map((item) => {
+      const saleItem = passedData.find((sale) => sale.id === item.id);
+      if (saleItem) {
+        return {...item, qty: item.qty - saleItem.qty};
+      }
+      return item
+    });
+
+    const selected_data_deduct = deductedProducts.filter(
+      obj2 => passedData.some(obj1 => isEqual(obj1, obj2)),
+    )
+
+    
+    console.log("Deducted Products:", selected_data_deduct)
+      setProductStore(deductedProducts)
+
+      const newDraftData = data;
+    
+      incomingDraftIndex != null
+        ? (data.draft[incomingDraftIndex] = {
+            customerData: customer === 'Guest' ? {name: customer} : customer,
+            items: passedData,
+            totalPrice: TOTAL_PRODUCT_PRICE,
+            time: moment(currentTime).format('h:mm:ss a'),
+            transaction_completed: true
+          })
+        : (newDraftData.draft = [
+            ...data.draft,
+            {
+              customerData: customer === 'Guest' ? {name: customer} : customer,
+              items: passedData,
+              totalPrice: TOTAL_PRODUCT_PRICE,
+              time: moment(currentTime).format('h:mm:ss a'),
+              transaction_completed: true
+            },
+          ]);
+
+    setData(newDraftData);
+
+    // console.log("Initial Data:",deductedProducts)
+    console.log("Product Store:", ProductStore)
+    // console.log("Selected Data:", passedData)
     setTransactionModal(true);
 
     setTimeout(() => {
       navigation.navigate('invoice-qr', passedData);
       setTransactionModal(false);
+      setPassedData([])
+      setCustomer({name: 'Guest'})
+      setDiscount(0)
     }, 1000);
   };
 

@@ -20,6 +20,7 @@ const Home = ({navigation}) => {
   const [fetchedProduct, setFetchedProduct] = useState([]);
 
   const selectedProducts = fetchedProduct.filter(product => product.qty > 0);
+  // console.log("fetchedProduct", fetchedProduct)
 
   // console.log(selectedProducts)
 
@@ -31,6 +32,10 @@ const Home = ({navigation}) => {
       console.log('There is an Error @ fething the data, Error msg:', error);
     }
   }, [ProductStore]);
+
+  useEffect(() => {
+    setCurrentProduct('All')
+  }, [])
 
   // console.log('Product Store:', ProductStore);
   // console.log('Selected Product:', fetchedProduct);
@@ -55,6 +60,14 @@ const Home = ({navigation}) => {
     // console.log('OnPress Output:', updatedProduct);
     setFetchedProduct([...fetchedProduct]);
   };
+
+  const handleMakeSale = () => {
+    const resettedProductQty = fetchedProduct.map((item) => ({...item, qty: 0}))
+    console.log("Fetched:",fetchedProduct)
+    console.log("Resseted:",resettedProductQty)
+    setFetchedProduct(resettedProductQty)
+    navigation.navigate('Sale', {screen: 'create-sale', params: {"passed_selected_product": selectedProducts}})
+  }
 
   /* Main Function Return */
   return (
@@ -87,8 +100,7 @@ const Home = ({navigation}) => {
               handleQtyDecrement={handleQtyDecrement}
               handleQtyIncrement={handleQtyIncrement}
               handleQuantityInput={handleQuantityInput}
-              selectedProducts={selectedProducts}
-              navigation={navigation}
+              handleMakeSale={handleMakeSale}
               activeMakeSale
             />
           )}

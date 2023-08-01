@@ -35,7 +35,7 @@ const CustomerComponent = ({customer, setCustomer, navigation}) => {
             {customer?.tin}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setCustomer()}>
+        <TouchableOpacity onPress={() => setCustomer({name: 'Guest'})}>
           <Ionicons name="trash" size={30} color={color.primary} />
         </TouchableOpacity>
       </View>
