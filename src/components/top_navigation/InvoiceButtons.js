@@ -4,37 +4,34 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Platform
-} from "react-native";
-import React from "react";
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { color, textStyles, containerStyles } from "../styles/Styles";
+  Platform,
+} from 'react-native';
+import React from 'react';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {color, textStyles, containerStyles} from '../../styles/Styles';
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get('window');
 
 console.log(width);
-const InvoiceButtons = ({ onSharePress, onPrintPress }) => {
+const InvoiceButtons = ({onSharePress, onPrintPress}) => {
   return (
     <View
       style={{
         // borderWidth: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        gap: 20
-      }}
-    >
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        gap: 20,
+      }}>
       <TouchableOpacity
         style={styles.invoiceBtnContainer}
-        onPress={onSharePress}
-      >
+        onPress={onSharePress}>
         <View
           style={{
             backgroundColor: color.lightBlue,
             padding: 10,
             borderRadius: 50,
-          }}
-        >
+          }}>
           <MaterialCommunityIcons
             name="share"
             size={26}
@@ -45,15 +42,13 @@ const InvoiceButtons = ({ onSharePress, onPrintPress }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.invoiceBtnContainer, {paddingHorizontal: 20}]}
-        onPress={onPrintPress}
-      >
+        onPress={onPrintPress}>
         <View
           style={{
             backgroundColor: color.lightBlue,
             padding: 10,
             borderRadius: 50,
-          }}
-        >
+          }}>
           <AntDesign name="printer" size={26} color={color.secondary} />
         </View>
         <Text style={styles.text}>Print</Text>
@@ -67,8 +62,8 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1.8,
     borderColor: color.secondary,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
     paddingVertical: 10,
@@ -76,18 +71,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'white',
     ...Platform.select({
-        ios: {
-            shadowColor: 'black',
-            shadowOffset: {width: 1, height: 2},
-            shadowOpacity: 0.5,
-            shadowRadius: 4,
-        },
-        android: {
-            elevation: 5
-        }
-    })
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: {width: 1, height: 2},
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
-  text: { fontSize: 18, fontWeight: "500" },
+  text: {fontSize: 18, fontWeight: '500'},
 });
 
 export default InvoiceButtons;

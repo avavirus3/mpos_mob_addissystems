@@ -67,8 +67,6 @@ const ProductCard = ({ item, handleQtyDecrement, handleQtyIncrement, handleQuant
                 textAlign: "center",
                 marginHorizontal: 5,
                 width: 50,
-                // borderWidth: 1,
-                borderColor: color.gray,
                 backgroundColor: "#f9f9f9",
                 borderRadius: 5,
               }}

@@ -26,13 +26,13 @@ export const textStyles = {
   },
 
   heading_normal: {
-    fontSize: 20,
+    fontSize: 19,
     color: color.black,
     fontWeight: '600',
   },
 
   text_normal: {
-    fontSize: 20,
+    fontSize: 19,
     color: color.black,
     fontWeight: '500'
   },
@@ -58,5 +58,6 @@ export const containerStyles = {
   },
   bodyContainer: {
     flex: 1,
+    paddingHorizontal: 15,
   },
 }
