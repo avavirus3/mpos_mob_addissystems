@@ -106,7 +106,7 @@ const ProductHead = ({
           label={'Make Sale'}
           height={50}
           btnBG={activeMakeSale ? color.primary : color.gray}
-          onPress={() => handleMakeSale()}
+          onPress={() => activeMakeSale && handleMakeSale()}
         />
       </View>
     </View>

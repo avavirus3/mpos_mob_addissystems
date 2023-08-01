@@ -1,10 +1,8 @@
 import {
   View,
-  Text,
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
-  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState, useRef, useContext} from 'react';
 import SearchBar from '../../../components/search/SearchBar';
@@ -22,8 +20,6 @@ const Home = ({navigation}) => {
   const selectedProducts = fetchedProduct.filter(product => product.qty > 0);
   // console.log("fetchedProduct", fetchedProduct)
 
-  // console.log(selectedProducts)
-
   useEffect(() => {
     try {
       const productWithZeroQty = ProductStore.map(item => ({...item, qty: 0}));
@@ -40,18 +36,15 @@ const Home = ({navigation}) => {
   // console.log('Product Store:', ProductStore);
   // console.log('Selected Product:', fetchedProduct);
 
-  const handleQuantityInput = (id, num) => {
-    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
-    updatedProduct.qty = parseInt(num);
-    // console.log('OnPress Output:', updatedProduct);
-    setFetchedProduct([...fetchedProduct]);
-  };
-
   const handleQtyIncrement = id => {
+    const product_prev_qty = ProductStore.filter(item => item.id === id && item)[0].qty
     const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
+    const updatedQty = updatedProduct.qty
+
     updatedProduct.qty += 1;
-    // console.log('OnPress Output:', updatedProduct);
-    setFetchedProduct([...fetchedProduct]);
+    // console.log('OnPress Output:', product_prev_qty);
+    // console.log(updatedProduct.qty)
+    // setFetchedProduct([...fetchedProduct]);
   };
 
   const handleQtyDecrement = id => {
@@ -61,13 +54,20 @@ const Home = ({navigation}) => {
     setFetchedProduct([...fetchedProduct]);
   };
 
+  const handleQuantityInput = (id, num) => {
+    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
+    updatedProduct.qty = parseInt(num);
+    // console.log('OnPress Output:', updatedProduct);
+    setFetchedProduct([...fetchedProduct]);
+  };
+
   const handleMakeSale = () => {
-    const resettedProductQty = fetchedProduct.map((item) => ({...item, qty: 0}))
+    if(selectedProducts.length > 0) {const resettedProductQty = fetchedProduct.map((item) => ({...item, qty: 0}))
     console.log("Fetched:",fetchedProduct)
     console.log("Resseted:",resettedProductQty)
     setFetchedProduct(resettedProductQty)
     navigation.navigate('Sale', {screen: 'create-sale', params: {"passed_selected_product": selectedProducts}})
-  }
+  }}
 
   /* Main Function Return */
   return (
@@ -101,7 +101,7 @@ const Home = ({navigation}) => {
               handleQtyIncrement={handleQtyIncrement}
               handleQuantityInput={handleQuantityInput}
               handleMakeSale={handleMakeSale}
-              activeMakeSale
+              activeMakeSale={selectedProducts.length > 0}
             />
           )}
         </View>

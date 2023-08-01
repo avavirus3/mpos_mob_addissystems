@@ -38,7 +38,7 @@ console.log("Error happende at useEffect with an error msg:", err)
     }
   }, [incomingData])
 
-  // console.log("ProductStore:", ProductStore)
+  console.log("ProductStore:", ProductStore)
 
   const handleQRResult = () => {
     navigation.navigate('payment');
