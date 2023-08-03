@@ -17,6 +17,7 @@ const ProductCard = ({
   handleQtyDecrement,
   handleQtyIncrement,
   handleQuantityInput,
+  handleEventOnBlur
 }) => {
   const {name, price, qty, image, category, id} = item;
 
@@ -80,6 +81,7 @@ const ProductCard = ({
             }}
             value={qty > 0 ? qty.toString() : qty === 0 ? '0' : ''}
             onChangeText={num => handleQuantityInput(id, num)}
+            onBlur={() => handleEventOnBlur(id)}
             keyboardType="number-pad"
           />
           <TouchableOpacity style={{}} onPress={() => handleQtyIncrement(id)}>

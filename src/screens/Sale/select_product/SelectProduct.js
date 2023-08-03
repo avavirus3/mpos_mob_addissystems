@@ -35,7 +35,7 @@ const SelectProduct = ({navigation}) => {
       .qty;
     const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
 
-    if ((Prev_Item_Qty - (Sale_Item.qty + 1)) >= 0) {
+    if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
       Sale_Item.qty += 1;
       setFetchedProduct([...fetchedProduct]);
     }
@@ -54,17 +54,28 @@ const SelectProduct = ({navigation}) => {
       .qty;
     const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
 
-    if ((Prev_Item_Qty - (Sale_Item.qty + 1)) >= 0) {
+    console.log('InputNum:', inputNum);
+    if (Prev_Item_Qty - (Sale_Item.qty + inputNum) >= 0) {
       console.log('Can be Deducted!');
       Sale_Item.qty = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
       console.log("Item Can't Set!");
       Sale_Item.qty = Prev_Item_Qty;
     } else {
-      Sale_Item.qty = 0
+      Sale_Item.qty = '';
     }
 
     setFetchedProduct([...fetchedProduct]);
+  };
+
+  const handleEventOnBlur = id => {
+    const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
+    console.log('OnBlur Event Fired!');
+
+    if (Sale_Item.qty === '') {
+      Sale_Item.qty = 0;
+      setFetchedProduct([...fetchedProduct]);
+    }
   };
 
   const selectedProducts = fetchedProduct.filter(product => product.qty > 0);
@@ -79,7 +90,9 @@ const SelectProduct = ({navigation}) => {
   const handleOnDone = () => {
     if (selectedProducts.length > 0) {
       const updatedProduct = ProductStore.filter(item => item.qty > 0);
-      navigation.navigate('create-sale', {passed_selected_product: selectedProducts});
+      navigation.navigate('create-sale', {
+        passed_selected_product: selectedProducts,
+      });
     }
   };
 
@@ -136,6 +149,7 @@ const SelectProduct = ({navigation}) => {
               handleQtyDecrement={handleQtyDecrement}
               handleQtyIncrement={handleQtyIncrement}
               handleQuantityInput={handleQuantityInput}
+              handleEventOnBlur={handleEventOnBlur}
             />
           )}
           keyExtractor={item => item.id}

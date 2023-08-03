@@ -17,6 +17,7 @@ const ItemsList = ({
   handleQtyDecrement,
   handleQtyIncrement,
   handleQuantityInput,
+  handleEventOnBlur
 }) => {
   return (
     <View
@@ -100,6 +101,7 @@ const ItemsList = ({
                 handleQtyDecrement={handleQtyDecrement}
                 handleQtyIncrement={handleQtyIncrement}
                 handleQuantityInput={handleQuantityInput}
+                handleEventOnBlur={handleEventOnBlur}
                 key={item.id}
               />
             );

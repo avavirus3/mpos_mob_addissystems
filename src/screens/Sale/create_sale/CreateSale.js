@@ -20,11 +20,12 @@ import SuccessFailModal from '../../../components/modal/SuccessFailModal';
 import CustomerComponent from './CustomerComponent';
 import SubTotal from './SubTotal';
 import ItemsList from './ItemsList';
-import { G } from 'react-native-svg';
+import {G} from 'react-native-svg';
 
 /* Main Function */
 const CreateSale = ({route}) => {
-  const {data, setData, ProductStore, setProductStore } = useContext(AuthContext);
+  const {data, setData, ProductStore, setProductStore} =
+    useContext(AuthContext);
   const navigation = useNavigation();
   const incomingData = route.params;
   const [passedData, setPassedData] = useState([]);
@@ -73,7 +74,7 @@ const CreateSale = ({route}) => {
             items: passedData,
             totalPrice: TOTAL_PRODUCT_PRICE,
             time: moment(currentTime).format('h:mm:ss a'),
-            transaction_completed: false
+            transaction_completed: false,
           })
         : (newDraftData.draft = [
             ...data.draft,
@@ -82,7 +83,7 @@ const CreateSale = ({route}) => {
               items: passedData,
               totalPrice: TOTAL_PRODUCT_PRICE,
               time: moment(currentTime).format('h:mm:ss a'),
-              transaction_completed: false
+              transaction_completed: false,
             },
           ]);
     }
@@ -93,23 +94,20 @@ const CreateSale = ({route}) => {
       setDraftModal(false);
       navigation.navigate('sale-home');
       setPassedData([]);
-      setCustomer({name: 'Guest'})
-      setDiscount(0)
+      setCustomer({name: 'Guest'});
+      setDiscount(0);
     }, 1500);
   };
 
-  const handleQuantityInput = (id, num) => {
-    const updatedProduct = passedData?.filter(item => item.id == id)[0];
-    updatedProduct.qty = num == '' ? 0 : num;
-    // console.log('OnPress Output:', updatedProduct);
-    setPassedData([...passedData]);
-  };
-
   const handleQtyIncrement = id => {
-    const updatedProduct = passedData?.filter(item => item.id == id)[0];
-    updatedProduct.qty += 1;
-    // console.log('OnPress Output:', updatedProduct);
-    setPassedData([...passedData]);
+    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = passedData.filter(item => item.id == id)[0];
+
+    if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
+      Sale_Item.qty += 1;
+      setPassedData([...passedData]);
+    }
   };
 
   const handleQtyDecrement = id => {
@@ -117,6 +115,38 @@ const CreateSale = ({route}) => {
     updatedProduct.qty = updatedProduct.qty - 1;
     setPassedData([...passedData]);
   };
+
+  const handleQuantityInput = (id, num) => {
+    const inputNum = parseInt(num);
+    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = passedData.filter(item => item.id == id)[0];
+
+    if (Prev_Item_Qty - (Sale_Item.qty + inputNum) >= 0) {
+      console.log('Can be Deducted!');
+      Sale_Item.qty = inputNum;
+    } else if (inputNum > Prev_Item_Qty) {
+      console.log("Item Can't Set!");
+      Sale_Item.qty = Prev_Item_Qty;
+    } else {
+      Sale_Item.qty = '';
+    }
+
+    console.log('num', num);
+
+    setPassedData([...passedData]);
+  };
+
+  const handleEventOnBlur = id => {
+    const Sale_Item = passedData.filter(item => item.id == id)[0];
+
+    if(Sale_Item.qty === '') {
+      Sale_Item.qty = 0
+      setPassedData([...passedData])
+    }
+  };
+
+  console.log("Passed Data", passedData)
 
   const handleDeleteItem = id => {
     const updatedProduct = passedData?.filter(item => item.id != id);
@@ -129,57 +159,55 @@ const CreateSale = ({route}) => {
   };
 
   const handleTransaction = () => {
-
-    const deductedProducts = ProductStore.map((item) => {
-      const saleItem = passedData.find((sale) => sale.id === item.id);
+    const deductedProducts = ProductStore.map(item => {
+      const saleItem = passedData.find(sale => sale.id === item.id);
       if (saleItem) {
         return {...item, qty: item.qty - saleItem.qty};
       }
-      return item
+      return item;
     });
 
-    const selected_data_deduct = deductedProducts.filter(
-      obj2 => passedData.some(obj1 => isEqual(obj1, obj2)),
-    )
+    const selected_data_deduct = deductedProducts.filter(obj2 =>
+      passedData.some(obj1 => isEqual(obj1, obj2)),
+    );
 
-    
-    console.log("Deducted Products:", selected_data_deduct)
-      setProductStore(deductedProducts)
+    console.log('Deducted Products:', selected_data_deduct);
+    setProductStore(deductedProducts);
 
-      const newDraftData = data;
-    
-      incomingDraftIndex != null
-        ? (data.draft[incomingDraftIndex] = {
+    const newDraftData = data;
+
+    incomingDraftIndex != null
+      ? (data.draft[incomingDraftIndex] = {
+          customerData: customer === 'Guest' ? {name: customer} : customer,
+          items: passedData,
+          totalPrice: TOTAL_PRODUCT_PRICE,
+          time: moment(currentTime).format('h:mm:ss a'),
+          transaction_completed: true,
+        })
+      : (newDraftData.draft = [
+          ...data.draft,
+          {
             customerData: customer === 'Guest' ? {name: customer} : customer,
             items: passedData,
             totalPrice: TOTAL_PRODUCT_PRICE,
             time: moment(currentTime).format('h:mm:ss a'),
-            transaction_completed: true
-          })
-        : (newDraftData.draft = [
-            ...data.draft,
-            {
-              customerData: customer === 'Guest' ? {name: customer} : customer,
-              items: passedData,
-              totalPrice: TOTAL_PRODUCT_PRICE,
-              time: moment(currentTime).format('h:mm:ss a'),
-              transaction_completed: true
-            },
-          ]);
+            transaction_completed: true,
+          },
+        ]);
 
     setData(newDraftData);
 
     // console.log("Initial Data:",deductedProducts)
-    console.log("Product Store:", ProductStore)
+    console.log('Product Store:', ProductStore);
     // console.log("Selected Data:", passedData)
     setTransactionModal(true);
 
     setTimeout(() => {
       navigation.navigate('invoice-qr', passedData);
       setTransactionModal(false);
-      setPassedData([])
-      setCustomer({name: 'Guest'})
-      setDiscount(0)
+      setPassedData([]);
+      setCustomer({name: 'Guest'});
+      setDiscount(0);
     }, 1000);
   };
 
@@ -213,6 +241,7 @@ const CreateSale = ({route}) => {
                 handleQtyDecrement={handleQtyDecrement}
                 handleQtyIncrement={handleQtyIncrement}
                 handleQuantityInput={handleQuantityInput}
+                handleEventOnBlur={handleEventOnBlur}
                 key={item.id}
               />
             );
@@ -266,6 +295,7 @@ const CreateSale = ({route}) => {
             handleQtyIncrement={handleQtyIncrement}
             handleQuantityInput={handleQuantityInput}
             handleRemoveAll={handleRemoveAll}
+            handleEventOnBlur={handleEventOnBlur}
           />
           <CustomerComponent
             customer={customer}

@@ -2,9 +2,7 @@ import React from 'react';
 import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { color } from '../../../styles/Styles';
+import {color} from '../../../styles/Styles';
 
 const RenderItem = ({
   item,
@@ -12,6 +10,7 @@ const RenderItem = ({
   handleQtyDecrement,
   handleQtyIncrement,
   handleQuantityInput,
+  handleEventOnBlur
 }) => {
   const {name, price, qty, image, category, id} = item;
 
@@ -79,10 +78,11 @@ const RenderItem = ({
               borderWidth: 1,
               borderColor: color.gray,
               borderRadius: 5,
-              backgroundColor: '#f7f7f7'
+              backgroundColor: '#f7f7f7',
             }}
-            value={qty ? qty.toString() : '0'}
+            value={qty > 0 ? qty.toString() : qty === 0 ? '0' : ''}
             onChangeText={num => handleQuantityInput(id, num)}
+            onBlur={() => handleEventOnBlur(id)}
             keyboardType="number-pad"
           />
           <TouchableOpacity
@@ -101,5 +101,4 @@ const RenderItem = ({
   );
 };
 
-
-export default RenderItem
+export default RenderItem;

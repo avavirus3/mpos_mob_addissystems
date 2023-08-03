@@ -13,6 +13,7 @@ const MainComponent = ({
   handleQtyDecrement,
   handleQtyIncrement,
   handleQuantityInput,
+  handleEventOnBlur,
   handleMakeSale,
   activeMakeSale,
 }) => {
@@ -61,6 +62,7 @@ const MainComponent = ({
               handleQtyDecrement={handleQtyDecrement}
               handleQtyIncrement={handleQtyIncrement}
               handleQuantityInput={handleQuantityInput}
+              handleEventOnBlur={handleEventOnBlur}
             />
           )}
           keyExtractor={item => item.id}
