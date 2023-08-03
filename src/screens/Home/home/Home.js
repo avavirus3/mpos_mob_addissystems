@@ -10,6 +10,7 @@ import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import HomeHeading from './HomeHeading';
 import InitialHomeComponent from './InitialHomeComponent';
 import MainComponent from './MainComponent';
+import {handleQuantityInput} from '../../../utilities/quantityCalc/QUANTITIY_CALC';
 
 const Home = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -30,21 +31,21 @@ const Home = ({navigation}) => {
   }, [ProductStore]);
 
   useEffect(() => {
-    setCurrentProduct('All')
-  }, [])
+    setCurrentProduct('All');
+  }, []);
 
   // console.log('Product Store:', ProductStore);
   // console.log('Selected Product:', fetchedProduct);
 
   const handleQtyIncrement = id => {
-    const product_prev_qty = ProductStore.filter(item => item.id === id && item)[0].qty
-    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
-    const updatedQty = updatedProduct.qty
+    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
 
-    updatedProduct.qty += 1;
-    // console.log('OnPress Output:', product_prev_qty);
-    // console.log(updatedProduct.qty)
-    // setFetchedProduct([...fetchedProduct]);
+    if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
+      Sale_Item.qty += 1;
+      setFetchedProduct([...fetchedProduct]);
+    }
   };
 
   const handleQtyDecrement = id => {
@@ -55,19 +56,39 @@ const Home = ({navigation}) => {
   };
 
   const handleQuantityInput = (id, num) => {
-    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
-    updatedProduct.qty = parseInt(num);
-    // console.log('OnPress Output:', updatedProduct);
+    const inputNum = parseInt(num);
+    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
+
+    if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
+      console.log('Can be Deducted!');
+      Sale_Item.qty = inputNum;
+    } else if (inputNum > Prev_Item_Qty) {
+      console.log("Item Can't Set!");
+      Sale_Item.qty = Prev_Item_Qty;
+    } else {
+      Sale_Item.qty = 0;
+    }
+
     setFetchedProduct([...fetchedProduct]);
   };
 
   const handleMakeSale = () => {
-    if(selectedProducts.length > 0) {const resettedProductQty = fetchedProduct.map((item) => ({...item, qty: 0}))
-    console.log("Fetched:",fetchedProduct)
-    console.log("Resseted:",resettedProductQty)
-    setFetchedProduct(resettedProductQty)
-    navigation.navigate('Sale', {screen: 'create-sale', params: {"passed_selected_product": selectedProducts}})
-  }}
+    if (selectedProducts.length > 0) {
+      const resettedProductQty = fetchedProduct.map(item => ({
+        ...item,
+        qty: 0,
+      }));
+      console.log('Fetched:', fetchedProduct);
+      console.log('Resseted:', resettedProductQty);
+      setFetchedProduct(resettedProductQty);
+      navigation.navigate('Sale', {
+        screen: 'create-sale',
+        params: {passed_selected_product: selectedProducts},
+      });
+    }
+  };
 
   /* Main Function Return */
   return (
@@ -83,7 +104,7 @@ const Home = ({navigation}) => {
             />
           </View>
         </TouchableWithoutFeedback>
-          
+
         {/* Main Body Container */}
         <View style={styles.bodyContainer}>
           {/* Heading Component */}

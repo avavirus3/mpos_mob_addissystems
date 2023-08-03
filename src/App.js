@@ -1,15 +1,16 @@
 import {View, Text} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import MainTabNavigation from './navigation/MainTabNavigation';
 import {AuthProvider} from './hooks/useContext/AuthContext';
+import InitialRender from './auth/InitialRender';
 
 const App = () => {
-  const [search, setSearch] = useState('');
+
   return (
     <AuthProvider>
       <NavigationContainer>
-        <MainTabNavigation />
+        <InitialRender />
       </NavigationContainer>
     </AuthProvider>
   );

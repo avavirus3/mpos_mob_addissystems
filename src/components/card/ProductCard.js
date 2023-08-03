@@ -18,9 +18,7 @@ const ProductCard = ({
   handleQtyIncrement,
   handleQuantityInput,
 }) => {
-  const [quantity, setQuantity] = useState(0);
   const {name, price, qty, image, category, id} = item;
-  // console.log(item);
 
   return (
     <View
@@ -80,7 +78,7 @@ const ProductCard = ({
               backgroundColor: '#f9f9f9',
               borderRadius: 5,
             }}
-            value={qty ? qty.toString() : '0'}
+            value={qty > 0 ? qty.toString() : qty === 0 ? '0' : ''}
             onChangeText={num => handleQuantityInput(id, num)}
             keyboardType="number-pad"
           />

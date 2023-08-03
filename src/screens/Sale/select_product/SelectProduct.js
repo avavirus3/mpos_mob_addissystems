@@ -30,24 +30,40 @@ const SelectProduct = ({navigation}) => {
     }
   }, []);
 
-  const handleQuantityInput = (id, num) => {
-    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
-    updatedProduct.qty = parseInt(num);
-    // console.log('OnPress Output:', updatedProduct);
-    setFetchedProduct([...fetchedProduct]);
-  };
-
   const handleQtyIncrement = id => {
-    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
-    updatedProduct.qty += 1;
-    // console.log("OnPress Output:", updatedProduct);
-    setFetchedProduct([...fetchedProduct]);
+    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
+
+    if ((Prev_Item_Qty - (Sale_Item.qty + 1)) >= 0) {
+      Sale_Item.qty += 1;
+      setFetchedProduct([...fetchedProduct]);
+    }
   };
 
   const handleQtyDecrement = id => {
     const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
     updatedProduct.qty = updatedProduct.qty == 0 ? 0 : updatedProduct.qty - 1;
     // console.log("OnPress Output:", updatedProduct);
+    setFetchedProduct([...fetchedProduct]);
+  };
+
+  const handleQuantityInput = (id, num) => {
+    const inputNum = parseInt(num);
+    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
+
+    if ((Prev_Item_Qty - (Sale_Item.qty + 1)) >= 0) {
+      console.log('Can be Deducted!');
+      Sale_Item.qty = inputNum;
+    } else if (inputNum > Prev_Item_Qty) {
+      console.log("Item Can't Set!");
+      Sale_Item.qty = Prev_Item_Qty;
+    } else {
+      Sale_Item.qty = 0
+    }
+
     setFetchedProduct([...fetchedProduct]);
   };
 
