@@ -3,6 +3,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState, useRef, useContext} from 'react';
 import SearchBar from '../../../components/search/SearchBar';
@@ -10,7 +11,7 @@ import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import HomeHeading from './HomeHeading';
 import InitialHomeComponent from './InitialHomeComponent';
 import MainComponent from './MainComponent';
-import {handleQuantityInput} from '../../../utilities/quantityCalc/QUANTITIY_CALC';
+import Toast from 'react-native-toast-message'
 
 const Home = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -45,7 +46,17 @@ const Home = ({navigation}) => {
     if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
       Sale_Item.qty += 1;
       setFetchedProduct([...fetchedProduct]);
+    } else if (Prev_Item_Qty - (Sale_Item.qty + 1) < 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'No Enough Items!',
+        text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
+          // backgroundColor: 'red', // Customize the toast background color
+          // leftIconColor: 'white', // Customize the left side color
+      });
     }
+
+    
   };
 
   const handleQtyDecrement = id => {
@@ -62,10 +73,17 @@ const Home = ({navigation}) => {
     const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
 
     if (Prev_Item_Qty - (Sale_Item.qty + inputNum) >= 0) {
-      console.log('Can be Deducted!');
+      // console.log('Can be Deducted!');
       Sale_Item.qty = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
-      console.log("Item Can't Set!");
+      // console.log("Item Can't Set!");
+      Toast.show({
+        type: 'error',
+        text1: 'There Is No This Amount of Items',
+        text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
+          // backgroundColor: 'red', // Customize the toast background color
+          // leftIconColor: 'white', // Customize the left side color
+      });
       Sale_Item.qty = Prev_Item_Qty;
     } else {
       Sale_Item.qty = '';
@@ -73,16 +91,16 @@ const Home = ({navigation}) => {
 
     setFetchedProduct([...fetchedProduct]);
 
-    console.log(Sale_Item.qty)
+    console.log(Sale_Item.qty);
   };
 
   const handleEventOnBlur = id => {
     const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
-    console.log("OnBlur Event Fired!")
+    console.log('OnBlur Event Fired!');
 
-    if(Sale_Item.qty === '') {
-      Sale_Item.qty = 0
-      setFetchedProduct([...fetchedProduct])
+    if (Sale_Item.qty === '') {
+      Sale_Item.qty = 0;
+      setFetchedProduct([...fetchedProduct]);
     }
   };
 

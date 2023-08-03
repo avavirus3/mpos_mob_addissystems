@@ -11,6 +11,7 @@ import SearchBar from '../../../components/search/SearchBar';
 import ProductCard from '../../../components/card/ProductCard';
 import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import CategoryHead from './CategoryHead';
+import Toast from 'react-native-toast-message';
 
 const SelectProduct = ({navigation}) => {
   const [CurrentProduct, setCurrentProduct] = useState('All');
@@ -38,6 +39,14 @@ const SelectProduct = ({navigation}) => {
     if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
       Sale_Item.qty += 1;
       setFetchedProduct([...fetchedProduct]);
+    } else if (Prev_Item_Qty - (Sale_Item.qty + 1) < 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'No Enough Items!',
+        text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
+          backgroundColor: 'red', // Customize the toast background color
+          leftIconColor: 'white', // Customize the left side color
+      });
     }
   };
 
@@ -56,10 +65,17 @@ const SelectProduct = ({navigation}) => {
 
     console.log('InputNum:', inputNum);
     if (Prev_Item_Qty - (Sale_Item.qty + inputNum) >= 0) {
-      console.log('Can be Deducted!');
+      // console.log('Can be Deducted!');
       Sale_Item.qty = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
-      console.log("Item Can't Set!");
+      // console.log("Item Can't Set!");
+      Toast.show({
+        type: 'error',
+        text1: 'There Is No This Amount of Items',
+        text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
+          // backgroundColor: 'red', // Customize the toast background color
+          // leftIconColor: 'white', // Customize the left side color
+      });
       Sale_Item.qty = Prev_Item_Qty;
     } else {
       Sale_Item.qty = '';
