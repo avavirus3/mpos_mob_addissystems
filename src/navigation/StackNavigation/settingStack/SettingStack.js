@@ -1,14 +1,14 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from './home/Home';
+import Setting from '../../../screens/Setting/Setting';
 const Stack = createNativeStackNavigator();
 
-const HomeStack = () => {
+const SettingStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
       initialRouteName="main">
-      <Stack.Screen name="main" component={Home} />
+      <Stack.Screen name="main" component={Setting} />
       {/* <Stack.Screen name="main" component={} /> */}
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
@@ -21,4 +21,4 @@ const HomeStack = () => {
 // Allways try to wright neat codes with comments as much as possible! someone may be maintain it latter.
 // You can Ignore this after you read it. Feel free to modify this file and even create from scratch, this is just template to work with the same flow.
 
-export default HomeStack;
+export default SettingStack;

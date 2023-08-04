@@ -7,11 +7,11 @@ import {
   Platform,
 } from 'react-native';
 import React, {useState, useContext} from 'react';
-import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
-import SearchBar from '../../components/search/SearchBar';
-import {AuthContext} from '../../hooks/useContext/AuthContext';
-import {color, textStyles, containerStyles} from '../../styles/Styles';
-import Button from '../../components/button/Button';
+import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
+import SearchBar from '../../../components/search/SearchBar';
+import {AuthContext} from '../../../hooks/useContext/AuthContext';
+import {color, textStyles, containerStyles} from '../../../styles/Styles';
+import Button from '../../../components/button/Button';
 
 const CustomerList = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -22,7 +22,7 @@ const CustomerList = ({navigation}) => {
   console.log('Selected Customer:', selectedCustomer);
 
   const handleAddCustomer = () => {
-    navigation.navigate('create-sale', {"selected_Customer": selectedCustomer});
+    navigation.navigate('create-sale', {selected_Customer: selectedCustomer});
   };
 
   const renderItem = ({item}) => {

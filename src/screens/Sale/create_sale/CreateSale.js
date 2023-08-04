@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {color, textStyles} from '../../../styles/Styles';
+import {color} from '../../../styles/Styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
@@ -20,12 +20,14 @@ import SuccessFailModal from '../../../components/modal/SuccessFailModal';
 import CustomerComponent from './CustomerComponent';
 import SubTotal from './SubTotal';
 import ItemsList from './ItemsList';
-import Toast from 'react-native-toast-message'
+import Toast from 'react-native-toast-message';
+import {useSelector, useDispatch} from 'react-redux';
 
 /* Main Function */
 const CreateSale = ({route}) => {
   const {data, setData, ProductStore, setProductStore} =
     useContext(AuthContext);
+  const PRODUCT_DATA = useSelector(state => state.product.items);
   const navigation = useNavigation();
   const incomingData = route.params;
   const [passedData, setPassedData] = useState([]);
@@ -100,7 +102,7 @@ const CreateSale = ({route}) => {
   };
 
   const handleQtyIncrement = id => {
-    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
       .qty;
     const Sale_Item = passedData.filter(item => item.id == id)[0];
 
@@ -112,8 +114,8 @@ const CreateSale = ({route}) => {
         type: 'error',
         text1: 'No Enough Items!',
         text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
-          // backgroundColor: 'red', // Customize the toast background color
-          // leftIconColor: 'white', // Customize the left side color
+        // backgroundColor: 'red', // Customize the toast background color
+        // leftIconColor: 'white', // Customize the left side color
       });
     }
   };
@@ -126,7 +128,7 @@ const CreateSale = ({route}) => {
 
   const handleQuantityInput = (id, num) => {
     const inputNum = parseInt(num);
-    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
       .qty;
     const Sale_Item = passedData.filter(item => item.id == id)[0];
 
@@ -139,8 +141,8 @@ const CreateSale = ({route}) => {
         type: 'error',
         text1: 'There Is No This Amount of Items',
         text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
-          // backgroundColor: 'red', // Customize the toast background color
-          // leftIconColor: 'white', // Customize the left side color
+        // backgroundColor: 'red', // Customize the toast background color
+        // leftIconColor: 'white', // Customize the left side color
       });
       Sale_Item.qty = Prev_Item_Qty;
     } else {
@@ -155,13 +157,13 @@ const CreateSale = ({route}) => {
   const handleEventOnBlur = id => {
     const Sale_Item = passedData.filter(item => item.id == id)[0];
 
-    if(Sale_Item.qty === '') {
-      Sale_Item.qty = 1
-      setPassedData([...passedData])
+    if (Sale_Item.qty === '') {
+      Sale_Item.qty = 1;
+      setPassedData([...passedData]);
     }
   };
 
-  console.log("Passed Data", passedData)
+  // console.log('Passed Data', passedData);
 
   const handleDeleteItem = id => {
     const updatedProduct = passedData?.filter(item => item.id != id);
@@ -174,7 +176,7 @@ const CreateSale = ({route}) => {
   };
 
   const handleTransaction = () => {
-    const deductedProducts = ProductStore.map(item => {
+    const products_after_qty_deduction = PRODUCT_DATA.map(item => {
       const saleItem = passedData.find(sale => sale.id === item.id);
       if (saleItem) {
         return {...item, qty: item.qty - saleItem.qty};
@@ -182,12 +184,13 @@ const CreateSale = ({route}) => {
       return item;
     });
 
-    const selected_data_deduct = deductedProducts.filter(obj2 =>
+    const selected_data_deduct = products_after_qty_deduction.filter(obj2 =>
       passedData.some(obj1 => isEqual(obj1, obj2)),
     );
 
-    console.log('Deducted Products:', selected_data_deduct);
-    setProductStore(deductedProducts);
+    console.log('products after deduction:', products_after_qty_deduction);
+
+    setProductStore(products_after_qty_deduction);
 
     const newDraftData = data;
 
@@ -211,18 +214,14 @@ const CreateSale = ({route}) => {
         ]);
 
     setData(newDraftData);
-
-    // console.log("Initial Data:",deductedProducts)
-    console.log('Product Store:', ProductStore);
-    // console.log("Selected Data:", passedData)
     setTransactionModal(true);
 
     setTimeout(() => {
-      navigation.navigate('invoice-qr', passedData);
+      // navigation.navigate('invoice-qr', passedData);
       setTransactionModal(false);
-      setPassedData([]);
-      setCustomer({name: 'Guest'});
-      setDiscount(0);
+      // setPassedData([]);
+      // setCustomer({name: 'Guest'});
+      // setDiscount(0);
     }, 1000);
   };
 

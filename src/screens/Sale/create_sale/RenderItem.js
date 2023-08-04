@@ -3,6 +3,7 @@ import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {color} from '../../../styles/Styles';
+import IncrementDecrement from '../../../components/button/IncrementDecrement';
 
 const RenderItem = ({
   item,
@@ -10,7 +11,7 @@ const RenderItem = ({
   handleQtyDecrement,
   handleQtyIncrement,
   handleQuantityInput,
-  handleEventOnBlur
+  handleEventOnBlur,
 }) => {
   const {name, price, qty, image, category, id} = item;
 
@@ -51,7 +52,7 @@ const RenderItem = ({
         </View>
       </View>
       <View style={{alignItems: 'flex-end'}}>
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             height: 47,
@@ -78,6 +79,7 @@ const RenderItem = ({
               borderWidth: 1,
               borderColor: color.gray,
               borderRadius: 5,
+              color: '#000',
               backgroundColor: '#f7f7f7',
             }}
             value={qty > 0 ? qty.toString() : qty === 0 ? '0' : ''}
@@ -90,7 +92,15 @@ const RenderItem = ({
             onPress={num => handleQtyIncrement(id, num)}>
             <Entypo name="plus" size={28} color={color.secondary} />
           </TouchableOpacity>
-        </View>
+        </View> */}
+        <IncrementDecrement
+          id={id}
+          qty={qty}
+          handleEventOnBlur={handleEventOnBlur}
+          handleQtyDecrement={handleQtyDecrement}
+          handleQtyIncrement={handleQtyIncrement}
+          handleQuantityInput={handleQuantityInput}
+        />
         <TouchableOpacity
           style={{borderWidth: 0, borderColor: 'red', padding: 5}}
           onPress={() => handleDeleteItem(id)}>
