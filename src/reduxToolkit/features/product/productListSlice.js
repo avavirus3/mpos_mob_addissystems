@@ -201,12 +201,12 @@ export const productListSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
-      setPRODUCT: (state, value) => {
-        state.items = value;
+      setPRODUCT: (state, action) => {
+        state.items = action.payload;
     },
     }
 });
 
-export const {  } = productListSlice.actions;
+export const { setPRODUCT } = productListSlice.actions;
 
 export default productListSlice.reducer;

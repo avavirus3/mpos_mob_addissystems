@@ -11,8 +11,6 @@ import InitialHomeComponent from './InitialHomeComponent';
 import MainComponent from './MainComponent';
 import Toast from 'react-native-toast-message';
 import {useSelector, useDispatch} from 'react-redux';
-import SkeletonLoader from '../../../components/loading/ProductSkeletonLoader';
-import SkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
 
 const Home = ({navigation}) => {
@@ -134,7 +132,7 @@ const Home = ({navigation}) => {
           {/* Heading Component */}
           <HomeHeading user={'Abebe Kebede'} sale={'50,000'} />
 
-          {false ? (
+          {0 ? (
             <InitialHomeComponent navigation={navigation} />
           ) : CurrentProduct.length > 0 ? (
             <MainComponent

@@ -9,17 +9,19 @@ import {
 import React, {useState, useContext} from 'react';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import SearchBar from '../../../components/search/SearchBar';
-import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import {color, textStyles, containerStyles} from '../../../styles/Styles';
 import Button from '../../../components/button/Button';
+import { useSelector, useDispatch } from 'react-redux';
 
 const CustomerList = ({navigation}) => {
+  const CUSTOMERS = useSelector(state => state.customerList.customers)
   const [search, setSearch] = useState('');
-  const {data} = useContext(AuthContext);
   const [selectedCustomer, setSelectedCustomer] = useState([]);
 
   // console.log(data.customerList);
   console.log('Selected Customer:', selectedCustomer);
+
+  console.log("CUSTOMERS:", CUSTOMERS)
 
   const handleAddCustomer = () => {
     navigation.navigate('create-sale', {selected_Customer: selectedCustomer});
@@ -90,7 +92,7 @@ const CustomerList = ({navigation}) => {
             paddingTop: 10,
             paddingBottom: 20,
           }}
-          data={data?.customerList}
+          data={CUSTOMERS}
           renderItem={renderItem}
           keyExtractor={item => item.tin}
         />

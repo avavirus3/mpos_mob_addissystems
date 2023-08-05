@@ -23,7 +23,7 @@ const ItemsList = ({
     <View
       style={{
         // flex: 1,
-        marginTop: 5,
+        marginTop: 0,
         backgroundColor: color.lightGray,
         paddingTop: 15,
         paddingBottom: 15,
@@ -90,8 +90,8 @@ const ItemsList = ({
         ]}>
         <View
           style={{
-            gap: 35,
-            marginVertical: passedData?.length > 0 ? 15 : 0,
+            gap: 15,
+            marginVertical: passedData?.length > 0 ? 10 : 0,
           }}>
           {passedData.map((item, index) => {
             return (
