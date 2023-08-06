@@ -13,12 +13,12 @@ const RenderItem = ({
   handleQuantityInput,
   handleEventOnBlur,
 }) => {
-  const {name, price, qty, image, category, id} = item;
+  const {name, price, quantity, image, category, _id} = item;
 
   const noImage = require('../../../assets/images/no-image.jpg');
 
   return (
-    <View style={{flexDirection: 'row', marginVertical: 0}} key={id}>
+    <View style={{flexDirection: 'row', marginVertical: 0}} key={_id}>
       <View
         style={{
           flex: 1,
@@ -44,10 +44,10 @@ const RenderItem = ({
           <Text style={{fontSize: 18, fontWeight: '600'}}>{name}</Text>
           <Text style={{fontSize: 16, color: color.gray}}>{category}</Text>
           <Text style={{fontSize: 18, fontWeight: '500'}}>
-            {qty} X {price} ETB
+            {quantity} X {price} ETB
           </Text>
           <Text style={{fontSize: 18, fontWeight: '500'}}>
-            = {qty * price} ETB
+            = {quantity * price} ETB
           </Text>
         </View>
       </View>
@@ -94,8 +94,8 @@ const RenderItem = ({
           </TouchableOpacity>
         </View> */}
         <IncrementDecrement
-          id={id}
-          qty={qty}
+          id={_id}
+          qty={quantity}
           handleEventOnBlur={handleEventOnBlur}
           handleQtyDecrement={handleQtyDecrement}
           handleQtyIncrement={handleQtyIncrement}
@@ -103,7 +103,7 @@ const RenderItem = ({
         />
         <TouchableOpacity
           style={{borderWidth: 0, borderColor: 'red', padding: 5}}
-          onPress={() => handleDeleteItem(id)}>
+          onPress={() => handleDeleteItem(_id)}>
           <Ionicons name="trash" size={30} color={color.primary} />
         </TouchableOpacity>
       </View>

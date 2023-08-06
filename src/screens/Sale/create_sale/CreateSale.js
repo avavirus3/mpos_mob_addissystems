@@ -22,12 +22,14 @@ import SubTotal from './SubTotal';
 import ItemsList from './ItemsList';
 import Toast from 'react-native-toast-message';
 import {useSelector, useDispatch} from 'react-redux';
+import { getItems, updateItem, deleteItem } from '../../../database/services/itemServices';
 
 /* Main Function */
 const CreateSale = ({route}) => {
   const {data, setData, ProductStore, setProductStore} =
     useContext(AuthContext);
   const PRODUCT_DATA = useSelector(state => state.product.items);
+  const [realmItemList, setRealmItemList] = useState([]);
   const navigation = useNavigation();
   const incomingData = route.params;
   const [passedData, setPassedData] = useState([]);
@@ -42,7 +44,7 @@ const CreateSale = ({route}) => {
   // console.log('incomingData:', incomingData);
 
   function isEqual(obj1, obj2) {
-    return obj1.id === obj2.id;
+    return obj1._id === obj2._id;
   }
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const CreateSale = ({route}) => {
 
     try {
       incomingData && incomingData?.hasOwnProperty('passed_selected_product')
-        ? setPassedData(passedData.concat(newUpcomingProduct))
+        ? setPassedData(passedData.concat(newUpcomingProduct)) // set Incoming passed data to a sale item state
         : incomingData?.hasOwnProperty('selected_Customer')
         ? setCustomer(incomingData.selected_Customer || customer)
         : incomingData?.hasOwnProperty('draftData')
@@ -65,6 +67,18 @@ const CreateSale = ({route}) => {
     } catch (error) {
       console.log('Error Message at useEffect, error msg:', error);
     }
+
+    const getDataFromRealmDb = async () => {
+      try {
+        const items = await getItems();
+        console.log('realm items', items);
+        setRealmItemList(items);
+      } catch (err) {
+        console.log("Error Retriving RealmDb:", err)
+      }
+    }
+
+    getDataFromRealmDb()
   }, [incomingData]);
 
   const handleSaveSale = () => {
@@ -102,63 +116,60 @@ const CreateSale = ({route}) => {
   };
 
   const handleQtyIncrement = id => {
-    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
-      .qty;
-    const Sale_Item = passedData.filter(item => item.id == id)[0];
+    const Prev_Item_Qty = realmItemList.filter(item => item._id === id && item)[0]
+      .quantity;
+    const Sale_Item = passedData.filter(item => item._id === id)[0];
 
-    if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
-      Sale_Item.qty += 1;
+    console.log("Sale Item:", Sale_Item)
+
+    if (Prev_Item_Qty - (Sale_Item.quantity + 1) >= 0) {
+      Sale_Item.quantity += 1;
       setPassedData([...passedData]);
-    } else if (Prev_Item_Qty - (Sale_Item.qty + 1) < 0) {
+    } else if (Prev_Item_Qty - (Sale_Item.quantity + 1) < 0) {
       Toast.show({
         type: 'error',
         text1: 'No Enough Items!',
         text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
-        // backgroundColor: 'red', // Customize the toast background color
-        // leftIconColor: 'white', // Customize the left side color
       });
     }
   };
 
   const handleQtyDecrement = id => {
-    const updatedProduct = passedData?.filter(item => item.id == id)[0];
-    updatedProduct.qty = updatedProduct.qty - 1;
+    const updatedProduct = passedData?.filter(item => item._id === id)[0];
+    updatedProduct.quantity = updatedProduct.quantity - 1;
     setPassedData([...passedData]);
   };
 
   const handleQuantityInput = (id, num) => {
     const inputNum = parseInt(num);
-    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
-      .qty;
-    const Sale_Item = passedData.filter(item => item.id == id)[0];
+    const Prev_Item_Qty = realmItemList.filter(
+      item => item._id === id && item,
+    )[0].quantity;
+    const Sale_Item = passedData.filter(item => item._id == id)[0];
 
-    if (Prev_Item_Qty - (Sale_Item.qty + inputNum) >= 0) {
+    if (Prev_Item_Qty - (Sale_Item.quantity + inputNum) >= 0) {
       // console.log('Can be Deducted!');
-      Sale_Item.qty = inputNum;
+      Sale_Item.quantity = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
       // console.log("Item Can't Set!");
       Toast.show({
         type: 'error',
         text1: 'There Is No This Amount of Items',
         text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
-        // backgroundColor: 'red', // Customize the toast background color
-        // leftIconColor: 'white', // Customize the left side color
       });
-      Sale_Item.qty = Prev_Item_Qty;
+      Sale_Item.quantity = Prev_Item_Qty;
     } else {
-      Sale_Item.qty = '';
+      Sale_Item.quantity = '';
     }
-
-    console.log('num', num);
 
     setPassedData([...passedData]);
   };
 
   const handleEventOnBlur = id => {
-    const Sale_Item = passedData.filter(item => item.id == id)[0];
+    const Sale_Item = passedData.filter(item => item._id == id)[0];
 
-    if (Sale_Item.qty === '') {
-      Sale_Item.qty = 1;
+    if (Sale_Item.quantity === '') {
+      Sale_Item.quantity = 1;
       setPassedData([...passedData]);
     }
   };
@@ -166,7 +177,7 @@ const CreateSale = ({route}) => {
   // console.log('Passed Data', passedData);
 
   const handleDeleteItem = id => {
-    const updatedProduct = passedData?.filter(item => item.id != id);
+    const updatedProduct = passedData?.filter(item => item._id != id);
     // console.log(updatedProduct);
     setPassedData(updatedProduct);
   };

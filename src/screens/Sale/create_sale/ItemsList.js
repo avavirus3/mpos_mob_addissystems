@@ -90,7 +90,7 @@ const ItemsList = ({
         ]}>
         <View
           style={{
-            gap: 35,
+            gap: 10,
             marginVertical: passedData?.length > 0 ? 15 : 0,
           }}>
           {passedData.map((item, index) => {
@@ -102,7 +102,7 @@ const ItemsList = ({
                 handleQtyIncrement={handleQtyIncrement}
                 handleQuantityInput={handleQuantityInput}
                 handleEventOnBlur={handleEventOnBlur}
-                key={item.id}
+                key={item._id}
               />
             );
           })}
