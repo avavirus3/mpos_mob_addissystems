@@ -217,11 +217,11 @@ const CreateSale = ({route}) => {
     setTransactionModal(true);
 
     setTimeout(() => {
-      // navigation.navigate('invoice-qr', passedData);
+      navigation.navigate('invoice-qr', passedData);
       setTransactionModal(false);
-      // setPassedData([]);
-      // setCustomer({name: 'Guest'});
-      // setDiscount(0);
+      setPassedData([]);
+      setCustomer({name: 'Guest'});
+      setDiscount(0);
     }, 1000);
   };
 

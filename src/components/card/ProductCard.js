@@ -1,37 +1,37 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import React, {useState} from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {color, textStyles} from '../../styles/Styles';
 import IncrementDecrement from '../button/IncrementDecrement';
+import FastImage from 'react-native-fast-image';
 
-const noImage = require('../../assets/images/no-image.jpg');
+const noImage = '../../assets/images/no-image.jpg';
+const noImage2 = '../../assets/images/charger-1.jpg';
 
 const ProductCard = ({
   item,
   handleQtyDecrement,
   handleQtyIncrement,
   handleQuantityInput,
-  handleEventOnBlur
+  handleEventOnBlur,
 }) => {
-  const {name, price, qty, image, category, id} = item;
+  const {name, price, quantity, image, category, _id} = item;
+  // console.log('items to be Destructure:', item);
 
   return (
     <View
       style={[
         styles.productContainer,
-        // { borderWidth: 1, borderColor: "red" },
-      ]}>
+        // { borderW_th: 1, borderColor: "red" },
+      ]}
+      key={_id}>
       <View style={styles.imageContainer}>
-        <Image
+        {/* <Image
           style={{height: '100%', width: '100%', resizeMode: 'cover'}}
-          source={image ? image : noImage}
+          source={imageSwicher}
+        /> */}
+        <FastImage
+          style={{height: '100%', width: '100%', resizeMode: 'cover'}}
+          source={image}
         />
       </View>
       <View
@@ -50,7 +50,14 @@ const ProductCard = ({
           <Text style={styles.priceText}>{price}</Text>
           <Text style={styles.priceText}> ETB</Text>
         </View>
-        <IncrementDecrement id={id} qty={qty} handleEventOnBlur={handleEventOnBlur} handleQtyDecrement={handleQtyDecrement} handleQtyIncrement={handleQtyIncrement} handleQuantityInput={handleQuantityInput} />
+        <IncrementDecrement
+          id={_id}
+          qty={quantity}
+          handleEventOnBlur={handleEventOnBlur}
+          handleQtyDecrement={handleQtyDecrement}
+          handleQtyIncrement={handleQtyIncrement}
+          handleQuantityInput={handleQuantityInput}
+        />
       </View>
     </View>
   );

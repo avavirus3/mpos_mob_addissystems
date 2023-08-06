@@ -1,6 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../../../screens/Home/home/Home';
+import HomeforRealm from '../../../screens/Home/home/HomeForRealm';
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
@@ -9,7 +10,7 @@ const HomeStack = () => {
       screenOptions={{headerShown: false}}
       initialRouteName="main">
       <Stack.Screen name="main" component={Home} />
-      {/* <Stack.Screen name="main" component={} /> */}
+      {/* <Stack.Screen name="main" component={HomeforRealm} /> */}
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );

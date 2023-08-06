@@ -65,7 +65,7 @@ const MainComponent = ({
               handleEventOnBlur={handleEventOnBlur}
             />
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
         />
       </KeyboardAvoidingView>
