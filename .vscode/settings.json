@@ -1,0 +1,7 @@
+{
+    "editor.colorDecorators": true,
+    "workbench.colorTheme": "Night Owl",
+    "workbench.preferredDarkColorTheme": "Night Owl",
+    "java.compile.nullAnalysis.mode": "automatic",
+   // "workbench.preferredHighContrastColorTheme": "Default Dark+"
+}

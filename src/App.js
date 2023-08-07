@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import MainTabNavigation from './navigation/MainTabNavigation';
 import {AuthProvider} from './hooks/useContext/AuthContext';
+import FloatActionButton from './components/FloatActionButton';
 
 const App = () => {
   const [search, setSearch] = useState('');
@@ -11,6 +12,7 @@ const App = () => {
       <NavigationContainer>
         <MainTabNavigation />
       </NavigationContainer>
+      <FloatActionButton />
     </AuthProvider>
   );
 };
