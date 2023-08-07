@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Modal, Pressable, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Modal, Pressable, TextInput, ScrollView, TouchableOpacity,FlatList } from 'react-native'
 import React, { useState } from 'react'
 import { scale, verticalScale } from 'react-native-size-matters'
 import { theme } from '../../styles/stylesheet'
@@ -45,6 +45,7 @@ const PhoneCode = ({ modalVisible, setModalVisible, setResult }) => {
               <View style={{ flexDirection: 'row' }}><Flag /><Text style={{ fontSize: 18 }}>{name}</Text></View>
               <Text>{dial_code}</Text></TouchableOpacity>)}</View></View>
             </ScrollView>
+            {/* <FlatList  /> */}
           </View>
         </View>
       </View>

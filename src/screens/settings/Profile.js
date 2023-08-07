@@ -43,7 +43,7 @@ const Profile = ({ navigation }) => {
           //paddingVertical:-10
         }}>
         <Image
-          source={{ uri: 'https://robohash.org/78' }}
+          source={{ uri: 'https://randomuser.me/api/portraits/men/6.jpg' }}
           style={{
             height: 131,
             width: 131,

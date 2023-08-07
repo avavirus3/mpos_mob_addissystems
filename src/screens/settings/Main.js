@@ -91,7 +91,7 @@ const Main = ({navigation}) => {
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
-                source={{uri: 'https://robohash.org/78'}}
+                source={{uri: 'https://randomuser.me/api/portraits/men/6.jpg'}}
                 style={{
                   height: 64,
                   width: 64,
