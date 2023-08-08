@@ -1,9 +1,9 @@
 import {View, Text, StyleSheet, FlatList} from 'react-native';
 import React, {useState} from 'react';
-import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
-import HeadSelector from '../../components/HeadSelector';
-import SearchBar from '../../components/search/SearchBar';
-import {color} from '../../styles/Styles';
+import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
+import HeadSelector from '../../../components/HeadSelector';
+import SearchBar from '../../../components/search/SearchBar';
+import {color} from '../../../styles/Styles';
 
 const AllSales = ({navigation}) => {
   const [search, setSearch] = useState('');

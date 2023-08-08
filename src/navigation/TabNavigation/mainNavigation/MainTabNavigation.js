@@ -3,13 +3,13 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {color} from '../styles/Styles';
-import ProductStack from '../screens/Products/ProductStack';
+import {color} from '../../../styles/Styles';
+import ProductStack from '../../StackNavigation/productStack/ProductStack';
 // import SettingStack from '../routes/SettingStack';
-import HomeStack from '../screens/Home/HomeStack';
-import SaleStack from '../screens/Sale/SaleStack';
-import Setting from '../screens/Setting/Setting';
-import SettingStack from '../screens/Setting/SettingStack';
+import HomeStack from '../../StackNavigation/homeStack/HomeStack';
+import SaleStack from '../../StackNavigation/saleStack/SaleStack';
+import Setting from '../../../screens/Setting/Setting';
+import SettingStack from '../../StackNavigation/settingStack/SettingStack';
 
 const Tab = createBottomTabNavigator();
 

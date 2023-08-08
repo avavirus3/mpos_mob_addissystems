@@ -1,15 +1,31 @@
-import {View, Text, StyleSheet, FlatList} from 'react-native';
-import React, {useState} from 'react';
-import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
-import HeadSelector from '../../components/HeadSelector';
-import SearchBar from '../../components/search/SearchBar';
-import {color} from '../../styles/Styles';
+import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
+import HeadSelector from '../../../components/HeadSelector';
+import SearchBar from '../../../components/search/SearchBar';
+import {AuthContext} from '../../../hooks/useContext/AuthContext';
+import {color} from '../../../styles/Styles';
+import { useSelector, useDispatch } from 'react-redux';
 
-const AllOrders = ({navigation}) => {
+const Draft = ({navigation}) => {
+  const DRAFT = useSelector(state => state.draftItem.draft)
+  const {data} = useContext(AuthContext);
+  const [localDraft, setLocalDraft] = useState([]);
   const [search, setSearch] = useState('');
-  const [selectedHead, setSelectedHead] = useState('Paid');
+  const [selectedHead, setSelectedHead] = useState('Sales in Invoice');
 
-  console.log('Search:', search);
+  useEffect(() => {
+    try {
+      setLocalDraft(data.draft);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  // console.log("data:", data);
+  // console.log("Local Draft:", localDraft);
+
+  console.log("DRAFT:", DRAFT)
 
   const SALES_INVOICE = [
     {
@@ -18,7 +34,6 @@ const AllOrders = ({navigation}) => {
       time: '12:45:06 AM',
       qty: 14,
       price: 74100,
-      status: 'Draft',
     },
     {
       name: 'Elyas Kebede',
@@ -26,7 +41,6 @@ const AllOrders = ({navigation}) => {
       time: '11:48:06 AM',
       qty: 29,
       price: 81900,
-      status: 'Paid',
     },
     {
       name: 'Habtom Kebede',
@@ -34,7 +48,6 @@ const AllOrders = ({navigation}) => {
       time: '02:51:06 PM',
       qty: 5,
       price: 57100,
-      status: 'Draft',
     },
     {
       name: 'Habtom Kebede',
@@ -42,7 +55,6 @@ const AllOrders = ({navigation}) => {
       time: '02:51:06 PM',
       qty: 5,
       price: 57100,
-      status: 'Draft',
     },
     {
       name: 'Habtom Kebede',
@@ -50,7 +62,6 @@ const AllOrders = ({navigation}) => {
       time: '02:51:06 PM',
       qty: 14,
       price: 34100,
-      status: 'Paid',
     },
     {
       name: 'Habtom Kebede',
@@ -58,7 +69,6 @@ const AllOrders = ({navigation}) => {
       time: '02:51:06 PM',
       qty: 14,
       price: 34100,
-      status: 'Paid',
     },
     {
       name: 'Habtom Kebede',
@@ -66,9 +76,25 @@ const AllOrders = ({navigation}) => {
       time: '02:51:06 PM',
       qty: 16,
       price: 32100,
-      status: 'Paid',
     },
   ];
+
+  const handleDraft = (index, item) => {
+    // console.log("item:", item)
+    if (item.transaction_completed) {
+      navigation.navigate('invoice-qr', {
+        transaction_draft: data.draft[index],
+        index,
+      });
+    } else {
+      navigation.navigate('create-sale', {
+        draftData: data.draft[index],
+        index,
+      });
+    }
+  };
+
+  // console.log('Draft Data:', data.draft);
 
   const PAID_INVOICE = SALES_INVOICE.filter(
     invoice => invoice.status === 'Paid',
@@ -92,17 +118,18 @@ const AllOrders = ({navigation}) => {
 
   //   console.log(PAID_INVOICE);
 
-  const renderData = ({item}) => {
-    const {name, time, qty, price, status} = item;
+  const renderData = ({item, index}) => {
+    // console.log("Log Item", item);
     return (
-      <View
+      <TouchableOpacity
         style={{
           marginTop: 0,
           backgroundColor: color.lightGray,
           padding: 15,
           borderRadius: 10,
           gap: 5,
-        }}>
+        }}
+        onPress={() => handleDraft(index, item)}>
         <View
           style={{
             flexDirection: 'row',
@@ -115,14 +142,14 @@ const AllOrders = ({navigation}) => {
               fontWeight: '600',
               color: color.normal,
             }}>
-            {name}
+            {item.customerData.name}
           </Text>
           <Text style={{fontSize: 16, fontWeight: '600', color: color.gray}}>
-            {time}
+            {item.time}
           </Text>
         </View>
         <Text style={{fontSize: 17, color: color.gray, fontWeight: '500'}}>
-          {qty} Items
+          {item.items.length} Items
         </Text>
         <View
           style={{
@@ -136,18 +163,17 @@ const AllOrders = ({navigation}) => {
               fontWeight: '600',
               color: color.normal,
             }}>
-            {price}
+            {item.totalPrice}
           </Text>
           <Text
             style={{
-              fontSize: 18,
-              fontWeight: '600',
-              color: status === 'Draft' ? color.secondary : color.green,
+              fontSize: 16,
+              color: item.transaction_completed ? color.green : color.primary,
             }}>
-            {status}
+            {item.transaction_completed ? 'On Transaction' : 'Draft'}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -156,19 +182,19 @@ const AllOrders = ({navigation}) => {
     <View style={styles.mainContainer}>
       <TopNavigationBar
         backIcon={true}
-        middleLabel={'All Orders'}
+        middleLabel={'Draft'}
         thirdIcon={true}
         onPressBack={() => navigation.goBack()}
         onPressGo={() => navigation.navigate('create-sale')}
       />
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <HeadSelector
-          label={'Paid'}
+          label={'Sales in Invoice'}
           state={selectedHead}
           setState={setSelectedHead}
         />
         <HeadSelector
-          label={'Draft'}
+          label={'Orders'}
           state={selectedHead}
           setState={setSelectedHead}
         />
@@ -188,9 +214,11 @@ const AllOrders = ({navigation}) => {
       <View style={{marginTop: 15, flex: 1, paddingBottom: 10}}>
         <FlatList
           contentContainerStyle={{gap: 12, marginTop: 5, paddingBottom: 50}}
-          data={dataSwitcher().filter(invoice =>
-            new RegExp(search, 'gi').test(invoice.name),
-          )}
+          data={
+            DRAFT
+            // filter((invoice) =>
+            // new RegExp(search, "gi").test(invoice.name))
+          }
           renderItem={renderData}
         />
       </View>
@@ -203,11 +231,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 12,
     backgroundColor: 'white',
-    // paddingTop: 25,
-    // borderWidth: 1,
-    // alignSelf: 'center',
     borderColor: 'red',
   },
 });
 
-export default AllOrders;
+export default Draft;

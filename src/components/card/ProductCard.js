@@ -9,6 +9,7 @@ import {
 import React, {useState} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {color, textStyles} from '../../styles/Styles';
+import IncrementDecrement from '../button/IncrementDecrement';
 
 const noImage = require('../../assets/images/no-image.jpg');
 
@@ -49,45 +50,7 @@ const ProductCard = ({
           <Text style={styles.priceText}>{price}</Text>
           <Text style={styles.priceText}> ETB</Text>
         </View>
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            height: 47,
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            backgroundColor: color.lightBlue,
-            borderRadius: 10,
-            marginVertical: 15,
-            paddingHorizontal: 10,
-          }}>
-          <TouchableOpacity
-            style={{}}
-            onPress={() => qty && handleQtyDecrement(id)}>
-            <Entypo
-              name="minus"
-              size={28}
-              color={qty ? color.secondary : 'gray'}
-            />
-          </TouchableOpacity>
-          <TextInput
-            style={{
-              fontSize: 18,
-              textAlign: 'center',
-              marginHorizontal: 5,
-              width: 50,
-              backgroundColor: '#f9f9f9',
-              borderRadius: 5,
-            }}
-            value={qty > 0 ? qty.toString() : qty === 0 ? '0' : ''}
-            onChangeText={num => handleQuantityInput(id, num)}
-            onBlur={() => handleEventOnBlur(id)}
-            keyboardType="number-pad"
-          />
-          <TouchableOpacity style={{}} onPress={() => handleQtyIncrement(id)}>
-            <Entypo name="plus" size={28} color={color.secondary} />
-          </TouchableOpacity>
-        </View>
+        <IncrementDecrement id={id} qty={qty} handleEventOnBlur={handleEventOnBlur} handleQtyDecrement={handleQtyDecrement} handleQtyIncrement={handleQtyIncrement} handleQuantityInput={handleQuantityInput} />
       </View>
     </View>
   );

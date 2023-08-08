@@ -3,74 +3,73 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
-  ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState, useRef, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import SearchBar from '../../../components/search/SearchBar';
-import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import HomeHeading from './HomeHeading';
 import InitialHomeComponent from './InitialHomeComponent';
 import MainComponent from './MainComponent';
-import Toast from 'react-native-toast-message'
+import Toast from 'react-native-toast-message';
+import {useSelector, useDispatch} from 'react-redux';
+import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
 
 const Home = ({navigation}) => {
+  const PRODUCT_DATA = useSelector(state => state.product.items);
   const [search, setSearch] = useState('');
   const [CurrentProduct, setCurrentProduct] = useState('All');
-  const {ProductStore, setProductStore} = useContext(AuthContext);
-  const [fetchedProduct, setFetchedProduct] = useState([]);
+  const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
 
-  const selectedProducts = fetchedProduct.filter(product => product.qty > 0);
-  // console.log("fetchedProduct", fetchedProduct)
+  // console.log('PRODUCT DATA:', PRODUCT_DATA);
+
+  /* This is to activate the "Make Sale" Button to go to the next step */
+  const selectedProducts = initialZeroQtyItems.filter(
+    product => product.qty > 0,
+  );
 
   useEffect(() => {
     try {
-      const productWithZeroQty = ProductStore.map(item => ({...item, qty: 0}));
-      setFetchedProduct(productWithZeroQty);
+      const productWithZeroQty = PRODUCT_DATA.map(item => ({...item, qty: 0}));
+      setInitialZeroQtyItems(productWithZeroQty);
     } catch (error) {
-      console.log('There is an Error @ fething the data, Error msg:', error);
+      console.log(
+        'There is an Error storing the data from Redux Store:',
+        error,
+      );
     }
-  }, [ProductStore]);
+  }, [PRODUCT_DATA]);
 
   useEffect(() => {
     setCurrentProduct('All');
   }, []);
 
-  // console.log('Product Store:', ProductStore);
-  // console.log('Selected Product:', fetchedProduct);
-
   const handleQtyIncrement = id => {
-    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
       .qty;
-    const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
+    const Sale_Item = initialZeroQtyItems.filter(item => item.id == id)[0];
 
     if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
       Sale_Item.qty += 1;
-      setFetchedProduct([...fetchedProduct]);
+      setInitialZeroQtyItems([...initialZeroQtyItems]);
     } else if (Prev_Item_Qty - (Sale_Item.qty + 1) < 0) {
       Toast.show({
         type: 'error',
         text1: 'No Enough Items!',
         text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
-          // backgroundColor: 'red', // Customize the toast background color
-          // leftIconColor: 'white', // Customize the left side color
       });
     }
-
-    
   };
 
   const handleQtyDecrement = id => {
-    const updatedProduct = fetchedProduct.filter(item => item.id == id)[0];
+    const updatedProduct = initialZeroQtyItems.filter(item => item.id == id)[0];
     updatedProduct.qty = updatedProduct.qty == 0 ? 0 : updatedProduct.qty - 1;
-    // console.log('OnPress Output:', updatedProduct);
-    setFetchedProduct([...fetchedProduct]);
+    setInitialZeroQtyItems([...initialZeroQtyItems]);
   };
 
   const handleQuantityInput = (id, num) => {
     const inputNum = parseInt(num);
-    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
       .qty;
-    const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
+    const Sale_Item = initialZeroQtyItems.filter(item => item.id == id)[0];
 
     if (Prev_Item_Qty - (Sale_Item.qty + inputNum) >= 0) {
       // console.log('Can be Deducted!');
@@ -81,38 +80,31 @@ const Home = ({navigation}) => {
         type: 'error',
         text1: 'There Is No This Amount of Items',
         text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
-          // backgroundColor: 'red', // Customize the toast background color
-          // leftIconColor: 'white', // Customize the left side color
       });
       Sale_Item.qty = Prev_Item_Qty;
     } else {
       Sale_Item.qty = '';
     }
 
-    setFetchedProduct([...fetchedProduct]);
-
-    console.log(Sale_Item.qty);
+    setInitialZeroQtyItems([...initialZeroQtyItems]);
   };
 
   const handleEventOnBlur = id => {
-    const Sale_Item = fetchedProduct.filter(item => item.id == id)[0];
-    console.log('OnBlur Event Fired!');
-
+    const Sale_Item = initialZeroQtyItems.filter(item => item.id == id)[0];
+    // console.log('OnBlur Event Fired!');
     if (Sale_Item.qty === '') {
       Sale_Item.qty = 0;
-      setFetchedProduct([...fetchedProduct]);
+      setInitialZeroQtyItems([...initialZeroQtyItems]);
     }
   };
 
   const handleMakeSale = () => {
     if (selectedProducts.length > 0) {
-      const resettedProductQty = fetchedProduct.map(item => ({
+      const resettedProductQty = initialZeroQtyItems.map(item => ({
         ...item,
         qty: 0,
       }));
-      console.log('Fetched:', fetchedProduct);
-      console.log('Resseted:', resettedProductQty);
-      setFetchedProduct(resettedProductQty);
+      setInitialZeroQtyItems(resettedProductQty);
       navigation.navigate('Sale', {
         screen: 'create-sale',
         params: {passed_selected_product: selectedProducts},
@@ -140,13 +132,13 @@ const Home = ({navigation}) => {
           {/* Heading Component */}
           <HomeHeading user={'Abebe Kebede'} sale={'50,000'} />
 
-          {false ? (
+          {0 ? (
             <InitialHomeComponent navigation={navigation} />
-          ) : (
+          ) : CurrentProduct.length > 0 ? (
             <MainComponent
               CurrentProduct={CurrentProduct}
               setCurrentProduct={setCurrentProduct}
-              ProductStore={fetchedProduct}
+              ProductStore={initialZeroQtyItems}
               search={search}
               handleQtyDecrement={handleQtyDecrement}
               handleQtyIncrement={handleQtyIncrement}
@@ -155,6 +147,8 @@ const Home = ({navigation}) => {
               handleMakeSale={handleMakeSale}
               activeMakeSale={selectedProducts.length > 0}
             />
+          ) : (
+            <ProductItemSkeletonGrid />
           )}
         </View>
       </View>

@@ -7,25 +7,29 @@ import {
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {color, textStyles} from '../../../styles/Styles';
+import {color} from '../../../styles/Styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import Button from '../../../components/button/Button';
 import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import moment from 'moment/moment';
-import RenderItem from './RenderItem';
 import DiscountModal from './DiscountModal';
 import SuccessFailModal from '../../../components/modal/SuccessFailModal';
 import CustomerComponent from './CustomerComponent';
 import SubTotal from './SubTotal';
 import ItemsList from './ItemsList';
-import Toast from 'react-native-toast-message'
+import Toast from 'react-native-toast-message';
+import {useSelector, useDispatch} from 'react-redux';
+import {setPRODUCT} from '../../../reduxToolkit/features/product/productListSlice';
+import {setDRAFT} from '../../../reduxToolkit/features/draftItems/draftItemSlice';
 
 /* Main Function */
 const CreateSale = ({route}) => {
-  const {data, setData, ProductStore, setProductStore} =
-    useContext(AuthContext);
+  const {data, setData} = useContext(AuthContext);
+  const PRODUCT_DATA = useSelector(state => state.product.items);
+  const DRAFT = useSelector(state => state.draftItem.draft);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const incomingData = route.params;
   const [passedData, setPassedData] = useState([]);
@@ -65,42 +69,8 @@ const CreateSale = ({route}) => {
     }
   }, [incomingData]);
 
-  const handleSaveSale = () => {
-    const newDraftData = data;
-    {
-      incomingDraftIndex != null
-        ? (data.draft[incomingDraftIndex] = {
-            customerData: customer === 'Guest' ? {name: customer} : customer,
-            items: passedData,
-            totalPrice: TOTAL_PRODUCT_PRICE,
-            time: moment(currentTime).format('h:mm:ss a'),
-            transaction_completed: false,
-          })
-        : (newDraftData.draft = [
-            ...data.draft,
-            {
-              customerData: customer === 'Guest' ? {name: customer} : customer,
-              items: passedData,
-              totalPrice: TOTAL_PRODUCT_PRICE,
-              time: moment(currentTime).format('h:mm:ss a'),
-              transaction_completed: false,
-            },
-          ]);
-    }
-
-    setData(newDraftData);
-    setDraftModal(true);
-    setTimeout(() => {
-      setDraftModal(false);
-      navigation.navigate('sale-home');
-      setPassedData([]);
-      setCustomer({name: 'Guest'});
-      setDiscount(0);
-    }, 1500);
-  };
-
   const handleQtyIncrement = id => {
-    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
       .qty;
     const Sale_Item = passedData.filter(item => item.id == id)[0];
 
@@ -112,8 +82,6 @@ const CreateSale = ({route}) => {
         type: 'error',
         text1: 'No Enough Items!',
         text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
-          // backgroundColor: 'red', // Customize the toast background color
-          // leftIconColor: 'white', // Customize the left side color
       });
     }
   };
@@ -126,7 +94,7 @@ const CreateSale = ({route}) => {
 
   const handleQuantityInput = (id, num) => {
     const inputNum = parseInt(num);
-    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
       .qty;
     const Sale_Item = passedData.filter(item => item.id == id)[0];
 
@@ -139,8 +107,8 @@ const CreateSale = ({route}) => {
         type: 'error',
         text1: 'There Is No This Amount of Items',
         text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
-          // backgroundColor: 'red', // Customize the toast background color
-          // leftIconColor: 'white', // Customize the left side color
+        // backgroundColor: 'red', // Customize the toast background color
+        // leftIconColor: 'white', // Customize the left side color
       });
       Sale_Item.qty = Prev_Item_Qty;
     } else {
@@ -155,13 +123,13 @@ const CreateSale = ({route}) => {
   const handleEventOnBlur = id => {
     const Sale_Item = passedData.filter(item => item.id == id)[0];
 
-    if(Sale_Item.qty === '') {
-      Sale_Item.qty = 1
-      setPassedData([...passedData])
+    if (Sale_Item.qty === '') {
+      Sale_Item.qty = 1;
+      setPassedData([...passedData]);
     }
   };
 
-  console.log("Passed Data", passedData)
+  // console.log('Passed Data', passedData);
 
   const handleDeleteItem = id => {
     const updatedProduct = passedData?.filter(item => item.id != id);
@@ -173,8 +141,41 @@ const CreateSale = ({route}) => {
     setPassedData([]);
   };
 
+  const handleSaveSale = () => {
+    incomingDraftIndex != null
+      ? (DRAFT[incomingDraftIndex] = {
+          customerData: customer === 'Guest' ? {name: customer} : customer,
+          items: passedData,
+          totalPrice: TOTAL_PRODUCT_PRICE,
+          time: moment(currentTime).format('h:mm:ss a'),
+          transaction_completed: false,
+        })
+      : (newDraftData = [
+          ...DRAFT,
+          {
+            customerData: customer === 'Guest' ? {name: customer} : customer,
+            items: passedData,
+            totalPrice: TOTAL_PRODUCT_PRICE,
+            time: moment(currentTime).format('h:mm:ss a'),
+            transaction_completed: false,
+          },
+        ]);
+
+    // setData(newDraftData);
+    dispatch(setDRAFT(newDraftData));
+    setDraftModal(true);
+    setTimeout(() => {
+      setDraftModal(false);
+      navigation.navigate('sale-home');
+      setPassedData([]);
+      setCustomer({name: 'Guest'});
+      setDiscount(0);
+    }, 1500);
+  };
+
+  /* Handle Transaction Function, trigered when Procced Transaction button pressed! */
   const handleTransaction = () => {
-    const deductedProducts = ProductStore.map(item => {
+    const products_after_qty_deduction = PRODUCT_DATA.map(item => {
       const saleItem = passedData.find(sale => sale.id === item.id);
       if (saleItem) {
         return {...item, qty: item.qty - saleItem.qty};
@@ -182,39 +183,19 @@ const CreateSale = ({route}) => {
       return item;
     });
 
-    const selected_data_deduct = deductedProducts.filter(obj2 =>
-      passedData.some(obj1 => isEqual(obj1, obj2)),
-    );
+    const newDraftData = [
+      ...DRAFT,
+      {
+        customerData: customer === 'Guest' ? {name: customer} : customer,
+        items: passedData,
+        totalPrice: TOTAL_PRODUCT_PRICE,
+        time: moment(currentTime).format('h:mm:ss a'),
+        transaction_completed: true,
+      },
+    ]
 
-    console.log('Deducted Products:', selected_data_deduct);
-    setProductStore(deductedProducts);
-
-    const newDraftData = data;
-
-    incomingDraftIndex != null
-      ? (data.draft[incomingDraftIndex] = {
-          customerData: customer === 'Guest' ? {name: customer} : customer,
-          items: passedData,
-          totalPrice: TOTAL_PRODUCT_PRICE,
-          time: moment(currentTime).format('h:mm:ss a'),
-          transaction_completed: true,
-        })
-      : (newDraftData.draft = [
-          ...data.draft,
-          {
-            customerData: customer === 'Guest' ? {name: customer} : customer,
-            items: passedData,
-            totalPrice: TOTAL_PRODUCT_PRICE,
-            time: moment(currentTime).format('h:mm:ss a'),
-            transaction_completed: true,
-          },
-        ]);
-
-    setData(newDraftData);
-
-    // console.log("Initial Data:",deductedProducts)
-    console.log('Product Store:', ProductStore);
-    // console.log("Selected Data:", passedData)
+    dispatch(setPRODUCT(products_after_qty_deduction)); // Deduct Item Quantity after a transactoin
+    dispatch(setDRAFT(newDraftData)); // set the transaction to a successful Draft
     setTransactionModal(true);
 
     setTimeout(() => {
@@ -226,6 +207,9 @@ const CreateSale = ({route}) => {
     }, 1000);
   };
 
+  console.log('PRODUCT DATA:', PRODUCT_DATA);
+  console.log('DRAFT DATA:', DRAFT);
+
   /* Product Sum Calculation Constants */
   const TOTAL_PRODUCT_PRICE =
     passedData?.length > 0 &&
@@ -234,37 +218,6 @@ const CreateSale = ({route}) => {
       .reduce((acc, cur) => acc + cur) - (discount || 0).toFixed(2);
   const TOTAL_VAT_VALUE = (TOTAL_PRODUCT_PRICE * 0.15).toFixed(2);
   const TOTAL_VAT_INCLUSIVE = (TOTAL_PRODUCT_PRICE * 1.15).toFixed(2);
-
-  const InnerScrollView = () => {
-    return (
-      <ScrollView
-        nestedScrollEnabled={true}
-        style={[
-          styles.gustureScrollArea,
-          passedData?.length > 0 && styles.guestureHoldingData,
-        ]}>
-        <View
-          style={{
-            gap: 35,
-            marginVertical: passedData?.length > 0 ? 15 : 0,
-          }}>
-          {passedData.map((item, index) => {
-            return (
-              <RenderItem
-                item={item}
-                handleDeleteItem={handleDeleteItem}
-                handleQtyDecrement={handleQtyDecrement}
-                handleQtyIncrement={handleQtyIncrement}
-                handleQuantityInput={handleQuantityInput}
-                handleEventOnBlur={handleEventOnBlur}
-                key={item.id}
-              />
-            );
-          })}
-        </View>
-      </ScrollView>
-    );
-  };
 
   /* Main Return */
   return (

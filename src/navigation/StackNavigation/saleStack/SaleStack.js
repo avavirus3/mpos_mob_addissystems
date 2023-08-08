@@ -1,14 +1,14 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SelectProduct from './select_product/SelectProduct';
-import CreateSale from './create_sale/CreateSale';
-import CustomerList from './CustomerList';
-import SaleHome from './SaleHome';
-import AllOrders from './AllOrders';
-import AllSales from './AllSales';
-import Draft from './Draft';
-import InvoiceQR from './invoice_qr/InvoiceQR';
-import Payment from './payment/Payment';
+import SelectProduct from '../../../screens/Sale/select_product/SelectProduct';
+import CreateSale from '../../../screens/Sale/create_sale/CreateSale';
+import CustomerList from '../../../screens/Sale/customerList/CustomerList';
+import SaleHome from '../../../screens/Sale/saleHome/SaleHome';
+import AllOrders from '../../../screens/Sale/allOrders/AllOrders';
+import AllSales from '../../../screens/Sale/allSales/AllSales';
+import Draft from '../../../screens/Sale/draft/Draft';
+import InvoiceQR from '../../../screens/Sale/invoice_qr/InvoiceQR';
+import Payment from '../../../screens/Sale/payment/Payment';
 const Stack = createNativeStackNavigator();
 
 const SaleStack = () => {
@@ -21,8 +21,8 @@ const SaleStack = () => {
       <Stack.Screen name="all-orders" component={AllOrders} />
       <Stack.Screen name="draft" component={Draft} />
       <Stack.Screen name="select-product" component={SelectProduct} />
-      <Stack.Screen name="create-sale" component={CreateSale} />
       <Stack.Screen name="customer-list" component={CustomerList} />
+      <Stack.Screen name="create-sale" component={CreateSale} />
       <Stack.Screen name="invoice-qr" component={InvoiceQR} />
       <Stack.Screen name="payment" component={Payment} />
     </Stack.Navigator>
