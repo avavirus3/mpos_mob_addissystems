@@ -9,7 +9,6 @@ import React, {useState, useEffect, useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {color, textStyles} from '../../../styles/Styles';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import Button from '../../../components/button/Button';
@@ -18,20 +17,27 @@ import moment from 'moment/moment';
 import RenderItem from './RenderItem';
 import DiscountModal from './DiscountModal';
 import SuccessFailModal from '../../../components/modal/SuccessFailModal';
+import CustomerComponent from './CustomerComponent';
+import SubTotal from './SubTotal';
+import ItemsList from './ItemsList';
+import {G} from 'react-native-svg';
 
 /* Main Function */
 const CreateSale = ({route}) => {
-  const {data, setData} = useContext(AuthContext);
+  const {data, setData, ProductStore, setProductStore} =
+    useContext(AuthContext);
   const navigation = useNavigation();
   const incomingData = route.params;
   const [passedData, setPassedData] = useState([]);
   const [customer, setCustomer] = useState({name: 'Guest'});
   const [incomingDraftIndex, setIncomingDraftIndex] = useState(null);
-  const [transactionModal, setTransactionModal] = useState(false)
-  const [draftModal, setDraftModal] = useState(false)
+  const [transactionModal, setTransactionModal] = useState(false);
+  const [draftModal, setDraftModal] = useState(false);
   const [discountModal, setDiscountModal] = useState(false);
   const [discount, setDiscount] = useState(0);
   const currentTime = new Date();
+
+  // console.log('incomingData:', incomingData);
 
   function isEqual(obj1, obj2) {
     return obj1.id === obj2.id;
@@ -39,25 +45,23 @@ const CreateSale = ({route}) => {
 
   useEffect(() => {
     const newUpcomingProduct =
-      !incomingData?.hasOwnProperty('selectedCustomer') &&
-      !incomingData?.hasOwnProperty('draftData') &&
-      incomingData?.filter(
+      incomingData?.hasOwnProperty('passed_selected_product') &&
+      incomingData?.passed_selected_product.filter(
         obj2 => !passedData.some(obj1 => isEqual(obj1, obj2)),
       );
-    // console.log("new Coming Data:", newUpcomingProduct);
 
     try {
-      incomingData &&
-      !incomingData?.hasOwnProperty('draftData') &&
-      !incomingData?.hasOwnProperty('selectedCustomer')
+      incomingData && incomingData?.hasOwnProperty('passed_selected_product')
         ? setPassedData(passedData.concat(newUpcomingProduct))
+        : incomingData?.hasOwnProperty('selected_Customer')
+        ? setCustomer(incomingData.selected_Customer || customer)
         : incomingData?.hasOwnProperty('draftData')
         ? (setPassedData(incomingData.draftData.items),
           setCustomer(incomingData.draftData.customerData),
           setIncomingDraftIndex(incomingData.index))
-        : setCustomer(incomingData.selectedCustomer || customer);
+        : null;
     } catch (error) {
-      console.log('Error Message:', error);
+      console.log('Error Message at useEffect, error msg:', error);
     }
   }, [incomingData]);
 
@@ -70,6 +74,7 @@ const CreateSale = ({route}) => {
             items: passedData,
             totalPrice: TOTAL_PRODUCT_PRICE,
             time: moment(currentTime).format('h:mm:ss a'),
+            transaction_completed: false,
           })
         : (newDraftData.draft = [
             ...data.draft,
@@ -78,6 +83,7 @@ const CreateSale = ({route}) => {
               items: passedData,
               totalPrice: TOTAL_PRODUCT_PRICE,
               time: moment(currentTime).format('h:mm:ss a'),
+              transaction_completed: false,
             },
           ]);
     }
@@ -87,22 +93,21 @@ const CreateSale = ({route}) => {
     setTimeout(() => {
       setDraftModal(false);
       navigation.navigate('sale-home');
+      setPassedData([]);
+      setCustomer({name: 'Guest'});
+      setDiscount(0);
     }, 1500);
   };
 
-  const handleQuantityInput = (id, num) => {
-    const updatedProduct = passedData?.filter(item => item.id == id)[0];
-    updatedProduct.qty = num == '' ? 0 : num;
-    console.log('OnPress Output:', updatedProduct);
-    console.log(num);
-    setPassedData([...passedData]);
-  };
-
   const handleQtyIncrement = id => {
-    const updatedProduct = passedData?.filter(item => item.id == id)[0];
-    updatedProduct.qty += 1;
-    console.log('OnPress Output:', updatedProduct);
-    setPassedData([...passedData]);
+    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = passedData.filter(item => item.id == id)[0];
+
+    if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
+      Sale_Item.qty += 1;
+      setPassedData([...passedData]);
+    }
   };
 
   const handleQtyDecrement = id => {
@@ -111,9 +116,41 @@ const CreateSale = ({route}) => {
     setPassedData([...passedData]);
   };
 
+  const handleQuantityInput = (id, num) => {
+    const inputNum = parseInt(num);
+    const Prev_Item_Qty = ProductStore.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = passedData.filter(item => item.id == id)[0];
+
+    if (Prev_Item_Qty - (Sale_Item.qty + inputNum) >= 0) {
+      console.log('Can be Deducted!');
+      Sale_Item.qty = inputNum;
+    } else if (inputNum > Prev_Item_Qty) {
+      console.log("Item Can't Set!");
+      Sale_Item.qty = Prev_Item_Qty;
+    } else {
+      Sale_Item.qty = '';
+    }
+
+    console.log('num', num);
+
+    setPassedData([...passedData]);
+  };
+
+  const handleEventOnBlur = id => {
+    const Sale_Item = passedData.filter(item => item.id == id)[0];
+
+    if(Sale_Item.qty === '') {
+      Sale_Item.qty = 0
+      setPassedData([...passedData])
+    }
+  };
+
+  console.log("Passed Data", passedData)
+
   const handleDeleteItem = id => {
     const updatedProduct = passedData?.filter(item => item.id != id);
-    console.log(updatedProduct);
+    // console.log(updatedProduct);
     setPassedData(updatedProduct);
   };
 
@@ -122,14 +159,59 @@ const CreateSale = ({route}) => {
   };
 
   const handleTransaction = () => {
+    const deductedProducts = ProductStore.map(item => {
+      const saleItem = passedData.find(sale => sale.id === item.id);
+      if (saleItem) {
+        return {...item, qty: item.qty - saleItem.qty};
+      }
+      return item;
+    });
+
+    const selected_data_deduct = deductedProducts.filter(obj2 =>
+      passedData.some(obj1 => isEqual(obj1, obj2)),
+    );
+
+    console.log('Deducted Products:', selected_data_deduct);
+    setProductStore(deductedProducts);
+
+    const newDraftData = data;
+
+    incomingDraftIndex != null
+      ? (data.draft[incomingDraftIndex] = {
+          customerData: customer === 'Guest' ? {name: customer} : customer,
+          items: passedData,
+          totalPrice: TOTAL_PRODUCT_PRICE,
+          time: moment(currentTime).format('h:mm:ss a'),
+          transaction_completed: true,
+        })
+      : (newDraftData.draft = [
+          ...data.draft,
+          {
+            customerData: customer === 'Guest' ? {name: customer} : customer,
+            items: passedData,
+            totalPrice: TOTAL_PRODUCT_PRICE,
+            time: moment(currentTime).format('h:mm:ss a'),
+            transaction_completed: true,
+          },
+        ]);
+
+    setData(newDraftData);
+
+    // console.log("Initial Data:",deductedProducts)
+    console.log('Product Store:', ProductStore);
+    // console.log("Selected Data:", passedData)
     setTransactionModal(true);
-    
+
     setTimeout(() => {
       navigation.navigate('invoice-qr', passedData);
       setTransactionModal(false);
+      setPassedData([]);
+      setCustomer({name: 'Guest'});
+      setDiscount(0);
     }, 1000);
   };
 
+  /* Product Sum Calculation Constants */
   const TOTAL_PRODUCT_PRICE =
     passedData?.length > 0 &&
     passedData
@@ -159,6 +241,7 @@ const CreateSale = ({route}) => {
                 handleQtyDecrement={handleQtyDecrement}
                 handleQtyIncrement={handleQtyIncrement}
                 handleQuantityInput={handleQuantityInput}
+                handleEventOnBlur={handleEventOnBlur}
                 key={item.id}
               />
             );
@@ -183,8 +266,16 @@ const CreateSale = ({route}) => {
         />
       </View>
       {/* <TransactionModal /> */}
-      <SuccessFailModal modalVisibility={transactionModal} setModalVisibility={setTransactionModal} message={"Transaction Successful!"}  />
-      <SuccessFailModal modalVisibility={draftModal} setModalVisibility={setDraftModal} message={"Draft Saved!"}  />
+      <SuccessFailModal
+        modalVisibility={transactionModal}
+        setModalVisibility={setTransactionModal}
+        message={'Transaction Successful!'}
+      />
+      <SuccessFailModal
+        modalVisibility={draftModal}
+        setModalVisibility={setDraftModal}
+        message={'Draft Saved!'}
+      />
       <DiscountModal
         discount={discount}
         setDiscount={setDiscount}
@@ -196,144 +287,21 @@ const CreateSale = ({route}) => {
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}>
         <View style={styles.bodyContainer}>
-          <View
-            style={{
-              // flex: 1,
-              marginTop: 5,
-              backgroundColor: color.lightGray,
-              paddingTop: 15,
-              paddingBottom: 25,
-              paddingHorizontal: 15,
-              // borderWidth: 1,
-            }}>
-            {/* Items and Remove All Bar Component */}
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginBottom: 10,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: 10,
-                }}>
-                <View>
-                  <Text style={{fontSize: 20, fontWeight: '600'}}>Items</Text>
-                </View>
-                <View
-                  style={{
-                    display: passedData?.length > 0 ? 'flex' : 'none',
-                    width: 28,
-                    height: 28,
-                    backgroundColor: color.primary,
-                    borderRadius: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      color: '#fff',
-                      fontWeight: '500',
-                      fontSize: 17,
-                      lineHeight: 22,
-                    }}>
-                    {passedData?.length > 8 ? '+9' : passedData.length}
-                  </Text>
-                </View>
-              </View>
-              <TouchableOpacity onPress={() => handleRemoveAll()}>
-                {passedData?.length > 0 && (
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: '600',
-                      color: color.primary,
-                    }}>
-                    Remove All
-                  </Text>
-                )}
-              </TouchableOpacity>
-            </View>
-
-            <InnerScrollView />
-
-            <TouchableOpacity
-              style={{marginTop: passedData?.length > 0 ? 15 : 0}}
-              onPress={() => navigation.navigate('select-product')}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: '500',
-                  color: color.secondary,
-                }}>
-                Select Products
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              // flex: 1,
-              backgroundColor: color.lightGray,
-              paddingTop: 15,
-              paddingBottom: 25,
-              paddingHorizontal: 15,
-              // borderWidth: 1,
-            }}>
-            {console.log('Customer:', customer)}
-            <Text style={{fontSize: 20, fontWeight: '600'}}>Customer</Text>
-            {customer?.name !== 'Guest' ? (
-              <View
-                style={{
-                  marginTop: 10,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                <TouchableOpacity
-                  style={{gap: 5}}
-                  onPress={() => navigation.navigate('customer-list')}>
-                  <Text style={{fontSize: 18, fontWeight: '500'}}>
-                    {customer?.name}
-                  </Text>
-                  <Text style={{fontSize: 18, color: color.gray}}>
-                    {customer?.tin}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setCustomer()}>
-                  <Ionicons name="trash" size={30} color={color.primary} />
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity
-                style={{
-                  marginTop: 10,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-                onPress={() => navigation.navigate('customer-list')}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: '500',
-                  }}>
-                  Guest
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: color.lightBlue,
-                    borderRadius: 50,
-                    padding: 2,
-                  }}
-                  onPress={() => navigation.navigate('customer-list')}>
-                  <Entypo name="plus" size={28} color={color.secondary} />
-                </TouchableOpacity>
-              </TouchableOpacity>
-            )}
-          </View>
+          <ItemsList
+            passedData={passedData}
+            navigation={navigation}
+            handleDeleteItem={handleDeleteItem}
+            handleQtyDecrement={handleQtyDecrement}
+            handleQtyIncrement={handleQtyIncrement}
+            handleQuantityInput={handleQuantityInput}
+            handleRemoveAll={handleRemoveAll}
+            handleEventOnBlur={handleEventOnBlur}
+          />
+          <CustomerComponent
+            customer={customer}
+            setCustomer={setCustomer}
+            navigation={navigation}
+          />
 
           {/* Payment */}
           <View
@@ -387,36 +355,13 @@ const CreateSale = ({route}) => {
                 </TouchableOpacity>
               )}
             </View>
-            <View style={{gap: 5, marginTop: 8}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={{fontSize: 18}}>Subtotal</Text>
-                <Text style={{fontSize: 18}}>
-                  ETB {TOTAL_PRODUCT_PRICE || (0.0).toFixed(2)}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={{fontSize: 18}}>TAX(15%)</Text>
-                <Text style={{fontSize: 18}}>ETB {TOTAL_VAT_VALUE || 0.0}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={{fontSize: 18}}>Total</Text>
-                <Text style={{fontSize: 18}}>
-                  ETB {TOTAL_VAT_INCLUSIVE || 0.0}
-                </Text>
-              </View>
-            </View>
+
+            {/* Sub Total Component */}
+            <SubTotal
+              TOTAL_PRODUCT_PRICE={TOTAL_PRODUCT_PRICE}
+              TOTAL_VAT_VALUE={TOTAL_VAT_VALUE}
+              TOTAL_VAT_INCLUSIVE={TOTAL_VAT_INCLUSIVE}
+            />
 
             {/* Transaction Button */}
             <View style={{marginTop: 25}}>
@@ -436,22 +381,12 @@ const CreateSale = ({route}) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    // paddingHorizontal: 12,
     backgroundColor: 'white',
     borderColor: 'red',
   },
   bodyContainer: {
     flex: 1,
     gap: 15,
-  },
-
-  gustureScrollArea: {
-    maxHeight: 270,
-  },
-  guestureHoldingData: {
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    borderColor: 'lightgray',
   },
 });
 

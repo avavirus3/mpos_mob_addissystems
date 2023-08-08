@@ -2,7 +2,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {color} from '../../../styles/Styles';
 
-const QrTableData = ({data, TOTAL_PRODUCT_PRICE, TOTAL_VAT_VALUE, TOTAL_VAT_INCLUSIVE}) => {
+const QrTableData = ({recievedProductData, TOTAL_PRODUCT_PRICE, TOTAL_VAT_VALUE, TOTAL_VAT_INCLUSIVE}) => {
   return (
     <View>
       {/* Table Head */}
@@ -15,7 +15,7 @@ const QrTableData = ({data, TOTAL_PRODUCT_PRICE, TOTAL_VAT_VALUE, TOTAL_VAT_INCL
       {/* Table Content Container */}
       <View style={{backgroundColor: color.lightGray, paddingVertical: 5}}>
         {/* Table Content */}
-        {data.map(item => {
+        {recievedProductData.map(item => {
           return (
             <View style={styles.tableItemContainer} key={item.id}>
               <Text style={[styles.itemText, {width: '100%', maxWidth: 100}]}>

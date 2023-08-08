@@ -1,38 +1,52 @@
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   Image,
   Platform,
-  FlatList,
   ScrollView,
   Modal,
   TouchableWithoutFeedback,
   Linking,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import {color, textStyles, containerStyles} from '../../../styles/Styles';
 import InvoiceButtons from '../../../components/top_navigation/InvoiceButtons';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import PaymentLinkComponent from '../payment/PaymentLinkComponent';
 import QrTableData from './QrTableData';
+import { AuthContext } from '../../../hooks/useContext/AuthContext';
 
 const {width, height} = Dimensions.get('window');
 
 /* Main Functional Component */
 const InvoiceQR = ({navigation, route}) => {
+const {ProductStore} = useContext(AuthContext)
   const [modalVisible, setModalVisible] = useState(false);
-  const data = route.params;
+  const [recievedProductData, setRecievedProductData] = useState([])
+  const incomingData = route.params;
+
+console.log("incoming Data:", incomingData)
+console.log("recievedProductData:", recievedProductData)
+
+  useEffect(() => {
+    try {
+      incomingData?.hasOwnProperty('transaction_draft') ? setRecievedProductData(incomingData?.transaction_draft.items) : setRecievedProductData(incomingData)
+    } catch(err) {
+console.log("Error happende at useEffect with an error msg:", err)
+    }
+  }, [incomingData])
+
+  console.log("ProductStore:", ProductStore)
 
   const handleQRResult = () => {
     navigation.navigate('payment');
   };
 
   const TOTAL_PRODUCT_PRICE =
-    data?.length > 0 &&
-    data
+    recievedProductData?.length > 0 &&
+    recievedProductData
       .map(item => item.qty * item.price)
       .reduce((acc, cur) => acc + cur)
       .toFixed(2);
@@ -168,7 +182,7 @@ const InvoiceQR = ({navigation, route}) => {
 
         {/* Table Component */}
         <QrTableData
-          data={data}
+          recievedProductData={recievedProductData}
           TOTAL_PRODUCT_PRICE={TOTAL_PRODUCT_PRICE}
           TOTAL_VAT_VALUE={TOTAL_VAT_VALUE}
           TOTAL_VAT_INCLUSIVE={TOTAL_VAT_INCLUSIVE}

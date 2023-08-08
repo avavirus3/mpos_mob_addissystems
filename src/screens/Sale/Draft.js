@@ -75,6 +75,23 @@ const Draft = ({navigation}) => {
     },
   ];
 
+  const handleDraft = (index, item) => {
+    // console.log("item:", item)
+    if(item.transaction_completed) {
+      navigation.navigate('invoice-qr', {
+        transaction_draft: data.draft[index],
+        index,
+      })
+    } else {
+      navigation.navigate('create-sale', {
+        draftData: data.draft[index],
+        index,
+      })
+  }
+  }
+
+  console.log("Draft Data:", data.draft)
+
   const PAID_INVOICE = SALES_INVOICE.filter(
     invoice => invoice.status === 'Paid',
   );
@@ -108,12 +125,7 @@ const Draft = ({navigation}) => {
           borderRadius: 10,
           gap: 5,
         }}
-        onPress={() =>
-          navigation.navigate('create-sale', {
-            draftData: data.draft[index],
-            index,
-          })
-        }>
+        onPress={() => handleDraft(index, item) }>
         <View
           style={{
             flexDirection: 'row',
@@ -149,6 +161,7 @@ const Draft = ({navigation}) => {
             }}>
             {item.totalPrice}
           </Text>
+          <Text style={{fontSize: 16, color: item.transaction_completed ? color.green : color.primary}}>{item.transaction_completed ? 'On Transaction' : 'Draft'}</Text>
         </View>
       </TouchableOpacity>
     );

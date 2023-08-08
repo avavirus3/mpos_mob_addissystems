@@ -1,6 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SelectProduct from './SelectProduct';
+import SelectProduct from './select_product/SelectProduct';
 import CreateSale from './create_sale/CreateSale';
 import CustomerList from './CustomerList';
 import SaleHome from './SaleHome';
