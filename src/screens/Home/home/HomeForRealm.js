@@ -6,12 +6,9 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SearchBar from '../../../components/search/SearchBar';
-import HomeHeading from './HomeHeading';
-import InitialHomeComponent from './InitialHomeComponent';
 import MainComponent from './MainComponent';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
-import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
 import {
   getItems,
   addItem,
@@ -20,53 +17,49 @@ import {
 } from '../../../database/services/itemServices';
 import Button from '../../../components/button/Button';
 
-const Home = ({navigation}) => {
+const HomeforRealm = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
-  const [realmItemList, setRealmItemList] = useState([]);
   const [search, setSearch] = useState('');
   const [CurrentProduct, setCurrentProduct] = useState('All');
   const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
 
   useEffect(() => {
-    const getDatafromRealm = async () => {
-      try {
-        const items = await getItems();
-        console.log('realm items', items);
-        setRealmItemList(items);
-        const newZeroItems = items.slice().map(item => ({
-          name: item.name,
-          _id: item._id,
-          price: item.price,
-          quantity: 0,
-          image: item.image,
-          category: item.category, 
-        }));
-        setInitialZeroQtyItems(newZeroItems);
-      } catch (error) {
-        console.log('Error Retriving Items:', error);
-      }
-    };
+    getItems()
+      .then(items => {
+        setInitialZeroQtyItems(items);
+        console.log('Loaded Items:', items);
+      })
+      .catch(error => {
+        console.log('Error retriving items:', error);
+      });
+  }, []);
 
-    getDatafromRealm();
-  }, [getItems]);
+  // console.log('PRODUCT DATA:', PRODUCT_DATA);
+  console.log('Local Item Database:', initialZeroQtyItems);
+
+  /* This is to activate the "Make Sale" Button to go to the next step */
+  const selectedProducts = initialZeroQtyItems.filter(
+    product => product.qty > 0,
+  );
 
   const handleAddItem = async () => {
-    const itemId = 4; 
+    const itemId = 4;
 
     const newItem = {
-      name: 'iPhone 14',
+      name: 'HP Pavilion dkx001',
       _id: itemId,
-      price: 120000,
-      quantity: 5,
-      image: require('../../../assets/images/phone-3.jpg').toString(),
-      category: 'Phone',
-    }; 
+      price: 47500,
+      quantity: 3,
+      image: require('../../../assets/images/laptop-3.jpg').toString(),
+      category: 'laptop'
+    };
 
-    try { 
+    try {
       const itemsDb = await getItems();
-      const isItemAdded = itemsDb.find(item => item._id == itemId); 
-      if (!isItemAdded) { 
+      const isItemAdded = itemsDb.find(item => item._id == itemId);
+      if (!isItemAdded) {
         await addItem(newItem);
+        setInitialZeroQtyItems(itemsDb)
         console.log(`Item of ID: ${itemId} added Successfully!`);
         console.log('Items in Db:', itemsDb);
       } else {
@@ -80,9 +73,9 @@ const Home = ({navigation}) => {
   const handleUpdateItem = async () => {
     const updatingItemId = 1;
     const updatingData = {
-      // name: 'Hp Pavilion',
-      // price: 42800,
-      quantity: 7,
+      name: 'Samsung S9+',
+      price: 42800,
+      quantity: 1,
     };
     try {
       const items = await getItems();
@@ -101,12 +94,14 @@ const Home = ({navigation}) => {
   };
 
   const handleDeleteItem = async () => {
-    const itemId = 2;
+    const itemId = 1;
     try {
       const items = await getItems();
       const itemToDelete = items.find(item => item._id === itemId);
+
       if (itemToDelete) {
         await deleteItem(itemId);
+        setInitialZeroQtyItems(items)
         console.log('Item Deleted!');
         console.log('Items Left in Db:', items);
       } else {
@@ -118,15 +113,14 @@ const Home = ({navigation}) => {
   };
 
   const handleQtyIncrement = id => {
-    const Prev_Item_Qty = realmItemList.filter(
-      item => item._id === id && item,
-    )[0].quantity;
-    const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
+    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = initialZeroQtyItems.filter(item => item.id == id)[0];
 
-    if (Prev_Item_Qty - (Sale_Item.quantity + 1) >= 0) {
-      Sale_Item.quantity += 1;
+    if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
+      Sale_Item.qty += 1;
       setInitialZeroQtyItems([...initialZeroQtyItems]);
-    } else if (Prev_Item_Qty - (Sale_Item.quantity + 1) < 0) {
+    } else if (Prev_Item_Qty - (Sale_Item.qty + 1) < 0) {
       Toast.show({
         type: 'error',
         text1: 'No Enough Items!',
@@ -136,24 +130,20 @@ const Home = ({navigation}) => {
   };
 
   const handleQtyDecrement = id => {
-    const updatedProduct = initialZeroQtyItems.filter(
-      item => item._id == id,
-    )[0];
-    updatedProduct.quantity =
-      updatedProduct.quantity == 0 ? 0 : updatedProduct.quantity - 1;
+    const updatedProduct = initialZeroQtyItems.filter(item => item.id == id)[0];
+    updatedProduct.qty = updatedProduct.qty == 0 ? 0 : updatedProduct.qty - 1;
     setInitialZeroQtyItems([...initialZeroQtyItems]);
   };
 
   const handleQuantityInput = (id, num) => {
     const inputNum = parseInt(num);
-    const Prev_Item_Qty = realmItemList.filter(
-      item => item._id === id && item,
-    )[0].quantity;
-    const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
+    const Prev_Item_Qty = PRODUCT_DATA.filter(item => item.id === id && item)[0]
+      .qty;
+    const Sale_Item = initialZeroQtyItems.filter(item => item.id == id)[0];
 
-    if (Prev_Item_Qty - (Sale_Item.quantity + inputNum) >= 0) {
+    if (Prev_Item_Qty - (Sale_Item.qty + inputNum) >= 0) {
       // console.log('Can be Deducted!');
-      Sale_Item.quantity = inputNum;
+      Sale_Item.qty = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
       // console.log("Item Can't Set!");
       Toast.show({
@@ -161,35 +151,29 @@ const Home = ({navigation}) => {
         text1: 'There Is No This Amount of Items',
         text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
       });
-      Sale_Item.quantity = Prev_Item_Qty;
+      Sale_Item.qty = Prev_Item_Qty;
     } else {
-      Sale_Item.quantity = '';
+      Sale_Item.qty = '';
     }
 
     setInitialZeroQtyItems([...initialZeroQtyItems]);
   };
 
   const handleEventOnBlur = id => {
-    const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
+    const Sale_Item = initialZeroQtyItems.filter(item => item.id == id)[0];
     // console.log('OnBlur Event Fired!');
-    if (Sale_Item.quantity === '') {
-      Sale_Item.quantity = 0;
+    if (Sale_Item.qty === '') {
+      Sale_Item.qty = 0;
       setInitialZeroQtyItems([...initialZeroQtyItems]);
     }
   };
-
-  /* This is to activate the "Make Sale" Button to go to the next step */
-  const selectedProducts = initialZeroQtyItems.filter(
-    item => item.quantity > 0,
-  );
 
   const handleMakeSale = () => {
     if (selectedProducts.length > 0) {
       const resettedProductQty = initialZeroQtyItems.map(item => ({
         ...item,
-        quantity: 0,
+        qty: 0,
       }));
-
       setInitialZeroQtyItems(resettedProductQty);
       navigation.navigate('Sale', {
         screen: 'create-sale',
@@ -213,29 +197,51 @@ const Home = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
 
+        <View
+          style={{
+            paddingHorizontal: 10,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 15,
+            }}>
+            <View style={{flex: 1}}>
+              <Button
+                label={'Add Items'}
+                theme="secondary"
+                onPress={handleAddItem}
+              />
+            </View>
+            <View style={{flex: 1}}>
+              <Button
+                label={'Update Item'}
+                theme="secondary"
+                onPress={handleUpdateItem}
+              />
+            </View>
+          </View>
+          <Button
+            label={'Delete Item'}
+            theme={'primary'}
+            onPress={handleDeleteItem}
+          />
+        </View>
+
         {/* Main Body Container */}
         <View style={styles.bodyContainer}>
-          {/* Heading Component */}
-          <HomeHeading user={'Abebe Kebede'} sale={'50,000'} />
-
-          {false ? (
-            <InitialHomeComponent navigation={navigation} />
-          ) : CurrentProduct.length > 0 ? (
-            <MainComponent
-              CurrentProduct={CurrentProduct}
-              setCurrentProduct={setCurrentProduct}
-              ProductStore={initialZeroQtyItems}
-              search={search}
-              handleQtyDecrement={handleQtyDecrement}
-              handleQtyIncrement={handleQtyIncrement}
-              handleQuantityInput={handleQuantityInput}
-              handleEventOnBlur={handleEventOnBlur}
-              handleMakeSale={handleMakeSale}
-              activeMakeSale={selectedProducts.length > 0}
-            />
-          ) : (
-            <ProductItemSkeletonGrid />
-          )}
+          <MainComponent
+            CurrentProduct={CurrentProduct}
+            setCurrentProduct={setCurrentProduct}
+            ProductStore={initialZeroQtyItems}
+            search={search}
+            handleQtyDecrement={handleQtyDecrement}
+            handleQtyIncrement={handleQtyIncrement}
+            handleQuantityInput={handleQuantityInput}
+            handleEventOnBlur={handleEventOnBlur}
+            handleMakeSale={handleMakeSale}
+            activeMakeSale={selectedProducts.length > 0}
+          />
         </View>
       </View>
     </View>
@@ -255,10 +261,4 @@ const styles = StyleSheet.create({
   },
 });
 
-/* Rules */
-// Screen names should be CamelCase like ProductStack.js
-// Don't use fontWeight in number value like this (fontWeight: 500) rather use in string like (fontWeight: '500') it may throw an error!
-// Allways try to wright neat codes with comments as much as possible! someone may be maintain it latter.
-// You can Ignore this after you read it. Feel free to modify this file and even create from scratch, this is just template to work with the same flow.
-
-export default Home;
+export default HomeforRealm;

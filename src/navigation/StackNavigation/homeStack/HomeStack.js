@@ -1,15 +1,16 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Setting from './Setting';
+import Home from '../../../screens/Home/home/Home';
+import HomeforRealm from '../../../screens/Home/home/HomeForRealm';
 const Stack = createNativeStackNavigator();
 
-const SettingStack = () => {
+const HomeStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
       initialRouteName="main">
-      <Stack.Screen name="main" component={Setting} />
-      {/* <Stack.Screen name="main" component={} /> */}
+      <Stack.Screen name="main" component={Home} />
+      {/* <Stack.Screen name="main" component={HomeforRealm} /> */}
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );
@@ -21,4 +22,4 @@ const SettingStack = () => {
 // Allways try to wright neat codes with comments as much as possible! someone may be maintain it latter.
 // You can Ignore this after you read it. Feel free to modify this file and even create from scratch, this is just template to work with the same flow.
 
-export default SettingStack;
+export default HomeStack;

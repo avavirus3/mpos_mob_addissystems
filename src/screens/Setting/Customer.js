@@ -19,7 +19,7 @@ const CostomerListCard=({name,number,onPressDelete})=>{
         <View style={{flexDirection:'row',width:"100%",justifyContent:'space-between',marginBottom:15,paddingVertical:verticalScale(16),borderRadius:10,paddingHorizontal:scale(30),backgroundColor:'#F9F7F7',alignItems:"center"}}>
             <View><Text style={{fontSize:20,fontWeight:500}}>{name}</Text>
             <Text style={{fontSize:18,fontWeight:500,color:theme.color.gray}}>{number}</Text></View>
-            <Pressable onPress={()=>onPressDelete(true)}><Iconify icon="fluent:delete-24-filled" size={35} color={theme.color.primary} /></Pressable>
+            <Pressable onPress={()=>onPressDelete(true)}><Iconify icon="fluent:delete-24-filled" size={30} color={theme.color.primary} /></Pressable>
           </View>
     )
 }

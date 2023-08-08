@@ -65,23 +65,23 @@ const Profile = ({ navigation }) => {
             //marginBottom:20
           }}
         />
-        <View style={{ marginVertical: 20,height:verticalScale(27) }}><Text style={styles.boldMd}>{profdata.organization}</Text></View>
+        <View style={{ marginVertical: 20,height:verticalScale(27) }}><Text style={styles.boldMd}>{profdata?.organization}</Text></View>
         <View style={{ paddingHorizontal: 0,  marginLeft: -54 ,}}>
         <View style={{ flexDirection: "row",height:verticalScale(27) }}>
         <Iconify icon='mdi:person-outline' size={20} color={theme.color.blue} />
-        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata.fullname}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?.fullname}</Text></View>
         <View style={{ flexDirection: "row"  ,height:verticalScale(27) }}>
         <Iconify icon='clarity:email-line' size={20}  color={theme.color.blue}/>
-        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata.email}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?.email}</Text></View>
         <View style={{ flexDirection: "row",height:verticalScale(27)  }}>
         <Iconify icon='tabler:phone' size={20}  color={theme.color.blue}/>
-        <Text style={{paddingHorizontal:10,fontSize:20,height:verticalScale(27)}}>{profdata.phonecode+" "+profdata.phone}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20,height:verticalScale(27)}}>{profdata?.phonecode+" "+profdata?.phone}</Text></View>
         <View style={{ flexDirection: "row",height:verticalScale(27) }}>
         <Iconify icon='carbon:license' size={20}  color={theme.color.blue}/>
-        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata.license}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?.license}</Text></View>
         <View style={{ flexDirection: "row", height:verticalScale(27),marginBottom:20  }}>
         <Iconify icon='pepicons-pencil:bulletin-notice' size={20} color={theme.color.blue} />
-        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata.tin}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?.tin}</Text></View>
         </View>
       </View>
     </View>

@@ -7,12 +7,23 @@ import { theme } from '../../styles/stylesheet'
 import { Iconify } from 'react-native-iconify'
 import TopNavigationBar from '../../components/top_navigation/TopNavigationBar'
 import { DoneModals} from '../../components/modal/Modals'
+import PhoneCode from "../../components/modal/PhoneCode";
+import { phoneData } from "../../../data/phonedata";
+
 import realm from '../../../data/Realm'
 const AddCustomer = ({ navigation }) => {
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneModal, setPhoneModal] = useState(false);
+  const [phoneCode,setPhoneCode]=useState( {
+    name: "Ethiopia",
+    dial_code: "+251",
+    code: "ET",
+  Flag:()=><Iconify icon='twemoji:flag-ethiopia' size={30} />},)
   const [done,setDone]=useState(false)
   return (
     <View style={{flex:1}}>
     <DoneModals message={"done"} modalVisible={done} setModalVisible={setDone}/>
+    <PhoneCode modalVisible={phoneModal} setModalVisible={setPhoneModal} setResult={setPhoneCode} />
       <View style={{ paddingHorizontal: 0 }}>
       <View style={{ paddingHorizontal: scale(20) }}>
         <TopNavigationBar
@@ -111,7 +122,8 @@ const AddCustomer = ({ navigation }) => {
               >
                 Phone Number
               </Text>
-              <View
+              <Pressable
+                onPress={() => setPhoneModal(true)}
                 style={{
                   width: "100%",
                   borderRadius: 10,
@@ -122,19 +134,21 @@ const AddCustomer = ({ navigation }) => {
                   paddingLeft: 20,
                 }}
               >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Iconify icon="twemoji:flag-ethiopia" size={30} />
-                  <Text style={{ fontSize: 18, paddingLeft: 9 }}>+251</Text>
+                {phoneCode?<View style={{ flexDirection: "row", alignItems: "center" }}>
+                 {<phoneCode.Flag />}
+                  <Text style={{ fontSize: 18, paddingLeft: 9 }}>{phoneCode?.dial_code}</Text>
                   <Iconify icon="mdi:menu-down" size={18} />
-                </View>
+                </View>:null}
 
                 <TextInput
-                keyboardType='numeric'
-                  style={{ fontSize: 18, alignItems: "center",flex:1}}
-                  //placeholderTextColor="black"
-                  placeholder="911223344"
+                  value={phoneNumber}
+                  onChangeText={(text) => setPhoneNumber(text)}
+                  keyboardType="numeric"
+                  style={{ fontSize: 18, alignItems: "center", flex: 1, color: 'black' }}
+                  placeholderTextColor={"black"}
+                  placeholder={"98765433"}
                 />
-              </View>
+              </Pressable>
             </View>
           <View style={{ marginBottom: verticalScale(15) }}>
             <Text

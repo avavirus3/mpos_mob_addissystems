@@ -6,13 +6,13 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
-import {color, textStyles} from '../../styles/Styles';
+import {color, textStyles} from '../../../styles/Styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import SearchBar from '../../components/search/SearchBar';
-import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
-import HeadSelector from '../../components/HeadSelector';
-import {AuthContext} from '../../hooks/useContext/AuthContext';
+import SearchBar from '../../../components/search/SearchBar';
+import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
+import HeadSelector from '../../../components/HeadSelector';
+import {AuthContext} from '../../../hooks/useContext/AuthContext';
 
 const SaleHome = ({navigation}) => {
   const {data} = useContext(AuthContext);

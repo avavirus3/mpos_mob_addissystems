@@ -1,40 +1,50 @@
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   Image,
   Platform,
-  FlatList,
   ScrollView,
   Modal,
   TouchableWithoutFeedback,
   Linking,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import {color, textStyles, containerStyles} from '../../../styles/Styles';
 import InvoiceButtons from '../../../components/top_navigation/InvoiceButtons';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import PaymentLinkComponent from '../payment/PaymentLinkComponent';
 import QrTableData from './QrTableData';
+import {AuthContext} from '../../../hooks/useContext/AuthContext';
 
 const {width, height} = Dimensions.get('window');
 
 /* Main Functional Component */
 const InvoiceQR = ({navigation, route}) => {
+  const {ProductStore} = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
-  const data = route.params;
+  const [recievedProductData, setRecievedProductData] = useState([]);
+  const [passedDiscount, setPassedDiscount] = useState(0)
+  const incomingData = route.params;
 
-  const handleQRResult = () => {
-    navigation.navigate('payment');
-  };
+  // console.log("incoming Data:", incomingData) 
+  // console.log("recievedProductData:", recievedProductData)
+
+  useEffect(() => { 
+    try {
+      setRecievedProductData(incomingData?.passedData);
+      setPassedDiscount(incomingData?.discount)
+    } catch (err) {
+      console.log('Error happende at useEffect with an error msg:', err);
+    }
+  }, [incomingData]);
 
   const TOTAL_PRODUCT_PRICE =
-    data?.length > 0 &&
-    data
-      .map(item => item.qty * item.price)
-      .reduce((acc, cur) => acc + cur)
+    recievedProductData?.length > 0 &&
+    recievedProductData
+      .map(item => item.quantity * item.price)
+      .reduce((acc, cur) => acc + cur)-passedDiscount
       .toFixed(2);
   const TOTAL_VAT_VALUE = (TOTAL_PRODUCT_PRICE * 0.15).toFixed(2);
   const TOTAL_VAT_INCLUSIVE = (TOTAL_PRODUCT_PRICE * 1.15).toFixed(2);
@@ -42,6 +52,10 @@ const InvoiceQR = ({navigation, route}) => {
   const handleCopy = async textTobeCopied => {
     await Clipboard.setString(textTobeCopied);
     ToastAndroid.show('Copied!', ToastAndroid.SHORT);
+  };
+
+  const handleQRResult = () => {
+    navigation.navigate('payment', TOTAL_VAT_INCLUSIVE);
   };
 
   const handleOpenApps = async (link, app) => {
@@ -168,7 +182,7 @@ const InvoiceQR = ({navigation, route}) => {
 
         {/* Table Component */}
         <QrTableData
-          data={data}
+          recievedProductData={recievedProductData}
           TOTAL_PRODUCT_PRICE={TOTAL_PRODUCT_PRICE}
           TOTAL_VAT_VALUE={TOTAL_VAT_VALUE}
           TOTAL_VAT_INCLUSIVE={TOTAL_VAT_INCLUSIVE}

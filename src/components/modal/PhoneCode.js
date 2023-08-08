@@ -3,10 +3,9 @@ import React, { useState } from 'react'
 import { scale, verticalScale } from 'react-native-size-matters'
 import { theme } from '../../styles/stylesheet'
 import Search from '../search/Search'
-import CountryFlag from "react-native-country-flag";
 import { phoneData } from '../../../data/phonedata'
 import { Iconify } from 'react-native-iconify'
-import { flag } from '../../assets/flagIcons/FlagIcon'
+
 export const CodeList = {
   Ethiopian: ({name,Flag,dial_code,code,setResult,setModalVisible} ) => {
     return (<TouchableOpacity onPress={() => {setResult({name,code,dial_code,Flag}); setModalVisible(false)}} key={name} style={{ width: "100%",flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 8 }}>

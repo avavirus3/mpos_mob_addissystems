@@ -1,30 +1,30 @@
 import React from 'react';
 import {View , Text} from 'react-native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Main from '../screens/settings/Main';
-import Profile from '../screens/settings/Profile'
-import Edit from '../screens/settings/Edit';
-import LockScreen from '../screens/settings/LockScreen';
-import PINScreen from '../screens/settings/PINScreen';
-import ChangePasswordScreen from '../screens/settings/ChangePasswordScreen';
-import Language from '../screens/settings/Language';
-import PaperWidth from '../screens/settings/PaperWidth';
-import PrinterSettingScreen from '../screens/settings/PrinterSettingScreen';
-import Currency from '../screens/settings/Currency';
-import Customer from '../screens/settings/Customer';
-import AddCustomer from '../screens/settings/AddCustomer';
-import Payment from '../screens/settings/Payment';
-import ChooseBank from '../screens/settings/ChooseBank';
-import Analytics from '../screens/settings/Analytics';
-import ActiveSessionsScreen from '../screens/settings/ActiveSessionsScreen';
-import Notification from '../screens/settings/Notification';
-import AccountNumber from '../screens/settings/AccountNumber';
-import PhoneNumber from '../screens/settings/PhoneNumber';
-import ActivationCode from '../screens/settings/ActivationCode';
+import Main from '../../../screens/Setting/Main';
+import Profile from '../../../screens/Setting/Profile'
+import Edit from '../../../screens/Setting/Edit';
+import LockScreen from '../../../screens/Setting/LockScreen';
+import PINScreen from '../../../screens/Setting/PINScreen';
+import ChangePasswordScreen from '../../../screens/Setting/ChangePasswordScreen';
+import Language from '../../../screens/Setting/Language';
+import PaperWidth from '../../../screens/Setting/PaperWidth';
+import PrinterSettingScreen from '../../../screens/Setting/PrinterSettingScreen';
+import Currency from '../../../screens/Setting/Currency';
+import Customer from '../../../screens/Setting/Customer';
+import AddCustomer from '../../../screens/Setting/AddCustomer';
+import Payment from '../../../screens/Setting/Payment';
+import ChooseBank from '../../../screens/Setting/ChooseBank';
+import Analytics from '../../../screens/Setting/Analytics';
+import ActiveSessionsScreen from '../../../screens/Setting/ActiveSessionsScreen';
+import Notification from '../../../screens/Setting/Notification';
+import AccountNumber from '../../../screens/Setting/AccountNumber';
+import PhoneNumber from '../../../screens/Setting/PhoneNumber';
+import ActivationCode from '../../../screens/Setting/ActivationCode';
 
 const Stack = createNativeStackNavigator();
 
-const SettingStack = () => {
+const Settingtack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Main" component={Main} />
@@ -35,7 +35,7 @@ const SettingStack = () => {
       <Stack.Screen name="ChangePassword"  component={ChangePasswordScreen}/>
       <Stack.Screen name="Language"  component={Language}/>
       <Stack.Screen name="PaperWidth"  component={PaperWidth}/>
-      <Stack.Screen name="PrinterSettingScreen"  component={PrinterSettingScreen}/>
+      <Stack.Screen name="PrinterSettingcreen"  component={PrinterSettingScreen}/>
       <Stack.Screen name="Currency"  component={Currency}/>
       <Stack.Screen name="Customer"  component={Customer}/>
       <Stack.Screen name="AddCustomer"  component={AddCustomer}/>
@@ -52,4 +52,4 @@ const SettingStack = () => {
   );
 };
 
-export default SettingStack;
+export default Settingtack;

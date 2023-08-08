@@ -40,7 +40,7 @@ const Edit = ({ navigation }) => {
     getData();
   },[])
   useEffect(()=>{
-    if(profdata)setPhoneCode(phoneData.find(phonecodes => phonecodes?.dial_code === profdata.phonecode));
+    if(profdata)setPhoneCode(phoneData.find(phonecodes => phonecodes?.dial_code === profdata?.phonecode));
     //console.log("update:",'\n\r',profdata,'\n\r',phoneData.find(phonecodes => phonecodes?.dial_code === profdata.phonecode));
   },[profdata])
 
@@ -133,7 +133,7 @@ const Edit = ({ navigation }) => {
                   flex: 1,
                   color: 'black',
                 }}
-                placeholder={profdata.fullname}
+                placeholder={profdata?.fullname}
                 placeholderTextColor='black'
               />
             </View>
@@ -160,7 +160,7 @@ const Edit = ({ navigation }) => {
                   paddingLeft: 20,
                   color: 'black'
                 }}
-                placeholder={profdata.email}
+                placeholder={profdata?.email}
                 placeholderTextColor='black'
               />
             </View>
@@ -199,7 +199,7 @@ const Edit = ({ navigation }) => {
                   keyboardType="numeric"
                   style={{ fontSize: 18, alignItems: "center", flex: 1, color: 'black' }}
                   placeholderTextColor={"black"}
-                  placeholder={profdata.phone}
+                  placeholder={profdata?.phone}
                 />
               </Pressable>
             </View>
@@ -227,7 +227,7 @@ const Edit = ({ navigation }) => {
                   flex: 1,
                   color: 'black',
                 }}
-                placeholder={profdata.organization}
+                placeholder={profdata?.organization}
                 placeholderTextColor={'black'}
               />
             </View>
@@ -255,7 +255,7 @@ const Edit = ({ navigation }) => {
                   paddingLeft: 20,
                   color: 'black',
                 }}
-                placeholder={profdata.license}
+                placeholder={profdata?.license}
                 placeholderTextColor={'black'}
               />
             </View>
@@ -283,7 +283,7 @@ const Edit = ({ navigation }) => {
                   paddingLeft: 20,
                   color: 'black',
                 }}
-                placeholder={profdata.tin}
+                placeholder={profdata?.tin}
                 placeholderTextColor={'black'}
               />
             </View>

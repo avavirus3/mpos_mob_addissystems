@@ -1,15 +1,15 @@
 import {View, Text, StyleSheet, FlatList} from 'react-native';
 import React, {useState} from 'react';
-import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
-import HeadSelector from '../../components/HeadSelector';
-import SearchBar from '../../components/search/SearchBar';
-import {color} from '../../styles/Styles';
+import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
+import HeadSelector from '../../../components/HeadSelector';
+import SearchBar from '../../../components/search/SearchBar';
+import {color} from '../../../styles/Styles';
 
-const AllSales = ({navigation}) => {
+const AllOrders = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [selectedHead, setSelectedHead] = useState('Paid');
 
-  console.log(search);
+  console.log('Search:', search);
 
   const SALES_INVOICE = [
     {
@@ -156,7 +156,7 @@ const AllSales = ({navigation}) => {
     <View style={styles.mainContainer}>
       <TopNavigationBar
         backIcon={true}
-        middleLabel={'All Sales in Invoice'}
+        middleLabel={'All Orders'}
         thirdIcon={true}
         onPressBack={() => navigation.goBack()}
         onPressGo={() => navigation.navigate('create-sale')}
@@ -210,4 +210,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllSales;
+export default AllOrders;
