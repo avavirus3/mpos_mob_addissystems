@@ -1,14 +1,14 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import LogIn from './LogIn';
 const Stack = createNativeStackNavigator();
 
-const LoginStack
- = () => {
+const LoginStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="main">
-      {/* <Stack.Screen name="main" component={Home} /> */}
+      initialRouteName="login">
+      <Stack.Screen name="login" component={LogIn} />
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );
@@ -20,5 +20,4 @@ const LoginStack
 // Allways try to wright neat codes with comments as much as possible! someone may be maintain it latter.
 // You can Ignore this after you read it. Feel free to modify this file and even create from scratch, this is just template to work with the same flow.
 
-export default LoginStack
-;
+export default LoginStack;

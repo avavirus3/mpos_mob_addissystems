@@ -1,17 +1,22 @@
 import {View, Text} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import MainTabNavigation from './navigation/MainTabNavigation';
 import {AuthProvider} from './hooks/useContext/AuthContext';
+import InitialRender from './auth/InitialRender';
+import Toast from 'react-native-toast-message';
+import {store} from './reduxToolkit/store';
+import {Provider} from 'react-redux';
 
 const App = () => {
-  const [search, setSearch] = useState('');
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <MainTabNavigation />
-      </NavigationContainer>
-    </AuthProvider>
+      <Provider store={store}>
+        <AuthProvider>
+          <NavigationContainer>
+            <InitialRender />
+            <Toast />
+          </NavigationContainer>
+        </AuthProvider>
+      </Provider>
   );
 };
 

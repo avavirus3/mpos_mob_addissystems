@@ -2,9 +2,10 @@ import React from 'react';
 import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { color } from '../../../styles/Styles';
+import {color} from '../../../styles/Styles';
+import IncrementDecrement from '../../../components/button/IncrementDecrement';
+import FastImage from 'react-native-fast-image';
+
 
 const RenderItem = ({
   item,
@@ -12,15 +13,14 @@ const RenderItem = ({
   handleQtyDecrement,
   handleQtyIncrement,
   handleQuantityInput,
+  handleEventOnBlur,
 }) => {
-  const {name, price, qty, image, category, id} = item;
-
-  console.log(id)
+  const {name, price, quantity, image, category, _id} = item;
 
   const noImage = require('../../../assets/images/no-image.jpg');
 
   return (
-    <View style={{flexDirection: 'row', marginVertical: 0}} key={id}>
+    <View style={{flexDirection: 'row', marginVertical: 0}} key={_id}>
       <View
         style={{
           flex: 1,
@@ -37,24 +37,28 @@ const RenderItem = ({
             borderRadius: 5,
             overflow: 'hidden',
           }}>
-          <Image
+          {/* <Image
             style={{height: '100%', width: '100%', resizeMode: 'cover'}}
             source={image ? image : noImage}
-          />
+          /> */}
+           <FastImage
+          style={{height: '100%', width: '100%', resizeMode: 'cover'}}
+          source={image ? image : noImage}
+        />
         </View>
         <View style={{flex: 1}}>
           <Text style={{fontSize: 18, fontWeight: '600'}}>{name}</Text>
           <Text style={{fontSize: 16, color: color.gray}}>{category}</Text>
           <Text style={{fontSize: 18, fontWeight: '500'}}>
-            {qty} X {price} ETB
+            {quantity} X {price} ETB
           </Text>
           <Text style={{fontSize: 18, fontWeight: '500'}}>
-            = {qty * price} ETB
+            = {quantity * price} ETB
           </Text>
         </View>
       </View>
       <View style={{alignItems: 'flex-end'}}>
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             height: 47,
@@ -81,10 +85,12 @@ const RenderItem = ({
               borderWidth: 1,
               borderColor: color.gray,
               borderRadius: 5,
-              backgroundColor: '#f7f7f7'
+              color: '#000',
+              backgroundColor: '#f7f7f7',
             }}
-            value={qty ? qty.toString() : '0'}
+            value={qty > 0 ? qty.toString() : qty === 0 ? '0' : ''}
             onChangeText={num => handleQuantityInput(id, num)}
+            onBlur={() => handleEventOnBlur(id)}
             keyboardType="number-pad"
           />
           <TouchableOpacity
@@ -92,10 +98,18 @@ const RenderItem = ({
             onPress={num => handleQtyIncrement(id, num)}>
             <Entypo name="plus" size={28} color={color.secondary} />
           </TouchableOpacity>
-        </View>
+        </View> */}
+        <IncrementDecrement
+          id={_id}
+          qty={quantity}
+          handleEventOnBlur={handleEventOnBlur}
+          handleQtyDecrement={handleQtyDecrement}
+          handleQtyIncrement={handleQtyIncrement}
+          handleQuantityInput={handleQuantityInput}
+        />
         <TouchableOpacity
           style={{borderWidth: 0, borderColor: 'red', padding: 5}}
-          onPress={() => handleDeleteItem(id)}>
+          onPress={() => handleDeleteItem(_id)}>
           <Ionicons name="trash" size={30} color={color.primary} />
         </TouchableOpacity>
       </View>
@@ -103,5 +117,4 @@ const RenderItem = ({
   );
 };
 
-
-export default RenderItem
+export default RenderItem;
