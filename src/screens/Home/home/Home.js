@@ -18,6 +18,7 @@ import {
   updateItem,
   deleteItem,
 } from '../../../database/services/itemServices';
+import Button from '../../../components/button/Button';
 
 const Home = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
@@ -38,7 +39,7 @@ const Home = ({navigation}) => {
           price: item.price,
           quantity: 0,
           image: item.image,
-          category: item.category,
+          category: item.category, 
         }));
         setInitialZeroQtyItems(newZeroItems);
       } catch (error) {
@@ -50,21 +51,21 @@ const Home = ({navigation}) => {
   }, [getItems]);
 
   const handleAddItem = async () => {
-    const itemId = 7;
+    const itemId = 4; 
 
     const newItem = {
-      name: 'Hp Pavilion',
+      name: 'iPhone 14',
       _id: itemId,
-      price: 47000,
-      quantity: 3,
-      image: require('../../../assets/images/laptop-1.jpg').toString(),
-      category: 'Laptop',
-    };
+      price: 120000,
+      quantity: 5,
+      image: require('../../../assets/images/phone-3.jpg').toString(),
+      category: 'Phone',
+    }; 
 
-    try {
+    try { 
       const itemsDb = await getItems();
-      const isItemAdded = itemsDb.find(item => item._id == itemId);
-      if (!isItemAdded) {
+      const isItemAdded = itemsDb.find(item => item._id == itemId); 
+      if (!isItemAdded) { 
         await addItem(newItem);
         console.log(`Item of ID: ${itemId} added Successfully!`);
         console.log('Items in Db:', itemsDb);
@@ -79,8 +80,8 @@ const Home = ({navigation}) => {
   const handleUpdateItem = async () => {
     const updatingItemId = 1;
     const updatingData = {
-      name: 'Samsung S9+',
-      price: 42800,
+      // name: 'Hp Pavilion',
+      // price: 42800,
       quantity: 7,
     };
     try {
@@ -197,7 +198,6 @@ const Home = ({navigation}) => {
     }
   };
 
-
   /* Main Function Return */
   return (
     <View style={styles.mainContainer}>
@@ -212,6 +212,37 @@ const Home = ({navigation}) => {
             />
           </View>
         </TouchableWithoutFeedback>
+
+        <View
+          style={{
+            paddingHorizontal: 10,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 15,
+            }}>
+            <View style={{flex: 1}}>
+              <Button
+                label={'Add Items'}
+                theme="secondary"
+                onPress={handleAddItem}
+              />
+            </View>
+            <View style={{flex: 1}}>
+              <Button
+                label={'Update Item'}
+                theme="secondary"
+                onPress={handleUpdateItem}
+              />
+            </View>
+          </View>
+          <Button
+            label={'Delete Item'}
+            theme={'primary'}
+            onPress={handleDeleteItem}
+          />
+        </View>
 
         {/* Main Body Container */}
         <View style={styles.bodyContainer}>

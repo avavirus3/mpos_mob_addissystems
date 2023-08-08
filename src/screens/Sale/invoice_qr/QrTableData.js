@@ -17,14 +17,14 @@ const QrTableData = ({recievedProductData, TOTAL_PRODUCT_PRICE, TOTAL_VAT_VALUE,
         {/* Table Content */}
         {recievedProductData.map(item => {
           return (
-            <View style={styles.tableItemContainer} key={item.id}>
+            <View style={styles.tableItemContainer} key={item._id}>
               <Text style={[styles.itemText, {width: '100%', maxWidth: 100}]}>
                 {item.name}
               </Text>
-              <Text style={[styles.itemText, {}]}>{item.qty}</Text>
+              <Text style={[styles.itemText, {}]}>{item.quantity}</Text>
               <Text style={[styles.itemText, {}]}>{item.price}</Text>
               <Text style={[styles.itemText, {}]}>
-                {(item.qty * item.price).toFixed(2)}
+                {(item.quantity * item.price).toFixed(2)} 
               </Text>
             </View>
           );

@@ -1,9 +1,9 @@
 import Realm from 'realm';
-import {itemSchema} from './schema/itemSchema';
+import schemas from './schema/schemas';
 
 export const initializeRealm = () => {
   return Realm.open({
-    schema: [itemSchema],
-    // deleteRealmIfMigrationNeeded: true,
+    schema: schemas,
+    deleteRealmIfMigrationNeeded: true,
   });
 };

@@ -23,13 +23,16 @@ import QRModalComponent from './QRModalComponent';
 import PaymentLinkComponent from './PaymentLinkComponent';
 import CardPayment from './CardPayment';
 
-const Payment = ({navigation}) => {
+const Payment = ({navigation, route}) => {
+  const price_Amount = route.params;
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('Cash');
   const paymentMethod = ['Cash', 'Bank', 'QR', 'Card'];
   const [modalVisible, setModalVisible] = useState(false);
   const [successFailModal, setSuccessFailModal] = useState(false);
   const [TrNumber, setTrNumber] = useState();
   const [successModal, setSuccessModal] = useState(false);
+
+  console.log("Incoming Data:", price_Amount)
 
   const handleRadioCheck = radio => {
     const pattern = /Bank|QR|Card/gi;

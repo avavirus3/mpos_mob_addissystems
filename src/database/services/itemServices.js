@@ -4,6 +4,7 @@ export const getItems = async () => {
   const realm = await initializeRealm();
 
   const items = realm.objects('Items');
+  // realm.close()
   return items;
 };
 
@@ -30,7 +31,7 @@ export const updateItem = async (itemId, updatedItem) => {
       itemTobeUpdated.price = updatedItem.price
         ? updatedItem.price
         : itemTobeUpdated.price;
-      itemTobeUpdated.quantity = updatedItem.quantity
+      itemTobeUpdated.quantity = updatedItem?.hasOwnProperty("quantity")
         ? updatedItem.quantity
         : itemTobeUpdated.quantity;
       itemTobeUpdated.image = updatedItem.image

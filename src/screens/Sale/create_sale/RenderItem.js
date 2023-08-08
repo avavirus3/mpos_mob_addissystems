@@ -4,6 +4,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {color} from '../../../styles/Styles';
 import IncrementDecrement from '../../../components/button/IncrementDecrement';
+import FastImage from 'react-native-fast-image';
+
 
 const RenderItem = ({
   item,
@@ -35,10 +37,14 @@ const RenderItem = ({
             borderRadius: 5,
             overflow: 'hidden',
           }}>
-          <Image
+          {/* <Image
             style={{height: '100%', width: '100%', resizeMode: 'cover'}}
             source={image ? image : noImage}
-          />
+          /> */}
+           <FastImage
+          style={{height: '100%', width: '100%', resizeMode: 'cover'}}
+          source={image ? image : noImage}
+        />
         </View>
         <View style={{flex: 1}}>
           <Text style={{fontSize: 18, fontWeight: '600'}}>{name}</Text>

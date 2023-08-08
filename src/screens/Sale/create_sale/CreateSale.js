@@ -22,7 +22,7 @@ import SubTotal from './SubTotal';
 import ItemsList from './ItemsList';
 import Toast from 'react-native-toast-message';
 import {useSelector, useDispatch} from 'react-redux';
-import { getItems, updateItem, deleteItem } from '../../../database/services/itemServices';
+import {getItems, updateItem} from '../../../database/services/itemServices';
 
 /* Main Function */
 const CreateSale = ({route}) => {
@@ -74,11 +74,11 @@ const CreateSale = ({route}) => {
         console.log('realm items', items);
         setRealmItemList(items);
       } catch (err) {
-        console.log("Error Retriving RealmDb:", err)
+        console.log('Error Retriving RealmDb:', err);
       }
-    }
+    };
 
-    getDataFromRealmDb()
+    getDataFromRealmDb();
   }, [incomingData]);
 
   const handleSaveSale = () => {
@@ -116,11 +116,12 @@ const CreateSale = ({route}) => {
   };
 
   const handleQtyIncrement = id => {
-    const Prev_Item_Qty = realmItemList.filter(item => item._id === id && item)[0]
-      .quantity;
+    const Prev_Item_Qty = realmItemList.filter(
+      item => item._id === id && item,
+    )[0].quantity;
     const Sale_Item = passedData.filter(item => item._id === id)[0];
 
-    console.log("Sale Item:", Sale_Item)
+    console.log('Sale Item:', Sale_Item);
 
     if (Prev_Item_Qty - (Sale_Item.quantity + 1) >= 0) {
       Sale_Item.quantity += 1;
@@ -187,48 +188,63 @@ const CreateSale = ({route}) => {
   };
 
   const handleTransaction = () => {
-    const products_after_qty_deduction = PRODUCT_DATA.map(item => {
-      const saleItem = passedData.find(sale => sale.id === item.id);
-      if (saleItem) {
-        return {...item, qty: item.qty - saleItem.qty};
-      }
-      return item;
-    });
+    // const products_after_qty_deduction = realmItemList.map(item => {
+    //   const saleItem = passedData.map(sale => {
+    //     sale
+    //   } );
+    //   // console.log("Sale Item:", saleItem)
+    //   return saleItem
+    // });
 
-    const selected_data_deduct = products_after_qty_deduction.filter(obj2 =>
-      passedData.some(obj1 => isEqual(obj1, obj2)),
+    const mySaleItems = realmItemList.filter(realm =>
+      passedData.map((sale, index) => sale._id == realm._id),
     );
 
-    console.log('products after deduction:', products_after_qty_deduction);
+    passedData.map(async realm => {
+      const passedSale = realmItemList.find(
+        sale => sale._id == realm._id,
+        // ({quantity: (realm.quantity - sale.quantity)}),
+      );
 
-    setProductStore(products_after_qty_deduction);
+      if (passedSale) {
+        const quantityResult = passedSale.quantity - realm.quantity 
+        const deductFromRealm = {
+          quantity: quantityResult == 1 ? 1 : quantityResult > 1 ? quantityResult : 0, 
+        }; 
+       await updateItem(realm._id, deductFromRealm); // Updating the sold item quantity from the database
+  
+        console.log("deductFromRealm:", deductFromRealm)
+      } 
+    }); 
 
-    const newDraftData = data;
+    // setProductStore(products_after_qty_deduction);
 
-    incomingDraftIndex != null
-      ? (data.draft[incomingDraftIndex] = {
-          customerData: customer === 'Guest' ? {name: customer} : customer,
-          items: passedData,
-          totalPrice: TOTAL_PRODUCT_PRICE,
-          time: moment(currentTime).format('h:mm:ss a'),
-          transaction_completed: true,
-        })
-      : (newDraftData.draft = [
-          ...data.draft,
-          {
-            customerData: customer === 'Guest' ? {name: customer} : customer,
-            items: passedData,
-            totalPrice: TOTAL_PRODUCT_PRICE,
-            time: moment(currentTime).format('h:mm:ss a'),
-            transaction_completed: true,
-          },
-        ]);
+    // const newDraftData = data;
 
-    setData(newDraftData);
+    // incomingDraftIndex != null
+    //   ? (data.draft[incomingDraftIndex] = {
+    //       customerData: customer === 'Guest' ? {name: customer} : customer,
+    //       items: passedData,
+    //       totalPrice: TOTAL_PRODUCT_PRICE,
+    //       time: moment(currentTime).format('h:mm:ss a'),
+    //       transaction_completed: true,
+    //     }) 
+    //   : (newDraftData.draft = [
+    //       ...data.draft,
+    //       {
+    //         customerData: customer === 'Guest' ? {name: customer} : customer,
+    //         items: passedData,
+    //         totalPrice: TOTAL_PRODUCT_PRICE,
+    //         time: moment(currentTime).format('h:mm:ss a'),
+    //         transaction_completed: true,
+    //       },
+    //     ]);
+
+    // setData(newDraftData);
     setTransactionModal(true);
 
     setTimeout(() => {
-      navigation.navigate('invoice-qr', passedData);
+      navigation.navigate('invoice-qr', {passedData, discount});
       setTransactionModal(false);
       setPassedData([]);
       setCustomer({name: 'Guest'});
@@ -240,7 +256,7 @@ const CreateSale = ({route}) => {
   const TOTAL_PRODUCT_PRICE =
     passedData?.length > 0 &&
     passedData
-      .map(item => item.qty * item.price)
+      .map(item => item.quantity * item.price)
       .reduce((acc, cur) => acc + cur) - (discount || 0).toFixed(2);
   const TOTAL_VAT_VALUE = (TOTAL_PRODUCT_PRICE * 0.15).toFixed(2);
   const TOTAL_VAT_INCLUSIVE = (TOTAL_PRODUCT_PRICE * 1.15).toFixed(2);

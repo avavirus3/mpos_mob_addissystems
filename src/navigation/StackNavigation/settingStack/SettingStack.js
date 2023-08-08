@@ -1,6 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Setting from '../../../screens/Setting/Setting';
+import AddCustomer from '../../../screens/Setting/AddCustomer';
+
 const Stack = createNativeStackNavigator();
 
 const SettingStack = () => {
@@ -8,8 +10,9 @@ const SettingStack = () => {
     <Stack.Navigator
       screenOptions={{headerShown: false}}
       initialRouteName="main">
-      <Stack.Screen name="main" component={Setting} />
-      {/* <Stack.Screen name="main" component={} /> */}
+
+      {/* <Stack.Screen name="main" component={Setting} /> */}
+      <Stack.Screen name="main" component={AddCustomer} />
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );

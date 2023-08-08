@@ -32,7 +32,7 @@ const CustomerComponent = ({customer, setCustomer, navigation}) => {
             {customer?.name}
           </Text>
           <Text style={{fontSize: 18, color: color.gray}}>
-            {customer?.tin}
+            {customer?._tin}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setCustomer({name: 'Guest'})}>

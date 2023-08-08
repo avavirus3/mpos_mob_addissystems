@@ -16,39 +16,35 @@ import InvoiceButtons from '../../../components/top_navigation/InvoiceButtons';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import PaymentLinkComponent from '../payment/PaymentLinkComponent';
 import QrTableData from './QrTableData';
-import { AuthContext } from '../../../hooks/useContext/AuthContext';
+import {AuthContext} from '../../../hooks/useContext/AuthContext';
 
 const {width, height} = Dimensions.get('window');
 
 /* Main Functional Component */
 const InvoiceQR = ({navigation, route}) => {
-const {ProductStore} = useContext(AuthContext)
+  const {ProductStore} = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
-  const [recievedProductData, setRecievedProductData] = useState([])
+  const [recievedProductData, setRecievedProductData] = useState([]);
+  const [passedDiscount, setPassedDiscount] = useState(0)
   const incomingData = route.params;
 
-console.log("incoming Data:", incomingData)
-console.log("recievedProductData:", recievedProductData)
+  // console.log("incoming Data:", incomingData) 
+  // console.log("recievedProductData:", recievedProductData)
 
-  useEffect(() => {
+  useEffect(() => { 
     try {
-      incomingData?.hasOwnProperty('transaction_draft') ? setRecievedProductData(incomingData?.transaction_draft.items) : setRecievedProductData(incomingData)
-    } catch(err) {
-console.log("Error happende at useEffect with an error msg:", err)
+      setRecievedProductData(incomingData?.passedData);
+      setPassedDiscount(incomingData?.discount)
+    } catch (err) {
+      console.log('Error happende at useEffect with an error msg:', err);
     }
-  }, [incomingData])
-
-  console.log("ProductStore:", ProductStore)
-
-  const handleQRResult = () => {
-    navigation.navigate('payment');
-  };
+  }, [incomingData]);
 
   const TOTAL_PRODUCT_PRICE =
     recievedProductData?.length > 0 &&
     recievedProductData
-      .map(item => item.qty * item.price)
-      .reduce((acc, cur) => acc + cur)
+      .map(item => item.quantity * item.price)
+      .reduce((acc, cur) => acc + cur)-passedDiscount
       .toFixed(2);
   const TOTAL_VAT_VALUE = (TOTAL_PRODUCT_PRICE * 0.15).toFixed(2);
   const TOTAL_VAT_INCLUSIVE = (TOTAL_PRODUCT_PRICE * 1.15).toFixed(2);
@@ -56,6 +52,10 @@ console.log("Error happende at useEffect with an error msg:", err)
   const handleCopy = async textTobeCopied => {
     await Clipboard.setString(textTobeCopied);
     ToastAndroid.show('Copied!', ToastAndroid.SHORT);
+  };
+
+  const handleQRResult = () => {
+    navigation.navigate('payment', TOTAL_VAT_INCLUSIVE);
   };
 
   const handleOpenApps = async (link, app) => {

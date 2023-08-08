@@ -6,19 +6,31 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import SearchBar from '../../../components/search/SearchBar';
 import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import {color, textStyles, containerStyles} from '../../../styles/Styles';
 import Button from '../../../components/button/Button';
+import { getCustomers } from '../../../database/services/customerServices';
 
 const CustomerList = ({navigation}) => {
   const [search, setSearch] = useState('');
-  const {data} = useContext(AuthContext);
+  const [customers, setCustomer] = useState([])
   const [selectedCustomer, setSelectedCustomer] = useState([]);
 
-  // console.log(data.customerList);
+  useEffect(() => {
+    const getRealmDbCustomers = async () => {
+      try {
+        const realmDbCustomer = await getCustomers()
+        setCustomer(realmDbCustomer)
+      } catch(error) { 
+        console.log("Error Retriving Customer Data:", error)
+      }
+    }
+    getRealmDbCustomers()
+  }, [])
+
   console.log('Selected Customer:', selectedCustomer);
 
   const handleAddCustomer = () => {
@@ -26,7 +38,7 @@ const CustomerList = ({navigation}) => {
   };
 
   const renderItem = ({item}) => {
-    const {name, tin} = item;
+    const {name, _tin} = item;
     return (
       <TouchableOpacity
         style={{
@@ -36,6 +48,7 @@ const CustomerList = ({navigation}) => {
               : color.lightGray,
           padding: 15,
           borderRadius: 10,
+          gap: 5,
           ...Platform.select({
             ios: {
               shadowColor: 'black',
@@ -53,7 +66,7 @@ const CustomerList = ({navigation}) => {
         }}
         onPress={() => setSelectedCustomer(item)}>
         <Text style={{fontSize: 20, fontWeight: '500'}}>{name}</Text>
-        <Text style={{fontSize: 18, color: color.gray}}>{tin}</Text>
+        <Text style={{fontSize: 18, color: color.gray}}>{_tin}</Text>
       </TouchableOpacity>
     );
   };
@@ -83,17 +96,17 @@ const CustomerList = ({navigation}) => {
       />
       <View
         style={{flex: 1, borderTopWidth: 2, borderTopColor: 'rgba(0,0,0,0.2)'}}>
-        <FlatList
+        {customers?.length > 0 ? <FlatList
           contentContainerStyle={{
             gap: 20,
             paddingHorizontal: 2,
             paddingTop: 10,
             paddingBottom: 20,
           }}
-          data={data?.customerList}
+          data={customers}
           renderItem={renderItem}
-          keyExtractor={item => item.tin}
-        />
+          keyExtractor={item => item._tin}
+        /> : null}
       </View>
     </View>
   );
