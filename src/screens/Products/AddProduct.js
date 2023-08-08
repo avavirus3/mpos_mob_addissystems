@@ -6,48 +6,32 @@ import {verticalScale, scale} from 'react-native-size-matters';
 import {color} from '../../styles/Styles';
 import {Iconify} from 'react-native-iconify';
 import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
-import {
-  addCustomer,
-  getCustomers,
-} from '../../database/services/customerServices';
+import { getItems, addItem } from '../../database/services/itemServices';
 
 const AddProduct = ({navigation}) => {
-  const [done, setDone] = useState(false);
-  const [customerData, setLocalProduct] = useState({
+  const [newProductData, setNewProductData] = useState({
     name: '',
-    email: '',
-    phone: '',
-    address: '',
-    _tin: '',
+    _id: 0,
+    price: 0,
+    quantity: 0,
+    category: '',
+    image: require('../../assets/images/charger-1.jpg').toString()
   });
-  const [customers, setCustomers] = useState([]);
-
-  useEffect(() => {
-    const getCustomersFunc = async () => {
-        try {
-          const Customers = await getCustomers();
-          console.log('realm Customers', Customers);
-          setCustomers(Customers);
-        } catch (error) {
-          console.log('Error Retriving Items:', error); 
-        }
-      };
-    
-      getCustomersFunc();
-  }, [])
-
-  console.log('Customer Data:', customerData);
 
   const handleAddProduct = () => {
-    const _tin = '1124523656897';
-
-    addCustomer(customerData);
-
-    console.log('Customer Added');
+    console.log("NewProductData:", typeof parseInt(newProductData._id))
+    const newItem = {
+      name: newProductData.name,
+      _id: parseInt(newProductData._id),
+      price: parseInt(newProductData.price)
+    }
+    // addItem(newProductData)
+    // console.log('Customer Added');
   };
+
+
   return (
     <View style={{flex: 1}}>
-      <Text>{customers.map(customer => customer.name)}</Text>
       <View style={{paddingHorizontal: 0}}>
         <View style={{paddingHorizontal: scale(20)}}>
           <TopNavigationBar
@@ -91,8 +75,8 @@ const AddProduct = ({navigation}) => {
                   flex: 1,
                 }}
                 placeholder="Product Name"
-                value={customerData.name}
-                onChangeText={name => setLocalProduct({...customerData, name})}
+                value={newProductData.name}
+                onChangeText={name => setNewProductData({...newProductData, name})}
               />
             </View>
           </View>
@@ -105,7 +89,7 @@ const AddProduct = ({navigation}) => {
                 marginBottom: 6,
                 color: '#cacaca',
               }}>
-              Email
+              Id
             </Text>
             <View
               style={{
@@ -124,10 +108,10 @@ const AddProduct = ({navigation}) => {
                   fontSize: 18,
                   flex: 1,
                 }}
-                placeholder="Email"
-                value={customerData.email}
-                onChangeText={email =>
-                  setLocalProduct({...customerData, email})
+                placeholder="Id"
+                value={newProductData._id.toString()}
+                onChangeText={_id =>
+                  setNewProductData({...newProductData, _id: parseInt(_id) })
                 }
               />
             </View>
@@ -141,7 +125,7 @@ const AddProduct = ({navigation}) => {
                 marginBottom: 6,
                 color: 'gray',
               }}>
-              Phone Number
+              quantity
             </Text>
             <View
               style={{
@@ -163,9 +147,9 @@ const AddProduct = ({navigation}) => {
                 style={{fontSize: 18, alignItems: 'center'}}
                 //placeholderTextColor="black"
                 placeholder="911223344"
-                value={customerData.phone}
-                onChangeText={phone =>
-                  setLocalProduct({...customerData, phone})
+                value={newProductData.quantity.toString()}
+                onChangeText={quantity =>
+                  setNewProductData({...newProductData, quantity})
                 }
               />
             </View>
@@ -179,7 +163,7 @@ const AddProduct = ({navigation}) => {
                 marginBottom: 6,
                 color: '#cacaca',
               }}>
-              Address
+              Category
             </Text>
             <View
               style={{
@@ -202,10 +186,10 @@ const AddProduct = ({navigation}) => {
                   fontSize: 18,
                   flex: 1,
                 }}
-                placeholder="City, Street Address, Woreda, H.No"
-                value={customerData.address}
-                onChangeText={address =>
-                  setLocalProduct({...customerData, address})
+                placeholder="category"
+                value={newProductData.category}
+                onChangeText={category =>
+                  setNewProductData({...newProductData, category})
                 }
               />
             </View>
@@ -219,7 +203,7 @@ const AddProduct = ({navigation}) => {
                 marginBottom: 6,
                 color: '#cacaca',
               }}>
-              TIN
+              Price
             </Text>
             <View
               style={{
@@ -242,11 +226,14 @@ const AddProduct = ({navigation}) => {
                   fontSize: 18,
                   flex: 1,
                 }}
-                placeholder="TIN"
-                value={customerData._tin}
-                onChangeText={_tin => setLocalProduct({...customerData, _tin})}
+                placeholder="Price"
+                value={newProductData.price}
+                onChangeText={price => setNewProductData({...newProductData, price})}
               />
             </View>
+          </View>
+          <View style={{backgroundColor: color.primary, paddingVertical: 15, borderRadius: 5, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: '#fff', fontSize: 16}}>Add Image</Text>
           </View>
           <Pressable
             onPress={handleAddProduct}
@@ -259,7 +246,7 @@ const AddProduct = ({navigation}) => {
               marginVertical: verticalScale(15),
             }}>
             <Text style={{color: 'white', fontSize: 22, fontWeight: 600}}>
-              Save
+              Add Product
             </Text>
           </Pressable>
         </View>
@@ -269,4 +256,3 @@ const AddProduct = ({navigation}) => {
 };
 
 export default AddProduct;
-
