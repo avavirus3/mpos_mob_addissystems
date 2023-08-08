@@ -20,7 +20,7 @@ import SuccessFailModal from '../../../components/modal/SuccessFailModal';
 import CustomerComponent from './CustomerComponent';
 import SubTotal from './SubTotal';
 import ItemsList from './ItemsList';
-import {G} from 'react-native-svg';
+import Toast from 'react-native-toast-message'
 
 /* Main Function */
 const CreateSale = ({route}) => {
@@ -107,6 +107,14 @@ const CreateSale = ({route}) => {
     if (Prev_Item_Qty - (Sale_Item.qty + 1) >= 0) {
       Sale_Item.qty += 1;
       setPassedData([...passedData]);
+    } else if (Prev_Item_Qty - (Sale_Item.qty + 1) < 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'No Enough Items!',
+        text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
+          // backgroundColor: 'red', // Customize the toast background color
+          // leftIconColor: 'white', // Customize the left side color
+      });
     }
   };
 
@@ -123,10 +131,17 @@ const CreateSale = ({route}) => {
     const Sale_Item = passedData.filter(item => item.id == id)[0];
 
     if (Prev_Item_Qty - (Sale_Item.qty + inputNum) >= 0) {
-      console.log('Can be Deducted!');
+      // console.log('Can be Deducted!');
       Sale_Item.qty = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
-      console.log("Item Can't Set!");
+      // console.log("Item Can't Set!");
+      Toast.show({
+        type: 'error',
+        text1: 'There Is No This Amount of Items',
+        text2: `There is Only ${Prev_Item_Qty} Items Left In The Stock`,
+          // backgroundColor: 'red', // Customize the toast background color
+          // leftIconColor: 'white', // Customize the left side color
+      });
       Sale_Item.qty = Prev_Item_Qty;
     } else {
       Sale_Item.qty = '';
@@ -141,7 +156,7 @@ const CreateSale = ({route}) => {
     const Sale_Item = passedData.filter(item => item.id == id)[0];
 
     if(Sale_Item.qty === '') {
-      Sale_Item.qty = 0
+      Sale_Item.qty = 1
       setPassedData([...passedData])
     }
   };

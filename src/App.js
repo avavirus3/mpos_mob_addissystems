@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import MainTabNavigation from './navigation/MainTabNavigation';
 import {AuthProvider} from './hooks/useContext/AuthContext';
 import InitialRender from './auth/InitialRender';
+import Toast from 'react-native-toast-message'
 
 const App = () => {
 
@@ -11,6 +12,7 @@ const App = () => {
     <AuthProvider>
       <NavigationContainer>
         <InitialRender />
+        <Toast />
       </NavigationContainer>
     </AuthProvider>
   );
