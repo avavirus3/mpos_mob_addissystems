@@ -213,37 +213,6 @@ const Home = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
 
-        <View
-          style={{
-            paddingHorizontal: 10,
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              gap: 15,
-            }}>
-            <View style={{flex: 1}}>
-              <Button
-                label={'Add Items'}
-                theme="secondary"
-                onPress={handleAddItem}
-              />
-            </View>
-            <View style={{flex: 1}}>
-              <Button
-                label={'Update Item'}
-                theme="secondary"
-                onPress={handleUpdateItem}
-              />
-            </View>
-          </View>
-          <Button
-            label={'Delete Item'}
-            theme={'primary'}
-            onPress={handleDeleteItem}
-          />
-        </View>
-
         {/* Main Body Container */}
         <View style={styles.bodyContainer}>
           {/* Heading Component */}
