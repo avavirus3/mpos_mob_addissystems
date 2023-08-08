@@ -7,14 +7,16 @@ import CountryFlag from "react-native-country-flag";
 import { phoneData } from '../../../data/phonedata'
 import { Iconify } from 'react-native-iconify'
 import { flag } from '../../assets/flagIcons/FlagIcon'
-export const Flag = {
-  Ethiopian: () => {
-    return (<View><Iconify icon='mdi:heart' size={20} /></View>)
+export const CodeList = {
+  Ethiopian: ({name,Flag,dial_code,code,setResult,setModalVisible} ) => {
+    return (<TouchableOpacity onPress={() => {setResult({name,code,dial_code,Flag}); setModalVisible(false)}} key={name} style={{ width: "100%",flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 8 }}>
+    <View style={{ flexDirection: 'row' }}><Flag /><Text style={{ fontSize: 18 }}>{name}</Text></View>
+    <Text>{dial_code}</Text></TouchableOpacity>)
   }
 }
 
 const PhoneCode = ({ modalVisible, setModalVisible, setResult }) => {
-  const [searchfield, setSearchfield] = useState("eth");
+  const [searchfield, setSearchfield] = useState("");
   const filteredphoneCodes = phoneData.filter((country) => {
     return country.name.toLowerCase().includes(searchfield.toLowerCase());
   });
@@ -39,13 +41,22 @@ const PhoneCode = ({ modalVisible, setModalVisible, setResult }) => {
               alignItems: 'center',
               justifyContent: 'space-around',
               width: '100%',
+              paddingHorizontal:20
             }}>
-            <ScrollView><View style={{ marginBottom: 100, alignItems: 'center', width: "100%", paddingHorizontal: 30 }}>
+            {/* <ScrollView><View style={{ marginBottom: 100, alignItems: 'center', width: "100%", paddingHorizontal: 30 }}>
             <View style={{ width: "100%"}}>{filteredphoneCodes.map(({ code, name, dial_code, Flag }) => <TouchableOpacity onPress={() => {setResult({name,code,dial_code,Flag}); setModalVisible(false)}} key={name} style={{ width: "100%",flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 8 }}>
               <View style={{ flexDirection: 'row' }}><Flag /><Text style={{ fontSize: 18 }}>{name}</Text></View>
               <Text>{dial_code}</Text></TouchableOpacity>)}</View></View>
-            </ScrollView>
-            {/* <FlatList  /> */}
+            </ScrollView> */}
+            <FlatList
+            showsVerticalScrollIndicator={false}
+            data={filteredphoneCodes}
+            numColumns={1}
+            renderItem={({item}) => <TouchableOpacity onPress={() => {setResult(item); setModalVisible(false)}} style={{ width: "100%",flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 8 }}>
+              <View style={{ flexDirection: 'row' }}><item.Flag /><Text style={{ fontSize: 18 }}>{item.name}</Text></View>
+              <Text>{item.dial_code}</Text></TouchableOpacity>}
+            keyExtractor={(item) => item.name}
+          />
           </View>
         </View>
       </View>

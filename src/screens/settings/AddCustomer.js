@@ -7,6 +7,7 @@ import { theme } from '../../styles/stylesheet'
 import { Iconify } from 'react-native-iconify'
 import TopNavigationBar from '../../components/top_navigation/TopNavigationBar'
 import { DoneModals} from '../../components/modal/Modals'
+import realm from '../../../data/Realm'
 const AddCustomer = ({ navigation }) => {
   const [done,setDone]=useState(false)
   return (
@@ -128,7 +129,8 @@ const AddCustomer = ({ navigation }) => {
                 </View>
 
                 <TextInput
-                  style={{ fontSize: 18, alignItems: "center" }}
+                keyboardType='numeric'
+                  style={{ fontSize: 18, alignItems: "center",flex:1}}
                   //placeholderTextColor="black"
                   placeholder="911223344"
                 />
@@ -202,6 +204,7 @@ const AddCustomer = ({ navigation }) => {
                 color={"#cacaca"}
               />
               <TextInput
+              keyboardType='numeric'
                 style={{
                   fontSize: 18,
                   flex: 1
