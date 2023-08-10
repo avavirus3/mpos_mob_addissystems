@@ -1,8 +1,8 @@
 import Realm from 'realm';
-import {myProfileData} from './Schema'
+import {myProfileData,Customer,Image} from './Schema'
 
 const realm = new Realm({
-  schema: [myProfileData],
+  schema: [Image,myProfileData,Customer],
   // Other configuration options (encryption, migration, etc.)
 });
 

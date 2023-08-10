@@ -30,7 +30,7 @@ const PrinterSettingScreen = ({navigation}) => {
         <Pressable onPress={() => navigation.goBack()}>
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
-        <Text style={{ fontSize: scale(22), fontWeight: 600 }}>Paper Width</Text>
+        <Text style={{ fontSize: scale(22), fontWeight: 600 }}> Printer Setting</Text>
         <Pressable>
         </Pressable>
       </View>

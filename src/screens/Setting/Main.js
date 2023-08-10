@@ -5,6 +5,8 @@ import { theme } from '../../styles/stylesheet'
 //import { ScrollView } from "react-native";
 import { Image } from 'react-native'
 import { Iconify } from 'react-native-iconify'
+import useFetchRealm from '../../hooks/customhooks/useFetchRealm'
+import { useFocusEffect } from '@react-navigation/native'
 
 const Main = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(false)
@@ -12,6 +14,7 @@ const Main = ({navigation}) => {
   const toggleSwitch = () => setIsEnabled(previousState => !previousState)
   const toggleSwitch2S = () => setIsEnabled2S(previousState => !previousState);
   const [modalVisible, setModalVisible] = useState(false);
+  const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
 
   return (
     <View style={{flex: 1,backgroundColor:"white"}}>
@@ -91,7 +94,7 @@ const Main = ({navigation}) => {
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
-                source={{uri: 'https://randomuser.me/api/portraits/men/6.jpg'}}
+                 source={{ uri:pendingimage?"https://randomuser.me/api/portraits/women/93.jpg":imgdata?.uri }}
                 style={{
                   height: 64,
                   width: 64,
@@ -102,7 +105,7 @@ const Main = ({navigation}) => {
                 }}
               />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 600}}>
+                <Text style={{fontSize: scale(20), fontWeight: 600,color:theme.color.blue}}>
                   ABC PLC
                 </Text>
                 <Text
@@ -133,12 +136,14 @@ const Main = ({navigation}) => {
             <Text
               style={{
                 fontSize: scale(22),
-                color: theme.color.gray,
+                color: theme.color.blue,
                 fontWeight: 600,
               }}>
               SECURITY
             </Text>
           </View>
+          {/* 
+          //lock screen settings bar
           <Pressable
           onPress={()=>navigation.navigate("LockScreen")}
             style={{
@@ -165,7 +170,7 @@ const Main = ({navigation}) => {
             <View>
               <Iconify icon="ion:chevron-forward-outline" size={20} />
             </View>
-          </Pressable>
+          </Pressable> */}
           <Pressable
           onPress={()=>navigation.navigate("ChangePassword")}
             style={{
@@ -215,7 +220,7 @@ const Main = ({navigation}) => {
             </View>
             <View>
               <Switch
-                trackColor={{false: '#d8d8d8', true: theme.color.primary}}
+                trackColor={{false: '#d8d8d8', true: theme.color.green}}
                 thumbColor={isEnabled2S ? '#fff' : '#fff'}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitch2S}
@@ -243,7 +248,7 @@ const Main = ({navigation}) => {
             </View>
             {<View>
               <View style={{alignItems:'flex-end'}}><Iconify icon='ic:baseline-wifi' size={16} color={isEnabled?theme.color.primary:theme.color.green}/>
-              <View style={{flexDirection:'row',alignItems:'center'}}><Text>1 sec ago</Text><Iconify icon='eva:sync-fill' size={18} color={isEnabled?theme.color.primary:theme.color.green}  /></View></View>
+              <View style={{flexDirection:'row',alignItems:'center',gap:10}}><Text>1 sec ago</Text><Iconify icon='eva:sync-fill' size={18} color={isEnabled?theme.color.primary:theme.color.green}  /></View></View>
             </View>}
           </Pressable>
           <View
@@ -256,7 +261,7 @@ const Main = ({navigation}) => {
             <Text
               style={{
                 fontSize: scale(22),
-                color: theme.color.gray,
+                color: theme.color.blue,
                 fontWeight: 600,
               }}>
               PREFERENCE
@@ -320,7 +325,7 @@ const Main = ({navigation}) => {
             <Text
               style={{
                 fontSize: scale(22),
-                color: theme.color.gray,
+                color: theme.color.blue,
                 fontWeight: 600,
               }}>
               CONTENT
@@ -456,7 +461,7 @@ const Main = ({navigation}) => {
             </View>
           </Pressable>
           <Pressable
-          onPress={()=>navigation.navigate("PrinterSettingScreen")}
+          onPress={()=>navigation.navigate("PrinterSettingcreen")}
             style={{
               backgroundColor: '#fff',
               height: verticalScale(50),

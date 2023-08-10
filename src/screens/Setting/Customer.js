@@ -14,12 +14,15 @@ import { Iconify } from "react-native-iconify";
 import { theme,color } from "../../styles/stylesheet";
 import TopNavigationBar from "../../components/top_navigation/TopNavigationBar";
 import { ComfirmationModal, DoneModals } from "../../components/modal/Modals";
-const CostomerListCard=({name,number,onPressDelete})=>{
+import { getCustomers } from "../../database/services/customerServices";
+import realm from "../../../data/Realm";
+import useFetchRealm from "../../hooks/customhooks/useFetchRealm";
+const CostomerListCard=({name,number,onPressDelete,id})=>{
     return(
         <View style={{flexDirection:'row',width:"100%",justifyContent:'space-between',marginBottom:15,paddingVertical:verticalScale(16),borderRadius:10,paddingHorizontal:scale(30),backgroundColor:'#F9F7F7',alignItems:"center"}}>
             <View><Text style={{fontSize:20,fontWeight:500}}>{name}</Text>
             <Text style={{fontSize:18,fontWeight:500,color:theme.color.gray}}>{number}</Text></View>
-            <Pressable onPress={()=>onPressDelete(true)}><Iconify icon="fluent:delete-24-filled" size={30} color={theme.color.primary} /></Pressable>
+            <Pressable onPress={onPressDelete}><Iconify icon="fluent:delete-24-filled" size={30} color={theme.color.primary} /></Pressable>
           </View>
     )
 }
@@ -27,23 +30,30 @@ const CostomerListCard=({name,number,onPressDelete})=>{
 const Customer = ({ navigation }) => {
     const [onDelete,setDelete]=useState(false)
     const [comfirm,setComfirm] = useState(false)
+    const [first, setfirst] = useState()
+    const [onSuccess, setonSuccess] = useState(false)
 
-    const [customersData,setCustomerData]= useState([
-        {name:'abe kebede',number:123987654},
-        {name:'abeb kebede',number:123987654},
-        {name:'abeba kebede',number:123987654},
-        {name:'abebu kebede',number:123987654},
-        {name:'abeby kebede',number:123987654},
-        {name:'abebech kebede',number:123987654},
-         {name:'abebachew kebede',number:123987654},
-         {name:'abebawle kebede',number:123987654},
-         {name:'abebawlee kebede',number:123987654},
-         {name:'abebawn kebede',number:123987654},
-    ])
+    // const [customersData,setCustomerData]= useState([])
+   const {data:customersData} = useFetchRealm({uri:"Customer"})
+    //getCustomers=()=> setCustomerData(realm.objects('Customer'))
+   useEffect(()=>{getCustomers()},[])
+const deleteCustomers=()=> realm.write(() => {
+  console.log(`id:${first}`)
+  const {data:taskToDelete} =  useFetchRealm({uri:"Customer",id:first})
+  setComfirm(false);
+ if (taskToDelete) {
+  realm.delete(taskToDelete);
+//console.log(taskToDelete,comfirm)
+}
+setfirst('')
+setonSuccess(true)
+})
+//console.log(customersData.length,comfirm,first?first:null)
+   useEffect(()=>{if(comfirm)deleteCustomers();},[comfirm])
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
-    <ComfirmationModal message={"Are You sure?"} setComfirm={setComfirm} setModalVisible={setDelete} modalVisible={onDelete}/>
-    <DoneModals message={"deleted"} setModalVisible={setComfirm} modalVisible={comfirm}/>
+    <ComfirmationModal message={"Are You sure?"} setComfirm={setComfirm} setModalVisible={setDelete} modalVisible={onDelete} />
+    <DoneModals message={"deleted"} setModalVisible={setonSuccess} modalVisible={onSuccess}/>
       <View style={{ paddingHorizontal: scale(20) }}>
         <TopNavigationBar
         onPressBack={()=>navigation.goBack()}
@@ -57,7 +67,7 @@ const Customer = ({ navigation }) => {
       <View style={{backgroundColor:'#fff',flex:1}}>
       <ScrollView showsVerticalScrollIndicator={false} style={{}}>
         <View style={{width:"100%",alignItems:'center',paddingHorizontal:scale(25),marginBottom:50}}>
-          {customersData.map(({name,number}) => (<CostomerListCard name={name} number={number} key={name} onPressDelete={setDelete} />))}
+          {customersData?.map(({fullname,phone,phonecode,_id}) => <CostomerListCard key={_id} name={fullname} number={phonecode+phone}  onPressDelete={()=>{setDelete(true);setfirst(_id)}} id={_id} />)}
         </View>
       </ScrollView>
       </View>

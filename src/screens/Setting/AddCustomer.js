@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TextInput,Pressable } from 'react-native'
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 // import TabNavigation from '../../routes/TabNavigation'
 // import  from '../../components/top_navigation/TopNavigationBar'
 import { verticalScale, scale } from 'react-native-size-matters'
@@ -13,6 +13,10 @@ import { phoneData } from "../../../data/phonedata";
 import realm from '../../../data/Realm'
 const AddCustomer = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [fullname, setFullname] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAdress] = useState('');
+  const [tin, setTin] = useState('');
   const [phoneModal, setPhoneModal] = useState(false);
   const [phoneCode,setPhoneCode]=useState( {
     name: "Ethiopia",
@@ -20,6 +24,20 @@ const AddCustomer = ({ navigation }) => {
     code: "ET",
   Flag:()=><Iconify icon='twemoji:flag-ethiopia' size={30} />},)
   const [done,setDone]=useState(false)
+  
+  const CreateCustomer = ()=>(realm.write(() => {
+    try{if(fullname&&email&&phoneNumber&&tin)realm.create('Customer', {
+      _id:Math.random()*200,
+      fullname:fullname,
+      email:email,
+      phonecode:phoneCode.dial_code,
+      phone:phoneNumber,
+      address:address,
+      tin:tin,
+    });
+}catch(e){console.log(e)}
+console.log("save")
+}))
   return (
     <View style={{flex:1}}>
     <DoneModals message={"done"} modalVisible={done} setModalVisible={setDone}/>
@@ -64,11 +82,15 @@ const AddCustomer = ({ navigation }) => {
                 color={"#cacaca"}
               />
               <TextInput
+              value={fullname}
+              onChangeText={(text)=>setFullname(text)}
                 style={{
                   fontSize: 18,
-                  flex: 1
+                  flex: 1,
+                  color:'black'
                 }}
                 placeholder="Full Name"
+                placeholderTextColor={theme.color.gray}
               />
             </View>
           </View>
@@ -102,11 +124,15 @@ const AddCustomer = ({ navigation }) => {
                 color={"#cacaca"}
               />
               <TextInput
-                style={{
+              value={email}
+              onChangeText={(text)=>setEmail(text)}
+                 style={{
                   fontSize: 18,
-                  flex: 1
+                  flex: 1,
+                  color:'black'
                 }}
                 placeholder="Email"
+                placeholderTextColor={theme.color.gray}
               />
             </View>
           </View>
@@ -145,7 +171,7 @@ const AddCustomer = ({ navigation }) => {
                   onChangeText={(text) => setPhoneNumber(text)}
                   keyboardType="numeric"
                   style={{ fontSize: 18, alignItems: "center", flex: 1, color: 'black' }}
-                  placeholderTextColor={"black"}
+                  placeholderTextColor={theme.color.gray}
                   placeholder={"98765433"}
                 />
               </Pressable>
@@ -180,11 +206,15 @@ const AddCustomer = ({ navigation }) => {
                 color={"#cacaca"}
               />
               <TextInput
-                style={{
+              value={address}
+              onChangeText={(text)=>setAdress(text)}
+               style={{
                   fontSize: 18,
-                  flex: 1
+                  flex: 1,
+                  color:'black'
                 }}
                 placeholder="City, Street Address, Woreda, H.No"
+                placeholderTextColor={theme.color.gray}
               />
             </View>
           </View>
@@ -218,17 +248,21 @@ const AddCustomer = ({ navigation }) => {
                 color={"#cacaca"}
               />
               <TextInput
+              value={tin}
+              onChangeText={(text)=>setTin(text)}
               keyboardType='numeric'
-                style={{
+              style={{
                   fontSize: 18,
-                  flex: 1
+                  flex: 1,
+                  color:'black'
                 }}
-                placeholder="TIN"
+                placeholder="TIN No"
+                placeholderTextColor={theme.color.gray}
               />
             </View>
           </View>
           <Pressable
-          onPress={()=>setDone(true)}
+          onPress={CreateCustomer}
               style={{
                 borderRadius: 10,
                 backgroundColor: theme.color.primary,

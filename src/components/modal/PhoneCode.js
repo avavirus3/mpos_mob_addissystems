@@ -40,7 +40,7 @@ const PhoneCode = ({ modalVisible, setModalVisible, setResult }) => {
               alignItems: 'center',
               justifyContent: 'space-around',
               width: '100%',
-              paddingHorizontal:20
+              paddingHorizontal:20,marginBottom: 100,
             }}>
             {/* <ScrollView><View style={{ marginBottom: 100, alignItems: 'center', width: "100%", paddingHorizontal: 30 }}>
             <View style={{ width: "100%"}}>{filteredphoneCodes.map(({ code, name, dial_code, Flag }) => <TouchableOpacity onPress={() => {setResult({name,code,dial_code,Flag}); setModalVisible(false)}} key={name} style={{ width: "100%",flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 8 }}>

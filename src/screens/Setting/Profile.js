@@ -5,16 +5,32 @@ import { theme } from '../../styles/stylesheet';
 import { Iconify } from 'react-native-iconify';
 //import FloatActionButton from '../../components/FloatActionButton';
 import realm from "../../../data/Realm";
+import useFetchRealm from '../../hooks/customhooks/useFetchRealm';
+import { useFocusEffect } from '@react-navigation/native';
+
 const Profile = ({ navigation }) => {
+  const {data,pending:pendingdata} = useFetchRealm({uri:"MyProfileData",id:457})
+  const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
+  console.log(data)
   const[profdata,setProfdata]=useState('');
   const getData= ()=>{
-    const profile = realm.objects('MyProfileData').filtered('_id == 198981');
+    const profile = realm.objects('MyProfileData').filtered('_id == 457');
+    // const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
     setProfdata(profile[0])
    // console.log(profdata.phonecode)
   }
   useEffect(()=>{
     getData();
   },[])
+  useFocusEffect(
+    React.useCallback(() => {
+     getData();
+     //  console.log("hi");
+
+      return () => getData();
+    }, [])
+  );
+ // u
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <View
@@ -53,7 +69,7 @@ const Profile = ({ navigation }) => {
           //paddingVertical:-10
         }}>
         <Image
-          source={{ uri: 'https://randomuser.me/api/portraits/men/6.jpg' }}
+          source={{ uri:pendingimage?"https://randomuser.me/api/portraits/women/93.jpg":imgdata?.uri }}
           style={{
             height: 131,
             width: 131,

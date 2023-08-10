@@ -12,16 +12,17 @@ const schemas = [
     primaryKey: '_id',
   },
   {
-    name: 'Customer',
+    name:"Customer",
     properties: {
-      name: 'string',
-      _tin: 'string',
-      email: {type: 'string', optional: true},
-      phone: {type: 'string', optional: true},
-      address: {type: 'string', optional: true},
+      _id:'int',
+      fullname:'string',
+      email:'string?',
+      phonecode:'string',
+      phone:'string',
+      address:'string?',
+      tin:'string?',
     },
-    primaryKey: '_tin',
-  },
+    primaryKey:'_id',}
 ];
 
 

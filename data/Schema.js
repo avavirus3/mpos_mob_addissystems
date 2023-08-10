@@ -18,11 +18,20 @@ export const Customer={
     _id:'int',
     fullname:'string',
     email:'string?',
-    phone:'string?',
-    license:'string?',
-    organization:'string?',
+    phonecode:'string',
+    phone:'string',
+    address:'string?',
     tin:'string?',
-    phonecode:'string?',
+  },
+  primaryKey:'_id',
+}
+export const Image={
+  name:"Image",
+  properties: {
+    _id:'int',
+   name:'string',
+    type:'string',
+    uri:'string',
   },
   primaryKey:'_id',
 }

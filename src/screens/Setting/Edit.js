@@ -12,15 +12,16 @@ import { verticalScale, scale } from "react-native-size-matters";
 import { Iconify } from "react-native-iconify";
 import { theme } from "../../styles/stylesheet";
 import PhoneCode from "../../components/modal/PhoneCode";
-import Realm from "realm";
 import realm from "../../../data/Realm";
 import { phoneData } from "../../../data/phonedata";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import useFetchRealm from "../../hooks/customhooks/useFetchRealm";
 
 
 
 
 const Edit = ({ navigation }) => {
+  const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
   const [phoneModal, setPhoneModal] = useState(false);
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
@@ -30,11 +31,28 @@ const Edit = ({ navigation }) => {
   const [tin, setTin] = useState('');
   const[profdata,setProfdata]=useState('');
   const [phoneCode, setPhoneCode] = useState()
+  const[imgUri, setImgUri] = useState("https://randomuser.me/api/portraits/men/6.jpg")
   const getData= ()=>{
-    const profile = realm.objects('MyProfileData').filtered('_id == 198981');
+
+    const profile = realm.objects('MyProfileData').filtered('_id == 457');
+    const profileimg = realm.objects('Image').filtered('_id == 300')[0];
+    profileimg?setImgUri(profileimg.uri):null;
     setProfdata(profile[0])
-   // console.log(profdata.phonecode)
+   console.log("profdata",profileimg)
   }
+//   (realm.write(() => {
+//     try{realm.create('MyProfileData', {
+//       _id:457,
+//       fullname:"fullname",
+//       email:"email",
+//       phonecode:phoneCode?phoneCode.dial_code:'+251',
+//       phone:"25485664",
+//       tin:"558228",
+//     });
+// }catch(e){console.log(e)}
+// console.log("save")
+// }))
+  const setData=()=>(realm.write )
   //console.log(phoneCode?.dial_code,profdata)
   useEffect(()=>{
     getData();
@@ -45,7 +63,7 @@ const Edit = ({ navigation }) => {
   },[profdata])
 
   const onSaveCreateProfile = ()=> realm.write(() => {
-    const taskToUpdate = realm.objects('MyProfileData').filtered('_id == 198981')[0];
+    const taskToUpdate = realm.objects('MyProfileData').filtered('_id == 457')[0];
     if (taskToUpdate) {
       // console.log(phoneCode.dial_code!=profdata.phonecode)
       if(phoneCode.dial_code!=taskToUpdate.phonecode){taskToUpdate.phonecode = phoneCode.dial_code;}
@@ -66,8 +84,37 @@ const Edit = ({ navigation }) => {
       includeBase64: false,
     },}
   const goToGallery =async()=>{
+    realm.write(() => {
+      const taskToDelete = realm.objects('Image').filtered('_id == 300')[0];
+      if (taskToDelete) {
+        realm.delete(taskToDelete);
+      }
+    })
     const open = await launchImageLibrary(options)
-    console.log(open)
+    const profile = realm.objects('Image')
+      console.log(profile)
+      // realm.write(() => {
+      //   realm.create('Image', {
+      //     _id: 300,
+      //     name: ,
+      //     type: 'photo',
+      //     uri:'fldldd'
+      //   });
+      // });
+    if(open){
+      setImgUri(open.assets[0].uri)
+      try{realm.write(() => {
+            realm.create("Image",{
+              _id:300,
+              name:open.assets[0].fileName,
+              type:open.assets[0].type,
+              uri:open.assets[0].uri,
+            })
+          })
+             setImgUri(open.assets[0].uri)
+      }catch(e){console.log(e)}
+    }
+    console.log(open.assets[0])
   }
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 0 }}>
@@ -92,7 +139,7 @@ const Edit = ({ navigation }) => {
       <ScrollView>
         <View style={{ alignItems: "center", marginHorizontal: scale(25) }}>
           <View><Image
-            source={{ uri: "https://randomuser.me/api/portraits/men/6.jpg" }}
+            source={{ uri: imgUri }}
             style={{
               height: 131,
               width: 131,

@@ -27,7 +27,6 @@ const RadioButton = ({ name, state, setState,  }) => {
     {ethiopia}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         {name == "Amharic" ? (
-         
         <Iconify icon={"twemoji:flag-ethiopia"} size={20} />
         ) : (
           <Iconify icon={"twemoji:flag-united-states"} size={20} />
@@ -87,17 +86,7 @@ const Language = ({ navigation }) => {
         marginBottom:verticalScale(10)}}>
         <Iconify icon="ion:search" size={18} color={theme.color.gray}/>
         <TextInput placeholder="Search for language" style={{fontSize:18,fontWeight:"500"}}/></View>
-        <ScrollView>
-          {flagLanguageName.map(({ flag, language }) => (
-            <RadioButton
-              name={language}
-              key={language}
-              flag={flag}
-              state={activeRadio}
-              setState={setActiveRadio}
-            />
-          ))}
-        </ScrollView>
+        
       </View>
     </View>
   );

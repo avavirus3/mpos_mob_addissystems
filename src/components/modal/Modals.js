@@ -55,7 +55,7 @@ export const ComfirmationModal=({modalVisible,setModalVisible,message,setComfirm
               }}>
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
-                onPress={() => {setModalVisible(!modalVisible);setComfirm(true)}}>
+                onPress={() => {setModalVisible(!modalVisible);setComfirm(modalVisible)}}>
                 <Text style={styles.textStyle}>Yes</Text>
               </Pressable>
               <Pressable
