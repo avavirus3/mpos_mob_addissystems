@@ -4,12 +4,13 @@ import React, {useEffect, useState} from 'react';
 // import  from '../../components/top_navigation/TopNavigationBar'
 import {verticalScale, scale} from 'react-native-size-matters';
 import {color} from '../../styles/Styles';
-import {Iconify} from 'react-native-iconify';
+// import {Iconify} from 'react-native-iconify';
 import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
 import {
   addCustomer,
   getCustomers,
 } from '../../database/services/customerServices';
+import useGetRealmData from '../../hooks/customHooks/useGetRealmData';
 
 const AddCustomer = ({navigation}) => {
   const [done, setDone] = useState(false);
@@ -84,7 +85,7 @@ const AddCustomer = ({navigation}) => {
                 paddingLeft: 20,
                 alignItems: 'center',
               }}>
-              <Iconify icon="mdi:person-outline" size={18} color={'#cacaca'} />
+              {/* <Iconify icon="mdi:person-outline" size={18} color={'#cacaca'} /> */}
               <TextInput
                 style={{
                   fontSize: 18,
@@ -118,7 +119,7 @@ const AddCustomer = ({navigation}) => {
                 paddingLeft: 20,
                 alignItems: 'center',
               }}>
-              <Iconify icon="mdi:email-outline" size={18} color={'#cacaca'} />
+              {/* <Iconify icon="mdi:email-outline" size={18} color={'#cacaca'} /> */}
               <TextInput
                 style={{
                   fontSize: 18,
@@ -154,9 +155,9 @@ const AddCustomer = ({navigation}) => {
                 paddingLeft: 20,
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Iconify icon="twemoji:flag-ethiopia" size={30} />
+                {/* <Iconify icon="twemoji:flag-ethiopia" size={30} /> */}
                 <Text style={{fontSize: 18, paddingLeft: 9}}>+251</Text>
-                <Iconify icon="mdi:menu-down" size={18} />
+                {/* <Iconify icon="mdi:menu-down" size={18} /> */}
               </View>
 
               <TextInput
@@ -192,11 +193,11 @@ const AddCustomer = ({navigation}) => {
                 paddingLeft: 20,
                 alignItems: 'center',
               }}>
-              <Iconify
+              {/* <Iconify
                 icon="mdi:address-marker-outline"
                 size={18}
                 color={'#cacaca'}
-              />
+              /> */}
               <TextInput
                 style={{
                   fontSize: 18,
@@ -232,11 +233,11 @@ const AddCustomer = ({navigation}) => {
                 paddingLeft: 20,
                 alignItems: 'center',
               }}>
-              <Iconify
+              {/* <Iconify
                 icon="pepicons-pencil:bulletin-notice"
                 size={18}
                 color={'#cacaca'}
-              />
+              /> */}
               <TextInput
                 style={{
                   fontSize: 18,

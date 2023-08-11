@@ -22,6 +22,12 @@ const schemas = [
     },
     primaryKey: '_tin',
   },
+  {
+    name: 'Total_Sale',
+    properties: {
+      amount: 'float',
+    },
+  },
 ];
 
 

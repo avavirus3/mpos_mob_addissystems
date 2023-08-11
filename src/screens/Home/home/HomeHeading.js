@@ -8,8 +8,15 @@ import {
 import React from 'react';
 import {color, textStyles} from '../../../styles/Styles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import useGetTotalSale from '../../../hooks/customHooks/useGetTotalSale';
+import {updateTotalSale} from '../../../database/services/totalSaleService';
+import Button from '../../../components/button/Button';
+import numberFormater from '../../../utilities/numberFormater/numberFormater';
 
 const HomeHeading = ({navigation, user, sale}) => {
+  const TOTAL_SALE_AMOUNT = useGetTotalSale();
+  const FORMATED_TOTAL_SALE =numberFormater(TOTAL_SALE_AMOUNT)
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={{marginTop: 10}}>
@@ -45,7 +52,7 @@ const HomeHeading = ({navigation, user, sale}) => {
             alignItems: 'center',
           }}>
           <Text style={textStyles.text_normal}>Total Sale Today</Text>
-          <Text style={textStyles.heading_blue}>{sale} ETB</Text>
+          <Text style={textStyles.heading_blue}>{FORMATED_TOTAL_SALE} ETB</Text>
         </View>
       </View>
     </TouchableWithoutFeedback>

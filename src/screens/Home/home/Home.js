@@ -18,104 +18,42 @@ import {
   updateItem,
   deleteItem,
 } from '../../../database/services/itemServices';
-import Button from '../../../components/button/Button';
+import useGetItems from '../../../hooks/customHooks/useGetItems';
 
 const Home = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
-  const [realmItemList, setRealmItemList] = useState([]);
+  const realmItemList = useGetItems();
   const [search, setSearch] = useState('');
   const [CurrentProduct, setCurrentProduct] = useState('All');
   const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
 
   useEffect(() => {
-    const getDatafromRealm = async () => {
-      try {
-        const items = await getItems();
-        console.log('realm items', items);
-        setRealmItemList(items);
-        const newZeroItems = items.slice().map(item => ({
+    const newZeroItems = PRODUCT_DATA.slice()
+    .map(
+      item =>
+        true && {
           name: item.name,
           _id: item._id,
           price: item.price,
           quantity: 0,
           image: item.image,
-          category: item.category, 
-        }));
-        setInitialZeroQtyItems(newZeroItems);
-      } catch (error) {
-        console.log('Error Retriving Items:', error);
-      }
-    };
+          category: item.category,
+        },
+    );
 
-    getDatafromRealm();
-  }, [getItems]);
+    setInitialZeroQtyItems(newZeroItems);
 
-  const handleAddItem = async () => {
-    const itemId = 4; 
+    // getDatafromRealm();
+  }, [PRODUCT_DATA]);
 
-    const newItem = {
-      name: 'iPhone 14',
-      _id: itemId,
-      price: 120000,
-      quantity: 5,
-      image: require('../../../assets/images/phone-3.jpg').toString(),
-      category: 'Phone',
-    }; 
+  console.log('Realm List List Data:', realmItemList); 
+  // console.log('PRODUCT ITEM:', PRODUCT_DATA); 
+  // console.log('initial Zero Item:', initialZeroQtyItems);
 
-    try { 
-      const itemsDb = await getItems();
-      const isItemAdded = itemsDb.find(item => item._id == itemId); 
-      if (!isItemAdded) { 
-        await addItem(newItem);
-        console.log(`Item of ID: ${itemId} added Successfully!`);
-        console.log('Items in Db:', itemsDb);
-      } else {
-        console.log('The Item is Already Added!');
-      }
-    } catch (err) {
-      console.log('Unable to add the Item!', err);
-    }
-  };
-
-  const handleUpdateItem = async () => {
-    const updatingItemId = 1;
-    const updatingData = {
-      // name: 'Hp Pavilion',
-      // price: 42800,
-      quantity: 7,
-    };
-    try {
-      const items = await getItems();
-      const itemsToUpdate = items.find(item => item._id == updatingItemId);
-      if (itemsToUpdate) {
-        await updateItem(updatingItemId, updatingData);
-        console.log('Item Updated!');
-        console.log('Items in Db:', items);
-      } else {
-        console.log('Unable to get the Item! check The item in the Database!');
-      }
-    } catch (error) {
-      console.log('Error retrieving and Updating the item:', error);
-    }
-    // console.log('Item Updated!');
-  };
-
-  const handleDeleteItem = async () => {
-    const itemId = 2;
-    try {
-      const items = await getItems();
-      const itemToDelete = items.find(item => item._id === itemId);
-      if (itemToDelete) {
-        await deleteItem(itemId);
-        console.log('Item Deleted!');
-        console.log('Items Left in Db:', items);
-      } else {
-        console.log('The item is Already Deleted!');
-      }
-    } catch (error) {
-      console.log('Error retrieving items:', error);
-    }
-  };
+   /* This is to activate the "Make Sale" Button to go to the next step */
+   const selectedProducts = initialZeroQtyItems.filter(
+    item => item.quantity > 0,
+  );
 
   const handleQtyIncrement = id => {
     const Prev_Item_Qty = realmItemList.filter(
@@ -123,8 +61,12 @@ const Home = ({navigation}) => {
     )[0].quantity;
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
 
+    // console.log('Sale Item', Sale_Item);
+
     if (Prev_Item_Qty - (Sale_Item.quantity + 1) >= 0) {
       Sale_Item.quantity += 1;
+      console.log('Sale Item', Sale_Item.quantity);
+      // console.log("initial Zero Item:", initialZeroQtyItems)
       setInitialZeroQtyItems([...initialZeroQtyItems]);
     } else if (Prev_Item_Qty - (Sale_Item.quantity + 1) < 0) {
       Toast.show({
@@ -178,10 +120,8 @@ const Home = ({navigation}) => {
     }
   };
 
-  /* This is to activate the "Make Sale" Button to go to the next step */
-  const selectedProducts = initialZeroQtyItems.filter(
-    item => item.quantity > 0,
-  );
+  
+  console.log("selectedProducts:", selectedProducts)
 
   const handleMakeSale = () => {
     if (selectedProducts.length > 0) {

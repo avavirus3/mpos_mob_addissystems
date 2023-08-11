@@ -10,6 +10,8 @@ export const getItems = async () => {
 
 export const addItem = async item => {
   const realm = await initializeRealm();
+  
+  console.log("Hello I am Running! AddItem")
 
   realm.write(() => {
     realm.create('Items', item);
