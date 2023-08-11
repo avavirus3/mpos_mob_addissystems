@@ -38,7 +38,7 @@ const Edit = ({ navigation }) => {
     const profileimg = realm.objects('Image').filtered('_id == 300')[0];
     profileimg?setImgUri(profileimg.uri):null;
     setProfdata(profile[0])
-   console.log("profdata",profileimg)
+   //console.log("profdata",profileimg)
   }
 //   (realm.write(() => {
 //     try{realm.create('MyProfileData', {
@@ -84,15 +84,15 @@ const Edit = ({ navigation }) => {
       includeBase64: false,
     },}
   const goToGallery =async()=>{
-    realm.write(() => {
-      const taskToDelete = realm.objects('Image').filtered('_id == 300')[0];
-      if (taskToDelete) {
-        realm.delete(taskToDelete);
-      }
-    })
+    // realm.write(() => {
+    //   const taskToDelete = realm.objects('Image').filtered('_id == 300')[0];
+    //   if (taskToDelete) {
+    //     realm.delete(taskToDelete);
+    //   }
+    // })
     const open = await launchImageLibrary(options)
     const profile = realm.objects('Image')
-      console.log(profile)
+      //console.log(profile)
       // realm.write(() => {
       //   realm.create('Image', {
       //     _id: 300,
@@ -104,7 +104,14 @@ const Edit = ({ navigation }) => {
     if(open){
       setImgUri(open.assets[0].uri)
       try{realm.write(() => {
-            realm.create("Image",{
+        const imgHolder = realm.objects('Image').filtered('_id == 300')[0];
+        if(imgHolder) {
+          imgHolder.name= open.assets[0].fileName
+          imgHolder.uri= open.assets[0].uri
+          imgHolder.type= open.assets[0].type
+
+        }
+        if(!imgHolder) realm.create("Image",{
               _id:300,
               name:open.assets[0].fileName,
               type:open.assets[0].type,
@@ -114,7 +121,7 @@ const Edit = ({ navigation }) => {
              setImgUri(open.assets[0].uri)
       }catch(e){console.log(e)}
     }
-    console.log(open.assets[0])
+    //console.log(open.assets[0])
   }
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 0 }}>

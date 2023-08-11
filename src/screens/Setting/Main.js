@@ -15,6 +15,7 @@ const Main = ({navigation}) => {
   const toggleSwitch2S = () => setIsEnabled2S(previousState => !previousState);
   const [modalVisible, setModalVisible] = useState(false);
   const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
+  const {data:profiledata,pending:pendingprofile} = useFetchRealm({uri:"MyProfileData",id:457})
 
   return (
     <View style={{flex: 1,backgroundColor:"white"}}>
@@ -106,7 +107,7 @@ const Main = ({navigation}) => {
               />
               <View style={{paddingHorizontal: scale(10)}}>
                 <Text style={{fontSize: scale(20), fontWeight: 600,color:theme.color.blue}}>
-                  ABC PLC
+                {profiledata?.organization}
                 </Text>
                 <Text
                   style={{
@@ -114,7 +115,7 @@ const Main = ({navigation}) => {
                     color: theme.color.gray,
                     fontWeight: 500,
                   }}>
-                  0987654321
+                  {profiledata?.phonecode + " " + profiledata?.phone}
                 </Text>
               </View>
             </View>

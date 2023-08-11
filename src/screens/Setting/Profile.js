@@ -11,7 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 const Profile = ({ navigation }) => {
   const {data,pending:pendingdata} = useFetchRealm({uri:"MyProfileData",id:457})
   const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
-  console.log(data)
+ // console.log(data)
   const[profdata,setProfdata]=useState('');
   const getData= ()=>{
     const profile = realm.objects('MyProfileData').filtered('_id == 457');
