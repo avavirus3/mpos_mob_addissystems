@@ -1,13 +1,16 @@
-import { StyleSheet, Text, View, Pressable, ScrollView,TextInput } from "react-native";
+import { StyleSheet, Text, View, Pressable, FlatList,TextInput } from "react-native";
 import React, { useState } from "react";
 import { verticalScale, scale } from "react-native-size-matters";
 import { Iconify } from "react-native-iconify";
 import { theme } from "../../styles/stylesheet";
 import {flag } from "../../assets/flagIcons/FlagIcon";
-const RadioButton = ({ name, state, setState,  }) => {
+import { getLocales } from "react-native-localize";
+import { phoneData } from "../../../data/phonedata";
+
+
+const RadioButton = ({ name, state, setState, Flag }) => {
   // console.log(flag)
-  let x="ethiopia"
-  const ethiopia=()=> <Iconify icon={"twemoji:flag-ethiopia"} size={20} />
+  const flagIcon = phoneData.find((country)=> country.code==Flag)
   return (
     <Pressable
       onPress={() => setState(name)}
@@ -24,13 +27,8 @@ const RadioButton = ({ name, state, setState,  }) => {
         marginBottom:verticalScale(10)
       }}
     >
-    {ethiopia}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        {name == "Amharic" ? (
-        <Iconify icon={"twemoji:flag-ethiopia"} size={20} />
-        ) : (
-          <Iconify icon={"twemoji:flag-united-states"} size={20} />
-        )}
+        {<flagIcon.Flag />}
         <Text style={{ fontSize: 20, paddingLeft: 10 }}>{name}</Text>
       </View>
       {state == name ? (
@@ -48,11 +46,12 @@ const RadioButton = ({ name, state, setState,  }) => {
   );
 };
 const Language = ({ navigation }) => {
+  //console.log(getLocales());
   const [activeRadio, setActiveRadio] = useState("English");
   const radioName = ["English", "Amharic", "Arabic"];
   const flagLanguageName = [
-    { flag: "united-states", language: "English" },
-    { flag: "ethiopia", language: "Amharic" },
+    {"countryCode": "US", "isRTL": false, "languageCode": "en", "languageTag": "en-US",languageName:'English'},
+    {"countryCode": "ET", "isRTL": false, "languageCode": "am", "languageTag": "am-ET",languageName:'Amharic'}
   ];
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -85,8 +84,15 @@ const Language = ({ navigation }) => {
         paddingHorizontal: 32,
         marginBottom:verticalScale(10)}}>
         <Iconify icon="ion:search" size={18} color={theme.color.gray}/>
-        <TextInput placeholder="Search for language" style={{fontSize:18,fontWeight:"500"}}/></View>
-        
+        <TextInput placeholder="Search for language" style={{fontSize:18,fontWeight:"500",flex:1}}/></View>
+        <FlatList 
+           showsVerticalScrollIndicator={false}
+            data={flagLanguageName}
+            numColumns={1}
+            renderItem={({item})=>(<RadioButton name={item.languageName} state={activeRadio} setState={setActiveRadio} Flag={item.countryCode} />)}
+            keyExtractor={(item) => item.languageCode}
+
+        />
       </View>
     </View>
   );

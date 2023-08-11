@@ -39,7 +39,7 @@ const Customer = ({ navigation }) => {
    useEffect(()=>{getCustomers()},[])
 const deleteCustomers=()=> realm.write(() => {
   console.log(`id:${first}`)
-  const {data:taskToDelete} =  useFetchRealm({uri:"Customer",id:first})
+  const taskToDelete= realm.objects("Customer").filtered(`_id == ${first}`)
   setComfirm(false);
  if (taskToDelete) {
   realm.delete(taskToDelete);

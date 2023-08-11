@@ -366,3 +366,14 @@ const Edit = ({ navigation }) => {
 export default Edit;
 
 const styles = StyleSheet.create({});
+
+
+const createData =()=> realm.write(() => {realm.create('Name of Schema', {
+  //this is an example data you should replace it by your own
+   _id:457,
+        fullname:"fullname",
+         email:"email",
+         phonecode:phoneCode?phoneCode.dial_code:'+251',
+         phone:"25485664",
+         tin:"558228",
+  })})
