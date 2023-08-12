@@ -15,8 +15,8 @@ const ProductCard = ({
   handleEventOnBlur,
 }) => {
   const {name, price, quantity, image, category, _id} = item;
-  // console.log('items to be Destructure:', item);
-
+  // console.log('items to be Destructure:', item.image);
+  const imageCont = image
   return (
     <View
       style={[
@@ -27,11 +27,11 @@ const ProductCard = ({
       <View style={styles.imageContainer}>
         {/* <Image
           style={{height: '100%', width: '100%', resizeMode: 'cover'}}
-          source={imageSwicher}
+          source={imageCont}
         /> */}
         <FastImage
           style={{height: '100%', width: '100%', resizeMode: 'cover'}}
-          source={image}
+          source={{uri: image}}
         />
       </View>
       <View

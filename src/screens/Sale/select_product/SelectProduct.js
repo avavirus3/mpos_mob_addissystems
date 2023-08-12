@@ -13,35 +13,31 @@ import CategoryHead from './CategoryHead';
 import Toast from 'react-native-toast-message';
 import {useSelector, useDispatch} from 'react-redux';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
-import { getItems } from '../../../database/services/itemServices';
+import {getItems} from '../../../database/services/itemServices';
+import useGetItems from '../../../hooks/customHooks/useGetItems';
 
 const SelectProduct = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
   const [CurrentProduct, setCurrentProduct] = useState('All');
-  const [realmItemList, setRealmItemList] = useState([]);
+  const realmItemList = useGetItems();
   const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
   const [search, setSearch] = useState('');
 
+  console.log("realmItemList of SelectProduct:", realmItemList)
+
   useEffect(() => {
-    const getRealmDbItems = async () => {
-      try {
-        const items = await getItems();
-        console.log('realm items', items);
-        setRealmItemList(items);
-        const newZeroItems = items.slice().map(item => ({
+    const newZeroItems = PRODUCT_DATA.slice().map(
+      item =>
+        true && {
           name: item.name,
           _id: item._id,
           price: item.price,
           quantity: 0,
           image: item.image,
-          category: item.category, 
-        }));
-        setInitialZeroQtyItems(newZeroItems);
-      } catch (error) {
-        console.log('Error Retriving Items:', error);
-      }
-    }
-    getRealmDbItems() 
+          category: item.category,
+        },
+    ); 
+    setInitialZeroQtyItems(newZeroItems);
   }, []);
 
   const handleQtyIncrement = id => {
@@ -49,6 +45,8 @@ const SelectProduct = ({navigation}) => {
       item => item._id === id && item,
     )[0].quantity;
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
+
+    // console.log("Sale Item:", Prev_Item_Qty)
 
     if (Prev_Item_Qty - (Sale_Item.quantity + 1) >= 0) {
       Sale_Item.quantity += 1;
@@ -133,7 +131,7 @@ const SelectProduct = ({navigation}) => {
           {/* Top Heading Component  */}
           <SellProductTopBar
             label1={'Select Products'}
-            cartNumber={selectedProducts.length} 
+            cartNumber={selectedProducts.length}
             onDone={handleOnDone}
             onCancel={() => navigation.goBack()}
           />
