@@ -9,12 +9,13 @@ import i18n  from '../../language/i18n';
 
 
 const Language = ({ navigation }) => {
-  //console.log(getLocales());
-  const [activeRadio, setActiveRadio] = useState("English");
+  //console.log(i18n.locale)
+  
   const flagLanguageName = [
     {"countryCode": "US", "isRTL": false, "languageCode": "en", "languageTag": "en-US",languageName:'English'},
     {"countryCode": "ET", "isRTL": false, "languageCode": "am", "languageTag": "am-ET",languageName:'Amharic'}
   ];
+  const [activeRadio, setActiveRadio] = useState(flagLanguageName.find((i)=>i.languageCode==i18n.locale).languageName);
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <View

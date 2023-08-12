@@ -16,7 +16,7 @@ import TopNavigationBar from "../../components/top_navigation/TopNavigationBar";
 import { ComfirmationModal, DoneModals } from "../../components/modal/Modals";
 import { getCustomers } from "../../database/services/customerServices";
 import realm from "../../database/index";
-import useFetchRealm from "../../hooks/customhooks/useFetchRealm";
+import useFetchRealm from "../../hooks/customHooks/useFetchRealm";
 const CostomerListCard=({name,number,onPressDelete,id})=>{
     return(
         <View style={{flexDirection:'row',width:"100%",justifyContent:'space-between',marginBottom:15,paddingVertical:verticalScale(16),borderRadius:10,paddingHorizontal:scale(30),backgroundColor:'#F9F7F7',alignItems:"center"}}>

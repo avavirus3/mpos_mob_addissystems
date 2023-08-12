@@ -15,7 +15,7 @@ import PhoneCode from "../../components/modal/PhoneCode";
 import realm from "../../database/index";
 import { phoneData } from "../../../data/phonedata";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import useFetchRealm from "../../hooks/customhooks/useFetchRealm";
+import useFetchRealm from "../../hooks/customHooks/useFetchRealm";
 
 
 

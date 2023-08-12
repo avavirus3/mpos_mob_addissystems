@@ -5,8 +5,9 @@ import { theme } from '../../styles/stylesheet'
 //import { ScrollView } from "react-native";
 import { Image } from 'react-native'
 import { Iconify } from 'react-native-iconify'
-import useFetchRealm from '../../hooks/customhooks/useFetchRealm'
+import useFetchRealm from '../../hooks/customHooks/useFetchRealm'
 import { useFocusEffect } from '@react-navigation/native'
+import i18n  from '../../language/i18n';
 
 const Main = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(false)
@@ -188,7 +189,7 @@ const Main = ({navigation}) => {
               <Iconify icon="mdi:password" size={scale(20)} />
               <View style={{paddingHorizontal: scale(10)}}>
                 <Text style={{fontSize: scale(20), fontWeight: 500}}>
-                  Change Password
+                {i18n.t('changepassword')}
                 </Text>
               </View>
             </View>
@@ -284,7 +285,7 @@ const Main = ({navigation}) => {
               <Iconify icon="clarity:language-solid" size={21} color="#000" />
               <View style={{paddingHorizontal: scale(10)}}>
                 <Text style={{fontSize: scale(20), fontWeight: 500}}>
-                  Language
+                {i18n.t('language')}
                 </Text>
               </View>
             </View>

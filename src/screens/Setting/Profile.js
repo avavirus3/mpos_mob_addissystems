@@ -5,7 +5,7 @@ import { theme } from '../../styles/stylesheet';
 import { Iconify } from 'react-native-iconify';
 //import FloatActionButton from '../../components/FloatActionButton';
 import realm from "../../database/index";
-import useFetchRealm from '../../hooks/customhooks/useFetchRealm';
+import useFetchRealm from '../../hooks/customHooks/useFetchRealm';
 import { useFocusEffect } from '@react-navigation/native';
 
 const Profile = ({ navigation }) => {
