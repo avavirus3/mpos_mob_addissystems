@@ -52,7 +52,7 @@ const Language = ({ navigation }) => {
            showsVerticalScrollIndicator={false}
             data={flagLanguageName}
             numColumns={1}
-            renderItem={({item})=>(<RadioButton langCode={item.languageCode} name={item.languageName} state={activeRadio} setState={setActiveRadio} Flag={item.countryCode} />)}
+            renderItem={({item})=>(<RadioButton langCode={item.languageCode} navigation={navigation} name={item.languageName} state={activeRadio} setState={setActiveRadio} Flag={item.countryCode} />)}
             keyExtractor={(item) => item.languageTag}
 
         />
@@ -64,12 +64,13 @@ const Language = ({ navigation }) => {
 export default Language;
 
 const styles = StyleSheet.create({});
-const RadioButton = ({ name, state, setState, Flag,langCode }) => {
+const RadioButton = ({ name, state, setState, Flag,langCode,navigation }) => {
   // console.log(flag)
   const flagIcon = phoneData.find((country)=> country.code==Flag)
   const changeLanguage = () => {
     i18n.locale = langCode;
     setState(name)
+      navigation.goBack()
   };
   return (
     <Pressable

@@ -1,6 +1,6 @@
 import Realm from 'realm';
-import schemas from './schema/schemas';
-import {myProfileData,Customer,Image} from './Schema'
+import schemas,{myProfileData,Customer,Image}  from './schema/schemas';
+// import {myProfileData,Customer,Image} from './Schema'
 // export const initializeRealm = () => {
 //   return Realm.open({
 //     schema: schemas,
