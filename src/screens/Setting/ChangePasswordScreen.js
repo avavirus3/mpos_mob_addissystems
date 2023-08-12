@@ -3,7 +3,7 @@ import React from "react";
 import { Iconify } from "react-native-iconify";
 import { verticalScale, scale } from "react-native-size-matters";
 import { theme } from "../../styles/stylesheet";
-
+import i18n from "../../language/i18n";
 const ChangePasswordScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -22,7 +22,7 @@ const ChangePasswordScreen = ({ navigation }) => {
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
         <Text style={{ fontSize: scale(22), fontWeight: 600 }}>
-          Change Password
+          {i18n.t("changepassword")}
         </Text>
         <View style={{ marginHorizontal: scale(25) }}></View>
       </View>

@@ -10,7 +10,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import i18n  from '../../language/i18n';
 
 const Main = ({navigation}) => {
-  const [isEnabled, setIsEnabled] = useState(false)
+  const [isEnabled, setIsEnabled] = useState(true)
   const [isEnabled2S, setIsEnabled2S] = useState(true)
   const toggleSwitch = () => setIsEnabled(previousState => !previousState)
   const toggleSwitch2S = () => setIsEnabled2S(previousState => !previousState);
@@ -231,7 +231,7 @@ const Main = ({navigation}) => {
             </View>
           </View>
           <Pressable
-          onPress={toggleSwitch}
+          onPress={()=>navigation.navigate("SyncScreen")}
             style={{
               backgroundColor: '#fff',
               height: verticalScale(50),
@@ -249,7 +249,7 @@ const Main = ({navigation}) => {
               </View>
             </View>
             {<View>
-              <View style={{alignItems:'flex-end'}}><Iconify icon='ic:baseline-wifi' size={16} color={isEnabled?theme.color.primary:theme.color.green}/>
+              <View style={{alignItems:'flex-end'}}>{isEnabled?<Iconify icon='ic:baseline-wifi-off' size={16} color={theme.color.primary}/>:<Iconify icon='ic:baseline-wifi' size={16} color={theme.color.green}/>}
               <View style={{flexDirection:'row',alignItems:'center',gap:10}}><Text>1 sec ago</Text><Iconify icon='eva:sync-fill' size={18} color={isEnabled?theme.color.primary:theme.color.green}  /></View></View>
             </View>}
           </Pressable>

@@ -21,6 +21,8 @@ import Notification from '../../../screens/Setting/Notification';
 import AccountNumber from '../../../screens/Setting/AccountNumber';
 import PhoneNumber from '../../../screens/Setting/PhoneNumber';
 import ActivationCode from '../../../screens/Setting/ActivationCode';
+import SyncScreen from '../../../screens/Setting/SyncScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +49,7 @@ const Settingtack = () => {
       <Stack.Screen name="AccountNumber" component={AccountNumber} />
       <Stack.Screen name="PhoneNumber" component={PhoneNumber} />
       <Stack.Screen name="ActivationCode" component={ActivationCode} />
+      <Stack.Screen name="SyncScreen" component={SyncScreen} />
 
     </Stack.Navigator>
   );
