@@ -15,7 +15,7 @@ const numberFormater = input => {
       }
     }
 
-    const output = formated ? formated : 'Please Pass an argument!'
+    const output = formated ? formated : '0'
 
     return output;
   };
