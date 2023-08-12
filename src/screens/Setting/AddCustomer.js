@@ -10,7 +10,7 @@ import { DoneModals} from '../../components/modal/Modals'
 import PhoneCode from "../../components/modal/PhoneCode";
 import { phoneData } from "../../../data/phonedata";
 
-import realm from '../../../data/Realm'
+import realm from '../../database/index'
 const AddCustomer = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [fullname, setFullname] = useState('');

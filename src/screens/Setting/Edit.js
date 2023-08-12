@@ -12,7 +12,7 @@ import { verticalScale, scale } from "react-native-size-matters";
 import { Iconify } from "react-native-iconify";
 import { theme } from "../../styles/stylesheet";
 import PhoneCode from "../../components/modal/PhoneCode";
-import realm from "../../../data/Realm";
+import realm from "../../database/index";
 import { phoneData } from "../../../data/phonedata";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import useFetchRealm from "../../hooks/customhooks/useFetchRealm";

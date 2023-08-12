@@ -4,7 +4,7 @@ import { verticalScale, scale } from 'react-native-size-matters';
 import { theme } from '../../styles/stylesheet';
 import { Iconify } from 'react-native-iconify';
 //import FloatActionButton from '../../components/FloatActionButton';
-import realm from "../../../data/Realm";
+import realm from "../../database/index";
 import useFetchRealm from '../../hooks/customhooks/useFetchRealm';
 import { useFocusEffect } from '@react-navigation/native';
 

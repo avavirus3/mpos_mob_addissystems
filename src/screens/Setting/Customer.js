@@ -15,7 +15,7 @@ import { theme,color } from "../../styles/stylesheet";
 import TopNavigationBar from "../../components/top_navigation/TopNavigationBar";
 import { ComfirmationModal, DoneModals } from "../../components/modal/Modals";
 import { getCustomers } from "../../database/services/customerServices";
-import realm from "../../../data/Realm";
+import realm from "../../database/index";
 import useFetchRealm from "../../hooks/customhooks/useFetchRealm";
 const CostomerListCard=({name,number,onPressDelete,id})=>{
     return(

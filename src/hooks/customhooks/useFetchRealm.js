@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import realm from '../../../data/Realm';
+import realm from '../../database/index'
 import { useFocusEffect } from '@react-navigation/native';
 const useFetchRealm = ({uri,id})=>{
     const [data, setData] = useState()
