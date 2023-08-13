@@ -1,8 +1,7 @@
 import {StyleSheet} from 'react-native';
-import {initializeRealm} from '../index';
+import realm from '../index';
 
 export const getTotalSaleAmount = async () => {
-  const realm = await initializeRealm();
 
   const totalSale = realm.objects('Total_Sale')[0];
   if (totalSale) {
@@ -13,7 +12,6 @@ export const getTotalSaleAmount = async () => {
 };
 
 export const updateTotalSale = async newValue => {
-  const realm = await initializeRealm();
 
   realm.write(() => {
     let totalSale = realm.objects('Total_Sale')[0];

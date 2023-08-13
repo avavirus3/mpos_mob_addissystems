@@ -46,6 +46,8 @@ const CreateSale = ({route}) => {
 
   // console.log('incomingData:', incomingData);
 
+  // console.log('incomingData:', incomingData);
+
   function isEqual(obj1, obj2) {
     return obj1._id === obj2._id;
   }

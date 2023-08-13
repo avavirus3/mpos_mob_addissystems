@@ -1,7 +1,6 @@
-import {initializeRealm} from '../index';
+import realm from '../index';
 
-export const getCustomers = async () => {
-  const realm = await initializeRealm();
+export const getCustomers = () => {
 
   const customers = realm.objects('Customer');
 //   realm.close()
@@ -9,7 +8,7 @@ export const getCustomers = async () => {
 };
 
 export const addCustomer = async newCustomer => {
-  const realm = await initializeRealm();
+  
 
   realm.write(() => {
     realm.create('Customer', newCustomer);
@@ -17,7 +16,6 @@ export const addCustomer = async newCustomer => {
 };
 
 export const updateCustomer = async (_Tin, newCustomerObject) => {
-  const realm = await initializeRealm();
 
   realm.write(() => {
     const customerTobeUpdated = realm.objectForPrimaryKey('Customer', _Tin);
@@ -42,7 +40,6 @@ export const updateCustomer = async (_Tin, newCustomerObject) => {
 };
 
 export const deleteCustomer = async customerTin => {
-  const realm = await initializeRealm();
 
   realm.write(() => {
     const customerToBeDeleted = realm.objectForPrimaryKey('Customer', customerTin);
