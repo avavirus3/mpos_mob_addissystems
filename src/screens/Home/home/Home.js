@@ -18,7 +18,7 @@ import {
   updateItem,
   deleteItem,
 } from '../../../database/services/itemServices';
-import useGetItems from "../../../hooks/customHooks/useGetItems"
+import useGetItems from '../../../hooks/customHooks/useGetItems';
 
 const Home = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);

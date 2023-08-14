@@ -9,7 +9,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {
   setPRODUCT,
 } from '../reduxToolkit/features/product/productListSlice';
-// import useGetItems from '../hooks/customHooks/useGetItems';
+import useGetItems from '../hooks/customHooks/useGetItems';
 import { setCHANGE } from '../reduxToolkit/features/change/trackChangeSlice';
 
 const InitialRender = () => {
@@ -39,7 +39,7 @@ const InitialRender = () => {
           );
         console.log('Initial Render UseEffect Console!', items);
         dispatch(setPRODUCT(newZeroItems));
-        console.log('Product Data At Initial:', PRODUCT_DATA);
+        console.log('Product Data At Initial:', PRODUCT_DATA); 
       } catch (error) {
         console.log('Error Retriving Items:', error);
       }
@@ -47,7 +47,7 @@ const InitialRender = () => {
 
     getDatafromRealm();
     dispatch(setCHANGE('Unchanged!'))
-  }, [changeTracker]);
+  }, [changeTracker]); 
 
 
 

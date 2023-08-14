@@ -52,8 +52,8 @@ const AddProduct = () => {
   };
 
   const handleConfirmAddItem = async () => {
-    await addItem(itemTobeAdded);
-    // dispatch(setCHANGE('Changed!'));
+    addItem(itemTobeAdded);
+    dispatch(setCHANGE('Changed!'));
 
     setShowModal(false)
     setSuccessModal(true);

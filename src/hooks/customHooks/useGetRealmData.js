@@ -2,8 +2,9 @@ import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {initializeRealm} from '../../database';
 import schemas from '../../database/schema/schemas';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCHANGE } from '../../reduxToolkit/features/change/trackChangeSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {setCHANGE} from '../../reduxToolkit/features/change/trackChangeSlice';
+import realm from '../../database';
 
 const useGetRealmData = schemaName => {
   const [fetchedData, setFetchedData] = useState([]);
@@ -15,7 +16,6 @@ const useGetRealmData = schemaName => {
     if (isThereTheSchema) {
       const getItem = async () => {
         try {
-          const realm = await initializeRealm();
           const data = realm.objects(schemaName);
           setFetchedData(data);
         } catch (err) {
@@ -24,7 +24,7 @@ const useGetRealmData = schemaName => {
       };
 
       getItem();
-      dispatch(setCHANGE("Unchanged!"))
+      dispatch(setCHANGE('Unchanged!'));
     }
   }, [changeTracker]);
 

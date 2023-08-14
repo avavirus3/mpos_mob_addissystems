@@ -1,5 +1,4 @@
-const schemas = [
-  {
+export const Product = {
     name: 'Items',
     properties: {
       name: 'string',
@@ -10,23 +9,15 @@ const schemas = [
       category: 'string',
     },
     primaryKey: '_id',
-  },
-  // {
-  //   name:"Customer",
-  //   properties: {
-  //     _id:'int',
-  //     fullname:'string',
-  //     email:'string?',
-  //     phonecode:'string',
-  //     phone:'string',
-  //     address:'string?',
-  //     tin:'string?',
-  //   },
-  //   primaryKey:'_id',}
-];
+  }
+  
+ export const TotalSale = {
+    name: 'Total_Sale',
+    properties: {
+      amount: 'float',
+    },
+  }
 
-
-export default schemas
 export const myProfileData={
   name:"MyProfileData",
   properties: {

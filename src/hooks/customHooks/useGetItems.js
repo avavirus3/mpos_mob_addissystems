@@ -12,7 +12,7 @@ const useGetItems = () => {
   useEffect(() => {
     const getDatafromRealm = async () => {
       try {
-        const items = await getItems();
+        const items = getItems();
         setProductItemFromRealm(items);
       } catch (error) {
         console.log('Error Retriving Items From Realm Database:', error);
