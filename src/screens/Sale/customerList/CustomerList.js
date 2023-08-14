@@ -12,12 +12,12 @@ import SearchBar from '../../../components/search/SearchBar';
 import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import {color, textStyles, containerStyles} from '../../../styles/Styles';
 import Button from '../../../components/button/Button';
-import { getCustomers } from '../../../database/services/customerServices';
+import {getCustomers} from '../../../database/services/customerServices';
 import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 
 const CustomerList = ({navigation}) => {
   const [search, setSearch] = useState('');
-  const customers = useGetRealmData("Customer")
+  const customers = useGetRealmData('Customer');
   const [selectedCustomer, setSelectedCustomer] = useState([]);
 
   console.log('Selected Customer:', selectedCustomer);
@@ -28,7 +28,7 @@ const CustomerList = ({navigation}) => {
 
   const renderItem = ({item}) => {
     const {fullname, tin, _id} = item;
-    console.log("Customer Destructuring:", item)
+    console.log('Customer Destructuring:', item);
     return (
       <TouchableOpacity
         style={{
@@ -66,7 +66,7 @@ const CustomerList = ({navigation}) => {
         backLabel={'Cancel'}
         middleLabel={'Customers'}
         thirdLabel={'Done'}
-        onGoCondition={selectedCustomer}
+        onGoCondition={selectedCustomer?.tin}
         onPressGo={() => handleAddCustomer()}
         onPressBack={() => navigation.navigate('create-sale')}
       />
@@ -84,17 +84,19 @@ const CustomerList = ({navigation}) => {
       />
       <View
         style={{flex: 1, borderTopWidth: 2, borderTopColor: 'rgba(0,0,0,0.2)'}}>
-        {customers?.length > 0 ? <FlatList
-          contentContainerStyle={{
-            gap: 20,
-            paddingHorizontal: 2,
-            paddingTop: 10,
-            paddingBottom: 20,
-          }}
-          data={customers}
-          renderItem={renderItem}
-          keyExtractor={item => item._id}
-        /> : null}
+        {customers?.length > 0 ? (
+          <FlatList
+            contentContainerStyle={{
+              gap: 20,
+              paddingHorizontal: 2,
+              paddingTop: 10,
+              paddingBottom: 20,
+            }}
+            data={customers}
+            renderItem={renderItem}
+            keyExtractor={item => item._id}
+          />
+        ) : null}
       </View>
     </View>
   );
