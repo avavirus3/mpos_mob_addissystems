@@ -1,0 +1,379 @@
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+  TextInput,
+  ScrollView,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { verticalScale, scale } from "react-native-size-matters";
+import { Iconify } from "react-native-iconify";
+import { theme } from "../../styles/stylesheet";
+import PhoneCode from "../../components/modal/PhoneCode";
+import realm from "../../database/index";
+import { phoneData } from "../../../data/phonedata";
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import useFetchRealm from "../../hooks/customHooks/useFetchRealm";
+
+
+
+
+const Edit = ({ navigation }) => {
+  const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
+  const [phoneModal, setPhoneModal] = useState(false);
+  const [fullname, setFullname] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [organization, setOrganization] = useState('');
+  const [license, setLicense] = useState('');
+  const [tin, setTin] = useState('');
+  const[profdata,setProfdata]=useState('');
+  const [phoneCode, setPhoneCode] = useState()
+  const[imgUri, setImgUri] = useState("https://randomuser.me/api/portraits/women/93.jpg")
+  const getData= ()=>{
+
+    const profile = realm.objects('MyProfileData').filtered('_id == 457');
+    const profileimg = realm.objects('Image').filtered('_id == 300')[0];
+    profileimg?setImgUri(profileimg.uri):null;
+    setProfdata(profile[0])
+   //console.log("profdata",profileimg)
+  }
+//   (realm.write(() => {
+//     try{realm.create('MyProfileData', {
+//       _id:457,
+//       fullname:"fullname",
+//       email:"email",
+//       phonecode:phoneCode?phoneCode.dial_code:'+251',
+//       phone:"25485664",
+//       tin:"558228",
+//     });
+// }catch(e){console.log(e)}
+// console.log("save")
+// }))
+  const setData=()=>(realm.write )
+  //console.log(phoneCode?.dial_code,profdata)
+  useEffect(()=>{
+    getData();
+  },[])
+  useEffect(()=>{
+    if(profdata)setPhoneCode(phoneData.find(phonecodes => phonecodes?.dial_code === profdata?.phonecode));
+    //console.log("update:",'\n\r',profdata,'\n\r',phoneData.find(phonecodes => phonecodes?.dial_code === profdata.phonecode));
+  },[profdata])
+
+  const onSaveCreateProfile = ()=> realm.write(() => {
+    const taskToUpdate = realm.objects('MyProfileData').filtered('_id == 457')[0];
+    if (taskToUpdate) {
+      // console.log(phoneCode.dial_code!=profdata.phonecode)
+      if(phoneCode.dial_code!=taskToUpdate.phonecode){taskToUpdate.phonecode = phoneCode.dial_code;}
+      if(fullname){taskToUpdate.fullname = fullname}
+      if(email){taskToUpdate.email = email}
+      if(license){taskToUpdate.license = license}
+      if(tin){taskToUpdate.tin =tin}
+      if(phoneNumber){taskToUpdate.phone = phoneNumber}
+      if(organization){taskToUpdate.organization = organization}
+    }
+  })
+  const options =   {
+    title: 'Select Image',
+    type: 'library',
+    options: {
+      selectionLimit: 1,
+      mediaType: 'photo',
+      includeBase64: false,
+    },}
+  const goToGallery =async()=>{
+    // realm.write(() => {
+    //   const taskToDelete = realm.objects('Image').filtered('_id == 300')[0];
+    //   if (taskToDelete) {
+    //     realm.delete(taskToDelete);
+    //   }
+    // })
+    const open = await launchImageLibrary(options)
+    const profile = realm.objects('Image')
+      //console.log(profile)
+      // realm.write(() => {
+      //   realm.create('Image', {
+      //     _id: 300,
+      //     name: ,
+      //     type: 'photo',
+      //     uri:'fldldd'
+      //   });
+      // });
+    if(open){
+      setImgUri(open.assets[0].uri)
+      try{realm.write(() => {
+        const imgHolder = realm.objects('Image').filtered('_id == 300')[0];
+        if(imgHolder) {
+          imgHolder.name= open.assets[0].fileName
+          imgHolder.uri= open.assets[0].uri
+          imgHolder.type= open.assets[0].type
+
+        }
+        if(!imgHolder) realm.create("Image",{
+              _id:300,
+              name:open.assets[0].fileName,
+              type:open.assets[0].type,
+              uri:open.assets[0].uri,
+            })
+          })
+             setImgUri(open.assets[0].uri)
+      }catch(e){console.log(e)}
+    }
+    //console.log(open.assets[0])
+  }
+  return (
+    <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 0 }}>
+      <PhoneCode modalVisible={phoneModal} setModalVisible={setPhoneModal} setResult={setPhoneCode} />
+      <View
+        style={{
+          flexDirection: "row",
+          backgroundColor: "#fff",
+          height: verticalScale(66),
+          justifyContent: "space-between",
+          paddingHorizontal: scale(25),
+          alignItems: "center",
+          //paddingVertical:0
+        }}
+      >
+        <Pressable onPress={() => navigation.goBack()}>
+          <Iconify icon="ion:chevron-back-outline" size={20} />
+        </Pressable>
+        <Text style={{ fontSize: scale(22), fontWeight: 600 }}>Edit</Text>
+        <View></View>
+      </View>
+      <ScrollView>
+        <View style={{ alignItems: "center", marginHorizontal: scale(25) }}>
+          <View><Image
+            source={{ uri: imgUri }}
+            style={{
+              height: 131,
+              width: 131,
+              borderRadius: 131,
+              borderWidth: 1,
+              borderColor: theme.color.blue,
+              backgroundColor: theme.color.lightGray,
+              //marginTop: -65,
+              marginVertical: 15,
+            }}
+          />
+            <Pressable onPress={goToGallery} style={{ backgroundColor: '#F9F7F7', height: 40, width: 40, position: 'reletive', left: 90, bottom: 60, borderRadius: 30, borderWidth: 2, borderColor: 'white', alignItems: 'center', justifyContent: 'center' }}>
+              <Iconify icon="fluent:edit-24-filled" size={20} />
+            </Pressable>
+          </View>
+          <View style={{ width: "100%" }}>
+            <View style={{ marginBottom: verticalScale(15) }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 500,
+                  height: 25,
+                  marginBottom: 6,
+                }}
+              >
+                Full Name
+              </Text>
+              <TextInput
+                value={fullname}
+                onChangeText={(text) => setFullname(text)}
+                style={{
+                  width: "100%",
+                  borderRadius: 10,
+                  borderWidth: 1.5,
+                  borderColor: theme.color.blue,
+                  fontSize: 18,
+                  paddingLeft: 20,
+                  flex: 1,
+                  color: 'black',
+                }}
+                placeholder={profdata?.fullname}
+                placeholderTextColor='black'
+              />
+            </View>
+            <View style={{ marginBottom: verticalScale(15) }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 500,
+                  height: 25,
+                  marginBottom: 6,
+                }}
+              >
+                Email
+              </Text>
+              <TextInput
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                style={{
+                  width: "100%",
+                  borderRadius: 10,
+                  borderWidth: 1.5,
+                  borderColor: theme.color.blue,
+                  fontSize: 18,
+                  paddingLeft: 20,
+                  color: 'black'
+                }}
+                placeholder={profdata?.email}
+                placeholderTextColor='black'
+              />
+            </View>
+            <View style={{ marginBottom: verticalScale(15), backgroundColor: "white" }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 500,
+                  height: 25,
+                  marginBottom: 6,
+                }}
+              >
+                Phone Number
+              </Text>
+              <Pressable
+                onPress={() => setPhoneModal(true)}
+                style={{
+                  width: "100%",
+                  borderRadius: 10,
+                  borderWidth: 1.5,
+                  borderColor: theme.color.blue,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingLeft: 20,
+                }}
+              >
+                {phoneCode?<View style={{ flexDirection: "row", alignItems: "center" }}>
+                 {<phoneCode.Flag />}
+                  <Text style={{ fontSize: 18, paddingLeft: 9 }}>{phoneCode?.dial_code}</Text>
+                  <Iconify icon="mdi:menu-down" size={18} />
+                </View>:null}
+
+                <TextInput
+                  value={phoneNumber}
+                  onChangeText={(text) => setPhoneNumber(text)}
+                  keyboardType="numeric"
+                  style={{ fontSize: 18, alignItems: "center", flex: 1, color: 'black' }}
+                  placeholderTextColor={"black"}
+                  placeholder={profdata?.phone}
+                />
+              </Pressable>
+            </View>
+            <View style={{ marginBottom: verticalScale(15) }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 500,
+                  height: 25,
+                  marginBottom: 6,
+                }}
+              >
+                Organization Name
+              </Text>
+              <TextInput
+                value={organization}
+                onChangeText={(text) => setOrganization(text)}
+                style={{
+                  width: "100%",
+                  borderRadius: 10,
+                  borderWidth: 1.5,
+                  borderColor: theme.color.blue,
+                  fontSize: 18,
+                  paddingLeft: 20,
+                  flex: 1,
+                  color: 'black',
+                }}
+                placeholder={profdata?.organization}
+                placeholderTextColor={'black'}
+              />
+            </View>
+            <View style={{ marginBottom: verticalScale(15) }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 500,
+                  height: 25,
+                  marginBottom: 6,
+                }}
+              >
+                License Number
+              </Text>
+              <TextInput
+                value={license}
+                onChangeText={(text) => setLicense(text)}
+                keyboardType="numeric"
+                style={{
+                  width: "100%",
+                  borderRadius: 10,
+                  borderWidth: 1.5,
+                  borderColor: theme.color.blue,
+                  fontSize: 18,
+                  paddingLeft: 20,
+                  color: 'black',
+                }}
+                placeholder={profdata?.license}
+                placeholderTextColor={'black'}
+              />
+            </View>
+            <View style={{ marginBottom: verticalScale(15) }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 500,
+                  height: 25,
+                  marginBottom: 6,
+                }}
+              >
+                TIN
+              </Text>
+              <TextInput
+                value={tin}
+                onChangeText={(text) => setTin(text)}
+                keyboardType="numeric"
+                style={{
+                  width: "100%",
+                  borderRadius: 10,
+                  borderWidth: 1.5,
+                  borderColor: theme.color.blue,
+                  fontSize: 18,
+                  paddingLeft: 20,
+                  color: 'black',
+                }}
+                placeholder={profdata?.tin}
+                placeholderTextColor={'black'}
+              />
+            </View>
+            <Pressable
+              onPress={onSaveCreateProfile}
+              style={{
+                borderRadius: 10,
+                backgroundColor: theme.color.primary,
+                paddingVertical: 18,
+                alignItems: "center",
+                justifyContent: "center",
+                marginVertical: verticalScale(15),
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 22, fontWeight: 600 }}>
+                Save
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+
+export default Edit;
+
+const styles = StyleSheet.create({});
+
+
+const createData =()=> realm.write(() => {realm.create('Name of Schema', {
+  //this is an example data you should replace it by your own
+   _id:457,
+        fullname:"fullname",
+         email:"email",
+         phonecode:phoneCode?phoneCode.dial_code:'+251',
+         phone:"25485664",
+         tin:"558228",
+  })})

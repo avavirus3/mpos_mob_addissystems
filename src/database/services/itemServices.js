@@ -1,23 +1,22 @@
-import {initializeRealm} from '../index';
+import realm from '../index';
 
-export const getItems = async () => {
-  const realm = await initializeRealm();
+export const getItems = () => {
 
   const items = realm.objects('Items');
   // realm.close()
   return items;
 };
 
-export const addItem = async item => {
-  const realm = await initializeRealm();
+export const addItem =   item => {
+  
 
   realm.write(() => {
     realm.create('Items', item);
   });
 };
 
-export const updateItem = async (itemId, updatedItem) => {
-  const realm = await initializeRealm();
+export const updateItem =   (itemId, updatedItem) => {
+  
 
   realm.write(() => {
     const itemTobeUpdated = realm.objectForPrimaryKey('Items', itemId);
@@ -44,8 +43,8 @@ export const updateItem = async (itemId, updatedItem) => {
   });
 };
 
-export const deleteItem = async itemId => {
-  const realm = await initializeRealm();
+export const deleteItem =   itemId => {
+  
 
   realm.write(() => {
     const itemToBeDeleted = realm.objectForPrimaryKey('Items', itemId);

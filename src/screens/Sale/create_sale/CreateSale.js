@@ -23,6 +23,8 @@ import ItemsList from './ItemsList';
 import Toast from 'react-native-toast-message';
 import {useSelector, useDispatch} from 'react-redux';
 import {getItems, updateItem} from '../../../database/services/itemServices';
+import { setCHANGE } from '../../../reduxToolkit/features/change/trackChangeSlice';
+import { updateTotalSale } from '../../../database/services/totalSaleService';
 
 /* Main Function */
 const CreateSale = ({route}) => {
@@ -40,6 +42,9 @@ const CreateSale = ({route}) => {
   const [discountModal, setDiscountModal] = useState(false);
   const [discount, setDiscount] = useState(0);
   const currentTime = new Date();
+  const dispatch = useDispatch();
+
+  // console.log('incomingData:', incomingData);
 
   // console.log('incomingData:', incomingData);
 
@@ -188,14 +193,6 @@ const CreateSale = ({route}) => {
   };
 
   const handleTransaction = () => {
-    // const products_after_qty_deduction = realmItemList.map(item => {
-    //   const saleItem = passedData.map(sale => {
-    //     sale
-    //   } );
-    //   // console.log("Sale Item:", saleItem)
-    //   return saleItem
-    // });
-
     const mySaleItems = realmItemList.filter(realm =>
       passedData.map((sale, index) => sale._id == realm._id),
     );
@@ -207,15 +204,17 @@ const CreateSale = ({route}) => {
       );
 
       if (passedSale) {
-        const quantityResult = passedSale.quantity - realm.quantity 
+        const quantityResult = passedSale.quantity - realm.quantity;
         const deductFromRealm = {
-          quantity: quantityResult == 1 ? 1 : quantityResult > 1 ? quantityResult : 0, 
-        }; 
-       await updateItem(realm._id, deductFromRealm); // Updating the sold item quantity from the database
-  
-        console.log("deductFromRealm:", deductFromRealm)
-      } 
-    }); 
+          quantity:
+            quantityResult == 1 ? 1 : quantityResult > 1 ? quantityResult : 0,
+        };
+        await updateItem(realm._id, deductFromRealm); // Updating the sold item quantity from the database
+        await updateTotalSale(TOTAL_VAT_INCLUSIVE)
+        dispatch(setCHANGE('Changed!'))
+        console.log('deductFromRealm:', deductFromRealm);
+      }
+    });
 
     // setProductStore(products_after_qty_deduction);
 
@@ -228,7 +227,7 @@ const CreateSale = ({route}) => {
     //       totalPrice: TOTAL_PRODUCT_PRICE,
     //       time: moment(currentTime).format('h:mm:ss a'),
     //       transaction_completed: true,
-    //     }) 
+    //     })
     //   : (newDraftData.draft = [
     //       ...data.draft,
     //       {

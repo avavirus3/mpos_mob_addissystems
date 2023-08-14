@@ -9,14 +9,14 @@ import {Provider} from 'react-redux';
 
 const App = () => {
   return (
-      <Provider store={store}>
-        <AuthProvider>
-          <NavigationContainer>
-            <InitialRender />
-            <Toast />
-          </NavigationContainer>
-        </AuthProvider>
-      </Provider>
+    <Provider store={store}>
+      <AuthProvider>
+        <NavigationContainer>
+          <InitialRender />
+          <Toast />
+        </NavigationContainer>
+      </AuthProvider>
+    </Provider>
   );
 };
 

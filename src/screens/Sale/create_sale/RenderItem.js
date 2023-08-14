@@ -43,7 +43,7 @@ const RenderItem = ({
           /> */}
            <FastImage
           style={{height: '100%', width: '100%', resizeMode: 'cover'}}
-          source={image ? image : noImage}
+          source={image ? {uri: image }: noImage}
         />
         </View>
         <View style={{flex: 1}}>
