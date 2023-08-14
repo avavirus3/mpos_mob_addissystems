@@ -23,7 +23,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {setCHANGE} from '../../reduxToolkit/features/change/trackChangeSlice';
 import CustomModal from '../../components/modal/CustomModal';
 import SuccessFailModal from '../../components/modal/SuccessFailModal';
-import { resetTotalSale } from '../../database/services/totalSaleService';
+import {resetTotalSale} from '../../database/services/totalSaleService';
 
 const AddProduct = () => {
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const AddProduct = () => {
     addItem(itemTobeAdded);
     dispatch(setCHANGE('Changed!'));
 
-    setShowModal(false)
+    setShowModal(false);
     setSuccessModal(true);
 
     setTimeout(() => {
@@ -107,34 +107,35 @@ const AddProduct = () => {
     //   setShowModal(true);
   };
 
-
   const handleUpdateItem = async () => {
-    const tobeUpdatedId = 1
+    const tobeUpdatedId = 1;
     const updatedData = {
       _id: tobeUpdatedId,
-      quantity: 4
-    }
+      quantity: 4,
+    };
 
-    try {;
-      const itemsToUpdate = realmItemData.find(item => item._id == tobeUpdatedId);
+    try {
+      const itemsToUpdate = realmItemData.find(
+        item => item._id == tobeUpdatedId,
+      );
       if (itemsToUpdate) {
         await updateItem(tobeUpdatedId, updatedData);
         console.log('Item Updated!');
         console.log('Items in Db:', realmItemData);
-        dispatch(setCHANGE("Changed!"))
+        dispatch(setCHANGE('Changed!'));
       } else {
         console.log('Unable to get the Item! check The item in the Database!');
       }
-    } catch(err) {
-      console.log("Error while updating Item:", err)
+    } catch (err) {
+      console.log('Error while updating Item:', err);
     }
-  }
+  };
 
   const handleResetTotalSale = async () => {
-    await resetTotalSale()
-    console.log("Total Sale Reseted!")
-    dispatch(setCHANGE("Changed!"))
-  }
+    await resetTotalSale();
+    console.log('Total Sale Reseted!');
+    dispatch(setCHANGE('Changed!'));
+  };
 
   const ProductInfo = ({property, value}) => {
     return (
@@ -296,19 +297,18 @@ const AddProduct = () => {
               onPress={handleAddItem}
             />
             <View style={{}}>
-            <Button
-              theme={'secondary'}
-              label={'Update Existing'}
-              onPress={handleUpdateItem}
-            />
-            <Button
-              theme={'secondary'}
-              label={'Reset Total Sale'}
-              onPress={handleResetTotalSale}
-            />
+              <Button
+                theme={'secondary'}
+                label={'Update Existing'}
+                onPress={handleUpdateItem}
+              />
+              <Button
+                theme={'secondary'}
+                label={'Reset Total Sale'}
+                onPress={handleResetTotalSale}
+              />
+            </View>
           </View>
-          </View>
-          
         </View>
       </ScrollView>
     </View>

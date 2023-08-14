@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Product from '../../../screens/Products/Product';
 import AddProduct from '../../../screens/Products/AddProduct';
+import AllProducts from '../../../screens/Products/allProduct/AllProducts';
 const Stack = createNativeStackNavigator();
 
 const ProductStack = () => {
@@ -9,8 +10,8 @@ const ProductStack = () => {
     <Stack.Navigator
       screenOptions={{headerShown: false}}
       initialRouteName="main">
-      {/* <Stack.Screen name="main" component={Product} /> */}
-      <Stack.Screen name="main" component={AddProduct} />
+      <Stack.Screen name="main" component={AllProducts} />
+      {/* <Stack.Screen name="main" component={AddProduct} /> */}
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );
