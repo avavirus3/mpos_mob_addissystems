@@ -2,7 +2,7 @@ import {View, Text} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {AuthContext} from '../hooks/useContext/AuthContext';
 import MainTabNavigation from '../navigation/TabNavigation/mainNavigation/MainTabNavigation';
-import LoginStack from './login/LoginStack';
+import LoginStack from '../navigation/StackNavigation/authStack/LoginStack';
 import {getItems} from '../database/services/itemServices';
 import {useSelector, useDispatch} from 'react-redux';
 import {
@@ -47,7 +47,7 @@ const InitialRender = () => {
 
 
 
-  return true ? <MainTabNavigation /> : <LoginStack />;
+  return false ? <MainTabNavigation /> : <LoginStack />;
 };
 
 export default InitialRender;

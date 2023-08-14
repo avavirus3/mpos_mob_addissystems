@@ -1,14 +1,15 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LogIn from './LogIn';
+import LogIn from '../../../auth/login/LogIn';
+import WelcomeScreen from '../../../screens/Auth/WelcomeScreen';
 const Stack = createNativeStackNavigator();
 
 const LoginStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="login">
-      <Stack.Screen name="login" component={LogIn} />
+    >
+      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );
