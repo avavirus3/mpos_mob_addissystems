@@ -12,7 +12,7 @@ const useGetTotalSale = () => {
   useEffect(() => {
     const getTotalSaleFromRealm = async () => {
       try {
-        const saleAmount = getTotalSaleAmount();
+        const saleAmount =  getTotalSaleAmount();
         setTotalSale(saleAmount);
       } catch (error) {
         console.log('Error Retriving Total Sale From Realm Database:', error);
