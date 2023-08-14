@@ -1,23 +1,17 @@
 import realm from '../index';
 
 export const getItems = () => {
-
   const items = realm.objects('Items');
-  // realm.close()
   return items;
 };
 
-export const addItem =   item => {
-  
-
+export const addItem = item => {
   realm.write(() => {
     realm.create('Items', item);
   });
 };
 
-export const updateItem =   (itemId, updatedItem) => {
-  
-
+export const updateItem = (itemId, updatedItem) => {
   realm.write(() => {
     const itemTobeUpdated = realm.objectForPrimaryKey('Items', itemId);
     if (itemTobeUpdated) {
@@ -30,7 +24,7 @@ export const updateItem =   (itemId, updatedItem) => {
       itemTobeUpdated.price = updatedItem.price
         ? updatedItem.price
         : itemTobeUpdated.price;
-      itemTobeUpdated.quantity = updatedItem?.hasOwnProperty("quantity")
+      itemTobeUpdated.quantity = updatedItem?.hasOwnProperty('quantity')
         ? updatedItem.quantity
         : itemTobeUpdated.quantity;
       itemTobeUpdated.image = updatedItem.image
@@ -43,9 +37,7 @@ export const updateItem =   (itemId, updatedItem) => {
   });
 };
 
-export const deleteItem =   itemId => {
-  
-
+export const deleteItem = itemId => {
   realm.write(() => {
     const itemToBeDeleted = realm.objectForPrimaryKey('Items', itemId);
     if (itemToBeDeleted) {

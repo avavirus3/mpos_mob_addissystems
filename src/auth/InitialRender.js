@@ -4,12 +4,10 @@ import {AuthContext} from '../hooks/useContext/AuthContext';
 import MainTabNavigation from '../navigation/TabNavigation/mainNavigation/MainTabNavigation';
 import LoginStack from './login/LoginStack';
 import {getItems} from '../database/services/itemServices';
-import {getCustomers} from '../database/services/customerServices';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   setPRODUCT,
 } from '../reduxToolkit/features/product/productListSlice';
-import useGetItems from '../hooks/customHooks/useGetItems';
 import { setCHANGE } from '../reduxToolkit/features/change/trackChangeSlice';
 
 const InitialRender = () => {
@@ -17,12 +15,10 @@ const InitialRender = () => {
   const changeTracker = useSelector(state => state.change.change)
   const dispatch = useDispatch();
 
-  // console.log("Initial Render relm Item List:", realmItemList)
-
   useEffect(() => {
-    const getDatafromRealm = async () => {
+    const getDatafromRealm =  () => {
       try {
-        const items = await getItems();
+        const items = getItems();
         const newZeroItems = items
           .slice()
           .filter(filt => filt.quantity > 0)
@@ -37,9 +33,9 @@ const InitialRender = () => {
                 category: item.category,
               },
           );
-        console.log('Initial Render UseEffect Console!', items);
+        // console.log('Initial Render UseEffect Console!', items);
         dispatch(setPRODUCT(newZeroItems));
-        console.log('Product Data At Initial:', PRODUCT_DATA); 
+        // console.log('Product Data At Initial:', PRODUCT_DATA); 
       } catch (error) {
         console.log('Error Retriving Items:', error);
       }

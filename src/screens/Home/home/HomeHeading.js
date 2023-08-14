@@ -9,8 +9,6 @@ import React from 'react';
 import {color, textStyles} from '../../../styles/Styles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import useGetTotalSale from '../../../hooks/customHooks/useGetTotalSale';
-import {updateTotalSale} from '../../../database/services/totalSaleService';
-import Button from '../../../components/button/Button';
 import numberFormater from '../../../utilities/numberFormater/numberFormater';
 
 const HomeHeading = ({navigation, user, sale}) => {

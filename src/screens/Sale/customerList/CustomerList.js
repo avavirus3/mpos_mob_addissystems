@@ -13,23 +13,12 @@ import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import {color, textStyles, containerStyles} from '../../../styles/Styles';
 import Button from '../../../components/button/Button';
 import { getCustomers } from '../../../database/services/customerServices';
+import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 
 const CustomerList = ({navigation}) => {
   const [search, setSearch] = useState('');
-  const [customers, setCustomer] = useState([])
+  const customers = useGetRealmData("Customer")
   const [selectedCustomer, setSelectedCustomer] = useState([]);
-
-  useEffect(() => {
-    const getRealmDbCustomers = async () => {
-      try {
-        const realmDbCustomer = await getCustomers()
-        setCustomer(realmDbCustomer)
-      } catch(error) { 
-        console.log("Error Retriving Customer Data:", error)
-      }
-    }
-    getRealmDbCustomers()
-  }, [])
 
   console.log('Selected Customer:', selectedCustomer);
 
@@ -38,12 +27,13 @@ const CustomerList = ({navigation}) => {
   };
 
   const renderItem = ({item}) => {
-    const {name, _tin} = item;
+    const {fullname, tin, _id} = item;
+    console.log("Customer Destructuring:", item)
     return (
       <TouchableOpacity
         style={{
           backgroundColor:
-            selectedCustomer?.name === name
+            selectedCustomer?.fullname === fullname
               ? 'rgba(50, 34, 198, 0.10)'
               : color.lightGray,
           padding: 15,
@@ -57,16 +47,14 @@ const CustomerList = ({navigation}) => {
               shadowRadius: 4,
             },
             android: {
-              //   shadowColor: "red",
               shadowColor: 'rgba(50, 34, 198, 0.1)',
-              //   shadowColor: "rgba(0,0,0, 0.5)",
               elevation: 5,
             },
           }),
         }}
         onPress={() => setSelectedCustomer(item)}>
-        <Text style={{fontSize: 20, fontWeight: '500'}}>{name}</Text>
-        <Text style={{fontSize: 18, color: color.gray}}>{_tin}</Text>
+        <Text style={{fontSize: 20, fontWeight: '500'}}>{fullname}</Text>
+        <Text style={{fontSize: 18, color: color.gray}}>{tin}</Text>
       </TouchableOpacity>
     );
   };
@@ -92,7 +80,7 @@ const CustomerList = ({navigation}) => {
       <Button
         theme={'secondary'}
         label={'Add new Customer'}
-        onPress={() => navigation.navigate('')}
+        onPress={() => navigation.navigate('Setting', {screen: 'AddCustomer'})}
       />
       <View
         style={{flex: 1, borderTopWidth: 2, borderTopColor: 'rgba(0,0,0,0.2)'}}>
@@ -105,7 +93,7 @@ const CustomerList = ({navigation}) => {
           }}
           data={customers}
           renderItem={renderItem}
-          keyExtractor={item => item._tin}
+          keyExtractor={item => item._id}
         /> : null}
       </View>
     </View>
