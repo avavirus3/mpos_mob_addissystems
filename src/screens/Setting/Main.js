@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Switch, ScrollView,Modal,Pressable,Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { scale, verticalScale } from 'react-native-size-matters'
 import { theme } from '../../styles/stylesheet'
 //import { ScrollView } from "react-native";
@@ -8,6 +8,7 @@ import { Iconify } from 'react-native-iconify'
 import useFetchRealm from '../../hooks/customHooks/useFetchRealm'
 import { useFocusEffect } from '@react-navigation/native'
 import i18n  from '../../language/i18n';
+import realm from '../../database'
 
 const Main = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(true)
@@ -17,7 +18,24 @@ const Main = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
   const {data:profiledata,pending:pendingprofile} = useFetchRealm({uri:"MyProfileData",id:457})
-
+   
+  useEffect(()=>
+    realm.write(() => {
+      try{realm.create('MyProfileData', {
+        _id:457,
+        fullname:"fullname",
+        email:"email",
+        phonecode:'+251',
+        phone:"25485664",
+        tin:"558228",
+        organization:'Abc plc'
+      });
+      console.log("save")
+  }catch(e){console.log(e)}
+  
+  })
+  ,[])
+  
   return (
     <View style={{flex: 1,backgroundColor:"white"}}>
       <Modal
@@ -96,7 +114,7 @@ const Main = ({navigation}) => {
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
-                 source={{ uri:pendingimage?"https://randomuser.me/api/portraits/women/93.jpg":imgdata?.uri }}
+                 source={{ uri:(pendingimage|!imgdata)?"https://randomuser.me/api/portraits/women/93.jpg":imgdata?.uri }}
                 style={{
                   height: 64,
                   width: 64,

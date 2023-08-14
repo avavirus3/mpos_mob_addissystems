@@ -68,8 +68,9 @@ const Profile = ({ navigation }) => {
           alignItems: 'center',
           //paddingVertical:-10
         }}>
+          {console.log(imgdata?imgdata.uri:"https://randomuser.me/api/portraits/women/93.jpg") }
         <Image
-          source={{ uri:pendingimage?"https://randomuser.me/api/portraits/women/93.jpg":imgdata?.uri }}
+          source={{ uri:(pendingimage)?"https://randomuser.me/api/portraits/women/93.jpg":(imgdata?imgdata.uri:"https://randomuser.me/api/portraits/women/93.jpg") }}
           style={{
             height: 131,
             width: 131,
@@ -81,23 +82,23 @@ const Profile = ({ navigation }) => {
             //marginBottom:20
           }}
         />
-        <View style={{ marginVertical: 20,height:verticalScale(27) }}><Text style={styles.boldMd}>{profdata?.organization}</Text></View>
+        <View style={{ marginVertical: 20,height:verticalScale(27) }}><Text style={styles.boldMd}>{profdata?profdata.organization:"ABC Plc"}</Text></View>
         <View style={{ paddingHorizontal: 0,  marginLeft: -54 ,}}>
         <View style={{ flexDirection: "row",height:verticalScale(27) }}>
         <Iconify icon='mdi:person-outline' size={20} color={theme.color.blue} />
-        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?.fullname}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?profdata.fullname:'abebe'}</Text></View>
         <View style={{ flexDirection: "row"  ,height:verticalScale(27) }}>
         <Iconify icon='clarity:email-line' size={20}  color={theme.color.blue}/>
-        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?.email}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?profdata.email:'abc@gmail.com'}</Text></View>
         <View style={{ flexDirection: "row",height:verticalScale(27)  }}>
         <Iconify icon='tabler:phone' size={20}  color={theme.color.blue}/>
-        <Text style={{paddingHorizontal:10,fontSize:20,height:verticalScale(27)}}>{profdata?.phonecode+" "+profdata?.phone}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20,height:verticalScale(27)}}>{profdata?(profdata?.phonecode+" "+profdata?.phone):"+2518254558"}</Text></View>
         <View style={{ flexDirection: "row",height:verticalScale(27) }}>
         <Iconify icon='carbon:license' size={20}  color={theme.color.blue}/>
-        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?.license}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?profdata.license:'762345'}</Text></View>
         <View style={{ flexDirection: "row", height:verticalScale(27),marginBottom:20  }}>
         <Iconify icon='pepicons-pencil:bulletin-notice' size={20} color={theme.color.blue} />
-        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?.tin}</Text></View>
+        <Text style={{paddingHorizontal:10,fontSize:20}}>{profdata?profdata.tin:'65432345'}</Text></View>
         </View>
       </View>
     </View>

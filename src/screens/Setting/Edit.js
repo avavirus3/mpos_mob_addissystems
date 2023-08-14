@@ -31,7 +31,7 @@ const Edit = ({ navigation }) => {
   const [tin, setTin] = useState('');
   const[profdata,setProfdata]=useState('');
   const [phoneCode, setPhoneCode] = useState()
-  const[imgUri, setImgUri] = useState("https://randomuser.me/api/portraits/men/6.jpg")
+  const[imgUri, setImgUri] = useState("https://randomuser.me/api/portraits/women/93.jpg")
   const getData= ()=>{
 
     const profile = realm.objects('MyProfileData').filtered('_id == 457');
