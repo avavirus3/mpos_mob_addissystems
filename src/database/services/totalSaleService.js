@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import realm from '../index';
 
-export const getTotalSaleAmount = async () => {
+export const getTotalSaleAmount =  () => {
 
   const totalSale = realm.objects('Total_Sale')[0];
   if (totalSale) {

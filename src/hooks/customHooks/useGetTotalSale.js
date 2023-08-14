@@ -10,7 +10,7 @@ const useGetTotalSale = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getTotalSaleFromRealm = async () => {
+    const getTotalSaleFromRealm = () => {
       try {
         const saleAmount = getTotalSaleAmount();
         setTotalSale(saleAmount);
