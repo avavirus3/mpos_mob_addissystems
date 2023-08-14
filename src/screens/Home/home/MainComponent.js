@@ -28,7 +28,7 @@ const MainComponent = ({
       />
 
       {/* Product List */}
-      <KeyboardAvoidingView behavior="padding" >
+      <KeyboardAvoidingView style={{flex: 1}} behavior="padding" >
         <FlatList
           nestedScrollEnabled
           columnWrapperStyle={{
@@ -39,7 +39,7 @@ const MainComponent = ({
           contentContainerStyle={{
             marginTop: 10,
             gap: 15,
-            paddingBottom: 80,
+            paddingBottom: 20,
             borderWidth: 0,
             borderColor: 'red',
             animated: true,
@@ -57,13 +57,15 @@ const MainComponent = ({
           }
           numColumns={2}
           renderItem={({item}) => (
-            <ProductCard
+            <View style={{flex: 1, maxWidth: '50%'}}>
+              <ProductCard
               item={item}
               handleQtyDecrement={handleQtyDecrement}
               handleQtyIncrement={handleQtyIncrement}
               handleQuantityInput={handleQuantityInput}
               handleEventOnBlur={handleEventOnBlur}
             />
+            </View>
           )}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}

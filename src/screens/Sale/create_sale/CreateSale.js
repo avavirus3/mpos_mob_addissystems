@@ -35,7 +35,7 @@ const CreateSale = ({route}) => {
   const navigation = useNavigation();
   const incomingData = route.params;
   const [passedData, setPassedData] = useState([]);
-  const [customer, setCustomer] = useState({name: 'Guest'});
+  const [customer, setCustomer] = useState({fullname: 'Guest'});
   const [incomingDraftIndex, setIncomingDraftIndex] = useState(null);
   const [transactionModal, setTransactionModal] = useState(false);
   const [draftModal, setDraftModal] = useState(false);

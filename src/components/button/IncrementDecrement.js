@@ -15,14 +15,14 @@ const IncrementDecrement = ({
     <View
       style={{
         flex: 1,
-        // width: '100%',
         flexDirection: 'row',
         height: 47,
         alignItems: 'center',
         justifyContent: 'space-around',
         backgroundColor: color.lightBlue,
         borderRadius: 10,
-        marginVertical: 15,
+        marginTop: 15,
+        marginBottom: 10,
         paddingHorizontal: 10,
       }}>
       <TouchableOpacity

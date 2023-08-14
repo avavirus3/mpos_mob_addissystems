@@ -6,24 +6,25 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
-import SellProductTopBar from '../../../components/top_navigation/SellProductTopBar';
 import SearchBar from '../../../components/search/SearchBar';
 import ProductCard from '../../../components/card/ProductCard';
-import CategoryHead from '../../../components/selector/CategoryHead'
+import CategoryHead from '../../../components/selector/CategoryHead';
 import Toast from 'react-native-toast-message';
 import {useSelector, useDispatch} from 'react-redux';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
 import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
+import DecisionModal from '../../../components/modal/DecisionModal';
 
 const AllProducts = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
   const [CurrentProduct, setCurrentProduct] = useState('All');
-  const realmItemList = useGetRealmData("Items");
+  const realmItemList = useGetRealmData('Items');
   const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
   const [search, setSearch] = useState('');
+  const [decisionModal, setDecisionModal] = useState(true);
 
-  console.log("realmItemList of SelectProduct:", realmItemList)
+  console.log('realmItemList of SelectProduct:', realmItemList);
 
   useEffect(() => {
     const newZeroItems = PRODUCT_DATA.slice().map(
@@ -36,7 +37,7 @@ const AllProducts = ({navigation}) => {
           image: item.image,
           category: item.category,
         },
-    ); 
+    );
     setInitialZeroQtyItems(newZeroItems);
   }, []);
 
@@ -123,13 +124,33 @@ const AllProducts = ({navigation}) => {
     }
   };
 
+  function handleModalAccept() {
+    console.log('Accepted!');
+  }
+
+  function handleModalReject() {
+    console.log('Deny!');
+  }
+
   /* Main Return */
   return (
     <View style={styles.mainContainer}>
+      {/* Are you sure Modal */}
+      <DecisionModal
+        modalVisibility={decisionModal}
+        setModalVisibility={setDecisionModal}
+        modalParam={{
+          message: 'Are you sure?',
+          accept: 'Yes',
+          reject: 'No',
+          handleAccept: handleModalAccept,
+          handleReject: handleModalReject,
+        }}
+      />
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <>
           {/* Top Heading Component  */}
-          <TopNavigationBar backIcon middleLabel={"All Products"} thirdIcon />
+          <TopNavigationBar backIcon middleLabel={'All Products'} thirdIcon />
 
           {/* Category Selector  */}
           <CategoryHead
@@ -167,13 +188,16 @@ const AllProducts = ({navigation}) => {
             }
             numColumns={2}
             renderItem={({item}) => (
-              <ProductCard
-                item={item}
-                handleQtyDecrement={handleQtyDecrement}
-                handleQtyIncrement={handleQtyIncrement}
-                handleQuantityInput={handleQuantityInput}
-                handleEventOnBlur={handleEventOnBlur}
-              />
+              <View style={{flex: 1, maxWidth: '50%'}}>
+                <ProductCard
+                  item={item}
+                  handleQtyDecrement={handleQtyDecrement}
+                  handleQtyIncrement={handleQtyIncrement}
+                  handleQuantityInput={handleQuantityInput}
+                  handleEventOnBlur={handleEventOnBlur}
+                  editMode
+                />
+              </View>
             )}
             keyExtractor={item => item._id}
             showsVerticalScrollIndicator={false}

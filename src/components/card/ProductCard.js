@@ -1,12 +1,11 @@
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import {color, textStyles} from '../../styles/Styles';
 import IncrementDecrement from '../button/IncrementDecrement';
 import FastImage from 'react-native-fast-image';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import EditDeleteBtn from '../button/EditDeleteBtn';
 
 const noImage = '../../assets/images/no-image.jpg';
-const noImage2 = '../../assets/images/charger-1.jpg';
 
 const ProductCard = ({
   item,
@@ -14,25 +13,17 @@ const ProductCard = ({
   handleQtyIncrement,
   handleQuantityInput,
   handleEventOnBlur,
+  handleEditItem,
+  handleDeleteItem,
+  editMode,
 }) => {
   const {name, price, quantity, image, category, _id} = item;
-  // console.log('items to be Destructure:', item.image);
-  const imageCont = image;
   return (
-    <View
-      style={[
-        styles.productContainer,
-        // { borderW_th: 1, borderColor: "red" },
-      ]}
-      key={_id}>
+    <View style={[styles.productContainer, {}]} key={_id}>
       <View style={styles.imageContainer}>
-        {/* <Image
-          style={{height: '100%', width: '100%', resizeMode: 'cover'}}
-          source={imageCont}
-        /> */}
         <FastImage
           style={{height: '100%', width: '100%', resizeMode: 'cover'}}
-          source={{uri: image}}
+          source={image ? {uri: image} : require(noImage)}
         />
       </View>
       <View
@@ -40,7 +31,7 @@ const ProductCard = ({
           width: '100%',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingHorizontal: 15,
+          paddingHorizontal: 10,
         }}>
         <Text style={[textStyles.heading_normal, {textAlign: 'center'}]}>
           {name}
@@ -51,25 +42,23 @@ const ProductCard = ({
           <Text style={styles.priceText}>{price}</Text>
           <Text style={styles.priceText}> ETB</Text>
         </View>
-        <IncrementDecrement
-          id={_id}
-          qty={quantity}
-          handleEventOnBlur={handleEventOnBlur}
-          handleQtyDecrement={handleQtyDecrement}
-          handleQtyIncrement={handleQtyIncrement}
-          handleQuantityInput={handleQuantityInput}
-        />
+        <View style={{flex: 1, width: '100%'}}>
+          <IncrementDecrement
+            id={_id}
+            qty={quantity}
+            handleEventOnBlur={handleEventOnBlur}
+            handleQtyDecrement={handleQtyDecrement}
+            handleQtyIncrement={handleQtyIncrement}
+            handleQuantityInput={handleQuantityInput}
+          />
+        </View>
+        {editMode && (
+          <EditDeleteBtn
+            handleEditItem={handleEditItem}
+            handleDeleteItem={handleDeleteItem}
+          />
+        )}
       </View>
-      {/* <View style={{borderWidth: 1}}>
-        <View style={{flexDirection: 'row', gap: 5}}>
-          <MaterialIcons name="edit" size={24} color={color.primary} />
-          <Text style={{fontSize: 16}}>Edit</Text>
-        </View>
-        <View style={{flexDirection: 'row', gap: 5}}>
-          <MaterialIcons name="edit" size={24} color={color.primary} />
-          <Text style={{fontSize: 16}}>Edit</Text>
-        </View>
-      </View> */}
     </View>
   );
 };
@@ -82,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.lightGray,
     borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    paddingBottom: 8,
     ...Platform.select({
       ios: {
         shadowColor: 'black',
