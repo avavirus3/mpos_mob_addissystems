@@ -17,7 +17,7 @@ const CustomerComponent = ({customer, setCustomer, navigation}) => {
     }}>
     {/* {console.log('Customer:', customer)} */}
     <Text style={{fontSize: 20, fontWeight: '600'}}>Customer</Text>
-    {customer?.name !== 'Guest' ? (
+    {customer?.fullname !== 'Guest' ? (
       <View
         style={{
           marginTop: 10,
@@ -29,13 +29,13 @@ const CustomerComponent = ({customer, setCustomer, navigation}) => {
           style={{gap: 5}}
           onPress={() => navigation.navigate('customer-list')}>
           <Text style={{fontSize: 18, fontWeight: '500'}}>
-            {customer?.name}
+            {customer?.fullname}
           </Text>
           <Text style={{fontSize: 18, color: color.gray}}>
-            {customer?._tin}
+            {customer?.tin}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setCustomer({name: 'Guest'})}>
+        <TouchableOpacity onPress={() => setCustomer({fullname: 'Guest'})}>
           <Ionicons name="trash" size={30} color={color.primary} />
         </TouchableOpacity>
       </View>

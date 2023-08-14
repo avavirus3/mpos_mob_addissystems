@@ -12,13 +12,8 @@ import MainComponent from './MainComponent';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
-import {
-  getItems,
-  addItem,
-  updateItem,
-  deleteItem,
-} from '../../../database/services/itemServices';
 import useGetItems from '../../../hooks/customHooks/useGetItems';
+import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 
 const Home = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
@@ -42,11 +37,9 @@ const Home = ({navigation}) => {
     );
 
     setInitialZeroQtyItems(newZeroItems);
-
-    // getDatafromRealm();
   }, [PRODUCT_DATA]);
 
-  console.log('Realm List List Data:', realmItemList); 
+  // console.log('Realm List List Data:', realmItemList); 
   // console.log('PRODUCT ITEM:', PRODUCT_DATA); 
   // console.log('initial Zero Item:', initialZeroQtyItems);
 
@@ -119,9 +112,6 @@ const Home = ({navigation}) => {
       setInitialZeroQtyItems([...initialZeroQtyItems]);
     }
   };
-
-  
-  console.log("selectedProducts:", selectedProducts)
 
   const handleMakeSale = () => {
     if (selectedProducts.length > 0) {

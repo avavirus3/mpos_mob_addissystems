@@ -13,7 +13,7 @@ import numberFormater from '../../../utilities/numberFormater/numberFormater';
 
 const HomeHeading = ({navigation, user, sale}) => {
   const TOTAL_SALE_AMOUNT = useGetTotalSale();
-  const FORMATED_TOTAL_SALE =numberFormater(TOTAL_SALE_AMOUNT)
+  const FORMATED_TOTAL_SALE = numberFormater(TOTAL_SALE_AMOUNT)
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
