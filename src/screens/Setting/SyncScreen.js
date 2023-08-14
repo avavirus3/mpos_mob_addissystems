@@ -29,6 +29,8 @@ const SyncScreen = ({navigation}) => {
             <View>
                 <Text>Total</Text>
             </View>
+            <View><Text>Synced</Text></View>
+            <View><Text>Unsynced</Text></View>
         </View>
       </View>
     </View>
