@@ -9,9 +9,9 @@ const ProductStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="main">
-      <Stack.Screen name="main" component={AllProducts} />
-      {/* <Stack.Screen name="main" component={AddProduct} /> */}
+      initialRouteName="all-product">
+      <Stack.Screen name="all-product" component={AllProducts} />
+      <Stack.Screen name="add-product" component={AddProduct} />
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );

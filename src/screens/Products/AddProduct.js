@@ -3,8 +3,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Image,
-  TextInput,
+  StyleSheet
 } from 'react-native';
 import React, {useState} from 'react';
 import {color, containerStyles} from '../../styles/Styles';
@@ -14,6 +13,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import FastImage from 'react-native-fast-image';
 import * as ImagePicker from 'react-native-image-picker';
 import Button from '../../components/button/Button';
@@ -24,8 +24,9 @@ import {setCHANGE} from '../../reduxToolkit/features/change/trackChangeSlice';
 import CustomModal from '../../components/modal/CustomModal';
 import SuccessFailModal from '../../components/modal/SuccessFailModal';
 import {resetTotalSale} from '../../database/services/totalSaleService';
+import IncrementDecrement from '../../components/button/IncrementDecrement';
 
-const AddProduct = () => {
+const AddProduct = ({navigation}) => {
   const dispatch = useDispatch();
   const realmItemData = useGetItems();
   const [productName, setProductName] = useState('');
@@ -44,9 +45,6 @@ const AddProduct = () => {
       return;
     }
     if (!result.canceled) {
-      // setImage(result.assets[0].uri);
-      const imageUri = result.assets[0].uri;
-      console.log('Uploaded', imageUri);
       setImagePath(result.assets[0].uri);
     }
   };
@@ -57,8 +55,10 @@ const AddProduct = () => {
 
     setShowModal(false);
     setSuccessModal(true);
+    console.log("Item Successfully Added!")
 
     setTimeout(() => {
+      navigation.navigate('all-product')
       setSuccessModal(false);
       setProductName(''),
         setId(''),
@@ -68,8 +68,6 @@ const AddProduct = () => {
         setImagePath('');
     }, 1300);
   };
-
-  console.log('Item Tobe Added:', itemTobeAdded);
 
   const handleAddItem = async () => {
     const newItem = {
@@ -82,29 +80,20 @@ const AddProduct = () => {
     };
 
     const hasEmptyValue = Object.values(newItem).some(value => value === '');
-    console.log('Has Empty Value:', hasEmptyValue);
-
-    console.log('NewItem:', newItem);
 
     try {
       const isItemAdded = realmItemData.find(
-        item => item._id == itemTobeAdded._id,
+        item => item._id == newItem._id,
       );
       if (!isItemAdded && !hasEmptyValue) {
         setItemTobeAdded(newItem);
         setShowModal(true);
-        console.log(`Item of ${itemTobeAdded.name} added Successfully!`);
-        // console.log('Items in Db:', realmItemData);
       } else {
-        console.log('The Item is Already Added!');
+        console.log('The Item ID is Already Added!');
       }
     } catch (err) {
       console.log('Unable to add the Item!', err);
     }
-    //
-    // if (!hasEmptyValue) {
-    //   setItemTobeAdded(newItem);
-    //   setShowModal(true);
   };
 
   const handleUpdateItem = async () => {
@@ -119,7 +108,7 @@ const AddProduct = () => {
         item => item._id == tobeUpdatedId,
       );
       if (itemsToUpdate) {
-        await updateItem(tobeUpdatedId, updatedData);
+         updateItem(tobeUpdatedId, updatedData);
         console.log('Item Updated!');
         console.log('Items in Db:', realmItemData);
         dispatch(setCHANGE('Changed!'));
@@ -162,7 +151,7 @@ const AddProduct = () => {
 
   return (
     <View style={containerStyles.mainContainer}>
-      <TopNavigationBar backIcon middleLabel={'Add Product'} />
+      <TopNavigationBar backIcon middleLabel={'Add Product'} onPressBack={() => navigation.goBack()} />
       <SuccessFailModal
         modalVisibility={succesModal}
         setModalVisibility={setSuccessModal}
@@ -232,42 +221,59 @@ const AddProduct = () => {
         }
       />
       <ScrollView style={{flex: 1}}>
-        <View style={{marginTop: 15, paddingHorizontal: 8, gap: 25}}>
+        <View style={{paddingHorizontal: 8, gap: 10}}>
           <CustomTextInput
+          label={"Product Name"}
             placeholder={'Product Name'}
             input={productName}
             setInput={setProductName}
-            icon={<AntDesign name={'tagso'} size={24} />}
+            icon={<AntDesign name={'tagso'} size={24} color={color.gray} />}
             autoCapitalize={'words'}
           />
           <CustomTextInput
+          label={"Product Description"}
+            placeholder={'Product Description'}
+            input={id}
+            setInput={setId}
+            icon={<Ionicons name="document-text-outline" size={24} color={color.gray} />}
+            keyboardType={'number-pad'}
+          />
+          <CustomTextInput
+          label={"Product ID"}
             placeholder={'ID'}
             input={id}
             setInput={setId}
-            icon={<Entypo name="text-document" size={24} color="black" />}
+            icon={<AntDesign name="idcard" size={24} color={color.gray} />}
             keyboardType={'number-pad'}
           />
           <CustomTextInput
-            placeholder={'Price'}
+          label={"Price"}
+            placeholder={'0.00'}
+            lastPlaceholder={"ETB"}
             input={price}
             setInput={setPrice}
-            icon={<FontAwesome name="money" size={24} color="black" />}
             keyboardType={'number-pad'}
           />
-          <CustomTextInput
+          {/* <CustomTextInput
             placeholder={'Quantity'}
             input={quantity}
             setInput={setQuantity}
-            icon={<Octicons name="number" size={24} color="black" />}
+            icon={<Octicons name="number" size={24} color={color.gray} />}
             keyboardType={'number-pad'}
-          />
-          <CustomTextInput
+          /> */}
+          {/* <CustomTextInput
             placeholder={'Category'}
             input={category}
             setInput={setCategory}
-            icon={<AntDesign name="menu-unfold" size={24} color="black" />}
+            icon={<AntDesign name="menu-unfold" size={24} color={color.gray} />}
             autoCapitalize={'words'}
-          />
+          /> */}
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10}}>
+            <Text>Available</Text>
+            <View>
+            <IncrementDecrement />
+            </View>
+          </View>
           <TouchableOpacity style={{}} onPress={handleAddImage}>
             {imagePath ? (
               <View style={{width: '100%', height: 200, paddingHorizontal: 10}}>
@@ -278,13 +284,7 @@ const AddProduct = () => {
               </View>
             ) : (
               <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: color.gray,
-                  paddingVertical: 25,
-                  borderRadius: 10,
-                }}>
+                style={styles.uploadImageContianer}>
                 <Entypo name="images" size={35} color="black" />
                 <Text style={{marginTop: 5, fontSize: 16}}>Upload Image</Text>
               </View>
@@ -296,7 +296,7 @@ const AddProduct = () => {
               label={'Add Product'}
               onPress={handleAddItem}
             />
-            <View style={{}}>
+            {/* <View style={{}}>
               <Button
                 theme={'secondary'}
                 label={'Update Existing'}
@@ -307,7 +307,7 @@ const AddProduct = () => {
                 label={'Reset Total Sale'}
                 onPress={handleResetTotalSale}
               />
-            </View>
+            </View> */}
           </View>
         </View>
       </ScrollView>
@@ -315,4 +315,16 @@ const AddProduct = () => {
   );
 };
 
+const styles = StyleSheet.create({
+  uploadImageContianer: {
+    width: 230,
+    minHeight: 150,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: color.lightGray,
+    paddingVertical: 25,
+    borderRadius: 10,
+  }
+})
 export default AddProduct;

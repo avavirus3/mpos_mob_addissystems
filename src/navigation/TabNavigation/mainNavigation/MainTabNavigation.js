@@ -1,5 +1,5 @@
 import {SafeAreaView} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -10,11 +10,39 @@ import HomeStack from '../../StackNavigation/homeStack/HomeStack';
 import SaleStack from '../../StackNavigation/saleStack/SaleStack';
 import Setting from '../../../screens/Setting/Setting';
 import SettingStack from '../../StackNavigation/settingStack/SettingStack';
+import {useDispatch, useSelector} from 'react-redux';
+import {setPRODUCT} from '../../../reduxToolkit/features/product/productListSlice';
+import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
+import { setCHANGE } from '../../../reduxToolkit/features/change/trackChangeSlice';
 
 const Tab = createBottomTabNavigator();
 
 // This is the Main Four Bottom Tab Navigations
 const MainTabNavigation = () => {
+  const realmItemData = useGetRealmData("Items")
+  const changeTracker = useSelector(state => state.change.change)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const newZeroItems = realmItemData
+      .slice()
+      .filter(filt => filt.quantity > 0)
+      .map(
+        item =>
+          item.quantity > 0 && {
+            name: item.name,
+            _id: item._id,
+            price: item.price,
+            quantity: 0,
+            image: item.image,
+            category: item.category,
+          },
+      );
+    console.log('Initial Render UseEffect Console!');
+    dispatch(setPRODUCT(newZeroItems));
+    dispatch(setCHANGE("Unchanged!"))
+  }, [changeTracker]);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Tab.Navigator

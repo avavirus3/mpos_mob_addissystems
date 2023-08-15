@@ -54,6 +54,7 @@ const ProductCard = ({
         </View>
         {editMode && (
           <EditDeleteBtn
+            id={_id}
             handleEditItem={handleEditItem}
             handleDeleteItem={handleDeleteItem}
           />
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
     maxWidth: 200,
     backgroundColor: color.lightGray,
     borderRadius: 10,
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 8,
     ...Platform.select({

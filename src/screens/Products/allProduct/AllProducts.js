@@ -12,19 +12,26 @@ import CategoryHead from '../../../components/selector/CategoryHead';
 import Toast from 'react-native-toast-message';
 import {useSelector, useDispatch} from 'react-redux';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
-import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import DecisionModal from '../../../components/modal/DecisionModal';
+import {deleteItem} from '../../../database/services/itemServices';
+import {setCHANGE} from '../../../reduxToolkit/features/change/trackChangeSlice';
+import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
+import LoadingActivityIndicator from '../../../components/loading/LoadingActivityIndicator';
+import CustomModal from '../../../components/modal/CustomModal';
+import LoadingModal from '../../../components/loading/LoadingModal';
 
 const AllProducts = ({navigation}) => {
+  const dispatch = useDispatch();
   const PRODUCT_DATA = useSelector(state => state.product.items);
-  const [CurrentProduct, setCurrentProduct] = useState('All');
   const realmItemList = useGetRealmData('Items');
+  const [CurrentProduct, setCurrentProduct] = useState('All');
   const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
   const [search, setSearch] = useState('');
-  const [decisionModal, setDecisionModal] = useState(true);
-
-  console.log('realmItemList of SelectProduct:', realmItemList);
+  const [decisionModal, setDecisionModal] = useState(false);
+  const [itemIdTobeEdited, setItemIdTobeEdited] = useState(null);
+  const [loadingModal, setLoadingModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(true);
 
   useEffect(() => {
     const newZeroItems = PRODUCT_DATA.slice().map(
@@ -39,7 +46,23 @@ const AllProducts = ({navigation}) => {
         },
     );
     setInitialZeroQtyItems(newZeroItems);
-  }, []);
+    // setIsDeleting(false)
+  }, [PRODUCT_DATA]);
+
+  useEffect(() => {
+    console.log('Second Dependent useEffect Rendered!');
+    if (itemIdTobeEdited !== null) {
+      const isItemDeleted = !initialZeroQtyItems.some(
+        item => item._id == itemIdTobeEdited,
+      );
+      console.log('selectedItemId:', itemIdTobeEdited);
+      console.log('isItemDeleted:', isItemDeleted);
+      isItemDeleted && setIsDeleting(false);
+      setTimeout(() => {
+        setLoadingModal(false)
+      },200)
+    }
+  }, [isDeleting, itemIdTobeEdited, realmItemList]);
 
   const handleQtyIncrement = id => {
     const Prev_Item_Qty = realmItemList.filter(
@@ -124,17 +147,42 @@ const AllProducts = ({navigation}) => {
     }
   };
 
+  console.log('isDeleting!', isDeleting);
+
   function handleModalAccept() {
-    console.log('Accepted!');
+    // Confirm Item Deletion!
+    const checkItem = realmItemList.some(item => item._id === itemIdTobeEdited);
+    if (checkItem) {
+      deleteItem(itemIdTobeEdited);
+      dispatch(setCHANGE('Changed!'));
+      setDecisionModal(false);
+      setLoadingModal(true);
+    } else {
+      console.log('The Item is not in the Database!');
+    }
   }
 
   function handleModalReject() {
-    console.log('Deny!');
+    // Cancel Item Deletion and clear the Id from the reserved!
+    setItemIdTobeEdited(null);
+    setDecisionModal(false);
+  }
+
+  function handleDeleteItem(id) {
+    // This will reserve the id for later delete the Item after the modal confirmation!
+    setItemIdTobeEdited(id);
+    setDecisionModal(true);
   }
 
   /* Main Return */
   return (
     <View style={styles.mainContainer}>
+      <LoadingModal
+        type={'success'}
+        modalVisibility={loadingModal}
+        setModalVisibility={setLoadingModal}
+        isLoading={isDeleting}
+      />
       {/* Are you sure Modal */}
       <DecisionModal
         modalVisibility={decisionModal}
@@ -150,7 +198,12 @@ const AllProducts = ({navigation}) => {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <>
           {/* Top Heading Component  */}
-          <TopNavigationBar backIcon middleLabel={'All Products'} thirdIcon />
+          <TopNavigationBar
+            backIcon
+            middleLabel={'All Products'}
+            thirdIcon
+            onPressGo={() => navigation.navigate('add-product')}
+          />
 
           {/* Category Selector  */}
           <CategoryHead
@@ -196,6 +249,7 @@ const AllProducts = ({navigation}) => {
                   handleQuantityInput={handleQuantityInput}
                   handleEventOnBlur={handleEventOnBlur}
                   editMode
+                  handleDeleteItem={handleDeleteItem}
                 />
               </View>
             )}

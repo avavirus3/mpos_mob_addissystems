@@ -12,12 +12,11 @@ import MainComponent from './MainComponent';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
-import useGetItems from '../../../hooks/customHooks/useGetItems';
 import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 
 const Home = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
-  const realmItemList = useGetItems();
+  const realmItemList = useGetRealmData("Items");
   const [search, setSearch] = useState('');
   const [CurrentProduct, setCurrentProduct] = useState('All');
   const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
