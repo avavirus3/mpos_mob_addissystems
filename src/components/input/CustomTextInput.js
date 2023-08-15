@@ -15,15 +15,15 @@ const CustomTextInput = ({
 }) => {
   return (
     <View style={{}}>
-      <Text
+      {label && <Text
         style={{
           marginVertical: 5,
           marginLeft: 2,
           fontSize: 17,
           color: color.gray,
         }}>
-        {label ? label : 'label Here'}
-      </Text>
+        {label}
+      </Text>}
       <View
         style={[
           style,

@@ -3,7 +3,9 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Touchable,
+  FlatList,
 } from 'react-native';
 import React, {useState} from 'react';
 import {color, containerStyles} from '../../styles/Styles';
@@ -11,8 +13,6 @@ import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
 import CustomTextInput from '../../components/input/CustomTextInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FastImage from 'react-native-fast-image';
 import * as ImagePicker from 'react-native-image-picker';
@@ -25,6 +25,7 @@ import CustomModal from '../../components/modal/CustomModal';
 import SuccessFailModal from '../../components/modal/SuccessFailModal';
 import {resetTotalSale} from '../../database/services/totalSaleService';
 import IncrementDecrement from '../../components/button/IncrementDecrement';
+import CustomDropDown from '../../components/input/CustomDropDown';
 
 const AddProduct = ({navigation}) => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const AddProduct = ({navigation}) => {
   const [showModal, setShowModal] = useState(false);
   const [itemTobeAdded, setItemTobeAdded] = useState({});
   const [succesModal, setSuccessModal] = useState(false);
+  const [isDroped, setIsDroped] = useState(false);
 
   const handleAddImage = async () => {
     const result = await ImagePicker.launchImageLibrary();
@@ -55,10 +57,10 @@ const AddProduct = ({navigation}) => {
 
     setShowModal(false);
     setSuccessModal(true);
-    console.log("Item Successfully Added!")
+    console.log('Item Successfully Added!');
 
     setTimeout(() => {
-      navigation.navigate('all-product')
+      navigation.navigate('all-product');
       setSuccessModal(false);
       setProductName(''),
         setId(''),
@@ -82,9 +84,7 @@ const AddProduct = ({navigation}) => {
     const hasEmptyValue = Object.values(newItem).some(value => value === '');
 
     try {
-      const isItemAdded = realmItemData.find(
-        item => item._id == newItem._id,
-      );
+      const isItemAdded = realmItemData.find(item => item._id == newItem._id);
       if (!isItemAdded && !hasEmptyValue) {
         setItemTobeAdded(newItem);
         setShowModal(true);
@@ -108,7 +108,7 @@ const AddProduct = ({navigation}) => {
         item => item._id == tobeUpdatedId,
       );
       if (itemsToUpdate) {
-         updateItem(tobeUpdatedId, updatedData);
+        updateItem(tobeUpdatedId, updatedData);
         console.log('Item Updated!');
         console.log('Items in Db:', realmItemData);
         dispatch(setCHANGE('Changed!'));
@@ -151,7 +151,11 @@ const AddProduct = ({navigation}) => {
 
   return (
     <View style={containerStyles.mainContainer}>
-      <TopNavigationBar backIcon middleLabel={'Add Product'} onPressBack={() => navigation.goBack()} />
+      <TopNavigationBar
+        backIcon
+        middleLabel={'Add Product'}
+        onPressBack={() => navigation.goBack()}
+      />
       <SuccessFailModal
         modalVisibility={succesModal}
         setModalVisibility={setSuccessModal}
@@ -220,10 +224,10 @@ const AddProduct = ({navigation}) => {
           </View>
         }
       />
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{flex: 1}} nestedScrollEnabled={true}>
         <View style={{paddingHorizontal: 8, gap: 10}}>
           <CustomTextInput
-          label={"Product Name"}
+            label={'Product Name'}
             placeholder={'Product Name'}
             input={productName}
             setInput={setProductName}
@@ -231,15 +235,21 @@ const AddProduct = ({navigation}) => {
             autoCapitalize={'words'}
           />
           <CustomTextInput
-          label={"Product Description"}
+            label={'Product Description'}
             placeholder={'Product Description'}
             input={id}
             setInput={setId}
-            icon={<Ionicons name="document-text-outline" size={24} color={color.gray} />}
+            icon={
+              <Ionicons
+                name="document-text-outline"
+                size={24}
+                color={color.gray}
+              />
+            }
             keyboardType={'number-pad'}
           />
           <CustomTextInput
-          label={"Product ID"}
+            label={'Product ID'}
             placeholder={'ID'}
             input={id}
             setInput={setId}
@@ -247,34 +257,30 @@ const AddProduct = ({navigation}) => {
             keyboardType={'number-pad'}
           />
           <CustomTextInput
-          label={"Price"}
+            label={'Price'}
             placeholder={'0.00'}
-            lastPlaceholder={"ETB"}
+            lastPlaceholder={'ETB'}
             input={price}
             setInput={setPrice}
             keyboardType={'number-pad'}
           />
-          {/* <CustomTextInput
-            placeholder={'Quantity'}
-            input={quantity}
-            setInput={setQuantity}
-            icon={<Octicons name="number" size={24} color={color.gray} />}
-            keyboardType={'number-pad'}
-          /> */}
-          {/* <CustomTextInput
-            placeholder={'Category'}
-            input={category}
-            setInput={setCategory}
-            icon={<AntDesign name="menu-unfold" size={24} color={color.gray} />}
-            autoCapitalize={'words'}
-          /> */}
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10}}>
-            <Text>Available</Text>
+
+          <CustomDropDown label={"Select Category"} data={["Mobile", "Vehicle", "Laptop", "Phone", "Fashion", "Mouse", "Camera"]} />
+
+          {/* Quantity handle Component */}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingHorizontal: 10,
+            }}>
+            <Text style={{fontSize: 20, fontWeight: '500'}}>Available</Text>
             <View>
-            <IncrementDecrement />
+              <IncrementDecrement />
             </View>
           </View>
-          <TouchableOpacity style={{}} onPress={handleAddImage}>
+          <TouchableOpacity style={{marginVertical: 10}} onPress={handleAddImage}>
             {imagePath ? (
               <View style={{width: '100%', height: 200, paddingHorizontal: 10}}>
                 <FastImage
@@ -283,8 +289,7 @@ const AddProduct = ({navigation}) => {
                 />
               </View>
             ) : (
-              <View
-                style={styles.uploadImageContianer}>
+              <View style={styles.uploadImageContianer}>
                 <Entypo name="images" size={35} color="black" />
                 <Text style={{marginTop: 5, fontSize: 16}}>Upload Image</Text>
               </View>
@@ -325,6 +330,6 @@ const styles = StyleSheet.create({
     backgroundColor: color.lightGray,
     paddingVertical: 25,
     borderRadius: 10,
-  }
-})
+  },
+});
 export default AddProduct;
