@@ -9,13 +9,21 @@ import {
   setPRODUCT,
 } from '../reduxToolkit/features/product/productListSlice';
 import { setCHANGE } from '../reduxToolkit/features/change/trackChangeSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import TopLevelStack from '../navigation/StackNavigation/TopLevelStack';
 
 const InitialRender = () => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
   const changeTracker = useSelector(state => state.change.change)
   const dispatch = useDispatch();
+  const [loginState,setLoginState]=useState()
+  const readValue=async()=> {
+    const v = await AsyncStorage.getItem("User");
+    setLoginState(v);
+  }
 
   useEffect(() => {
+    readValue();
     const getDatafromRealm =  () => {
       try {
         const items = getItems();
@@ -47,7 +55,7 @@ const InitialRender = () => {
 
 
 
-  return false ? <MainTabNavigation /> : <LoginStack />;
+  return <TopLevelStack />;
 };
 
 export default InitialRender;

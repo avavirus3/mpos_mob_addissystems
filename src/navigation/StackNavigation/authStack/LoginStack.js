@@ -1,7 +1,9 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LogIn from '../../../auth/login/LogIn';
 import WelcomeScreen from '../../../screens/Auth/WelcomeScreen';
+import LogIn from '../../../screens/Auth/LogIn';
+import SignUp from '../../../screens/Auth/SignUp';
+import ForgotPassword from '../../../screens/Auth/ForgotPassword';
 const Stack = createNativeStackNavigator();
 
 const LoginStack = () => {
@@ -10,6 +12,11 @@ const LoginStack = () => {
       screenOptions={{headerShown: false}}
     >
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen name="LogIn" component={LogIn} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+
+      
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );

@@ -16,7 +16,7 @@ import {LinearTextGradient} from 'react-native-text-gradient';
 import {scale, verticalScale} from 'react-native-size-matters';
 
 const WelcomeScreen = ({navigation}) => {
-  const [timeLeft, setTimeLeft] = useState(4);
+  const [timeLeft, setTimeLeft] = useState(2);
   const intialBg = require('../../assets/images/welcomebg.png');
   const finalBg = require('../../assets/images/loginbg.png');
   console.log(timeLeft);
@@ -27,8 +27,8 @@ const WelcomeScreen = ({navigation}) => {
     // save intervalId to clear the interval when the
     // component re-renders
     const intervalId = setInterval(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
+      setTimeLeft(0);
+    }, 2000);
 
     // clear interval on re-render to avoid memory leaks
     return () => clearInterval(intervalId);
@@ -46,6 +46,8 @@ const WelcomeScreen = ({navigation}) => {
         backgroundColor: '#fff',
       }}
       source={timeLeft ? intialBg : finalBg}>
+        <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.0)" barStyle="light-content" />
+
         <View style={[{alignItems:'center',},timeLeft?{marginTop:verticalScale(-154)}:{}]}>
       <Image
         source={require('../../assets/images/logowithname.png')}
@@ -67,7 +69,7 @@ const WelcomeScreen = ({navigation}) => {
         <Text style={{color: 'white', fontWeight: '600'}}>Version 1.0.0</Text>
       </View>:<View style={{alignItems: 'center',width:'100%',paddingHorizontal:scale(25) }}>
       <Pressable
-      onPress={()=>setTimeLeft(2)}
+      onPress={()=>navigation.navigate("LogIn")}
               style={{
                 width:'100%',
                 borderRadius: 10,
@@ -84,6 +86,7 @@ const WelcomeScreen = ({navigation}) => {
               </Text>
             </Pressable>
             <Pressable
+            onPress={()=>navigation.navigate("SignUp")}
               style={{
                 width:'100%',
                 borderRadius: 10,
