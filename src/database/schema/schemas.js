@@ -42,6 +42,8 @@ properties: {
   phone:'string',
   address:'string?',
   tin:'string?',
+  userid:'string?'
+  
 },
 primaryKey:'_id',
 }
@@ -49,9 +51,26 @@ export const Image={
 name:"Image",
 properties: {
   _id:'int',
+  userid:'string?',
  name:'string',
   type:'string',
   uri:'string',
 },
 primaryKey:'_id',
+}
+export const Profile={
+  name:"Profile",
+  properties:{
+    _id:'string',
+    fullname:'string',
+    password:'string',
+    email:'string?',
+    phone:'string?',
+    license:'string?',
+    organization:'string?',
+    tin:'string?',
+    phonecode:'string?',
+  },
+  primaryKey:'_id',
+  
 }

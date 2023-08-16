@@ -13,12 +13,26 @@ import {theme} from '../../styles/stylesheet';
 import {Iconify} from 'react-native-iconify';
 import {LinearTextGradient} from 'react-native-text-gradient';
 import {verticalScale, scale} from 'react-native-size-matters';
+import realm from '../../database';
+import useFetchRealm from '../../hooks/customHooks/useFetchRealm';
 
 const LogIn = ({navigation}) => {
   const [email, setEmail] = useState('')
+  const [incorrect, setIncorrect] = useState(false)
   const [password, setPassword] = useState('')
-  const onLogin=async()=>{
-    await AsyncStorage.setItem("User", true);
+  const onLogin=()=>{
+    const data=  realm.objects("Profile");
+  try{
+    let d=data.filter(d=>email==d.email)[0]
+  console.log(data.filter(d=>email==d.email)[0].password==password)
+  if(data.filter(d=>email==d.email)[0]==undefined||data.filter(d=>email==d.email)[0].password!=password)return setIncorrect(true)
+  if(data.filter(d=>email==d.email)[0].password==password)navigation.navigate("MainStack")
+
+}
+  catch(e){
+    console.log(e)
+  } 
+   
   }
   return (
     <View style={{backgroundColor: theme.color.white, flex: 1}}>
@@ -148,9 +162,12 @@ const LogIn = ({navigation}) => {
               />
             </View>
           </View>
-          <View style={{width:'100%',alignItems:'flex-end',paddingHorizontal:scale(8),marginTop:verticalScale(10)}}><Pressable onPress={()=>navigation.navigate("ForgotPassword")}><Text style={{color:theme.color.primary,fontSize:18,fontWeight:600}}>Forgot Password?</Text></Pressable></View>
+          <View style={{width:'100%',alignItems:'flex-start',justifyContent:'space-between',flexDirection:'row',paddingHorizontal:scale(8),marginTop:verticalScale(10)}}><Text style={{color:theme.color.primary,fontSize:18,fontWeight:600}}>{incorrect?"Incorrect Input":null}</Text><Pressable onPress={()=>navigation.navigate("ForgotPassword")}><Text style={{color:theme.color.primary,fontSize:18,fontWeight:600}}>Forgot Password?</Text></Pressable></View>
           <Pressable
-          onPress={()=>navigation.navigate("MainStack")}
+          onPress={()=>{
+            onLogin()
+           // navigation.navigate("MainStack")
+          }}
               style={{
                 borderRadius: 10,
                 backgroundColor: theme.color.primary,

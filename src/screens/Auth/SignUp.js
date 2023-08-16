@@ -6,7 +6,38 @@ import { LinearTextGradient } from 'react-native-text-gradient'
 import { Iconify } from 'react-native-iconify'
 import { phoneData } from '../../../data/phonedata'
 import PhoneCode from '../../components/modal/PhoneCode'
+import uuid from 'react-native-uuid';
+import realm from '../../database'
+
 const SignUp = ({navigation}) => {
+  const onSignUp=()=>{
+    let id=uuid.v4()
+      console.log("Profile",{
+        _id:id,
+        fullname:fullname,
+        email:email,
+        phone:phoneNumber,
+        license:license,
+        organization:organization,
+        tin:tin,
+        password:password,
+        phonecode:phoneCode.dial_code,
+        
+      })
+      return realm.write(()=>realm.create("Profile",{
+        _id:id,
+        fullname:fullname,
+        email:email,
+        phone:phoneNumber,
+        license:license,
+        organization:organization,
+        tin:tin,
+        password:password,
+        phonecode:phoneCode.dial_code,
+        
+      }))
+
+  }
   const [phoneModal, setPhoneModal] = useState(false);
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
@@ -132,8 +163,8 @@ const SignUp = ({navigation}) => {
                 color={"#cacaca"}
               />
               <TextInput
-              value={password}
-              onChangeText={(text)=>setPassword(text)}
+              value={email}
+              onChangeText={(text)=>setEmail(text)}
                 style={{
                   fontSize: 18,
                   flex: 1,
@@ -269,12 +300,13 @@ const SignUp = ({navigation}) => {
                     >
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             {<phoneCode.Flag />}
-                            <Text style={{ fontSize: 18, paddingLeft: 9 }}>{phoneCode.dial_code}</Text>
+                            <Text style={{ fontSize: 18, paddingLeft: 9, }}>{phoneCode.dial_code}</Text>
                             <Iconify icon="mdi:menu-down" size={18} />
                         </View>
 
                         <TextInput
-                            style={{ fontSize: 18, alignItems: "center" }}
+                            style={{ flex:1,fontSize: 18, alignItems: "center" ,color:'black'}}
+                            keyboardType='numeric'
                             placeholderTextColor={theme.color.gray}
                             placeholder="911223344"
                         />
@@ -354,6 +386,7 @@ const SignUp = ({navigation}) => {
               />
               <TextInput
               value={license}
+              keyboardType='numeric'
               onChangeText={(text)=>setLicense(text)}
                 style={{
                   fontSize: 18,
@@ -397,6 +430,7 @@ const SignUp = ({navigation}) => {
               />
               <TextInput
               value={tin}
+              keyboardType='numeric'
               onChangeText={(text)=>setTin(text)}
                 style={{
                   fontSize: 18,
@@ -411,7 +445,10 @@ const SignUp = ({navigation}) => {
           </View>
           
           <Pressable
-          onPress={()=>navigation.navigate("OTP")}
+          onPress={()=>{
+            onSignUp()
+            //navigation.navigate("OTP")
+          }}
               style={{
                 borderRadius: 10,
                 backgroundColor: theme.color.primary,
