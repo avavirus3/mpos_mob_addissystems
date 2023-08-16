@@ -8,29 +8,40 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useState} from 'react';
-import {color, containerStyles} from '../../styles/Styles';
-import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
-import CustomTextInput from '../../components/input/CustomTextInput';
+import {color, containerStyles} from '../../../styles/Styles';
+import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
+import CustomTextInput from '../../../components/input/CustomTextInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FastImage from 'react-native-fast-image';
 import * as ImagePicker from 'react-native-image-picker';
-import Button from '../../components/button/Button';
-import useGetItems from '../../hooks/customHooks/useGetItems';
-import {addItem, updateItem} from '../../database/services/itemServices';
+import Button from '../../../components/button/Button';
+import useGetItems from '../../../hooks/customHooks/useGetItems';
+import {addItem, updateItem} from '../../../database/services/itemServices';
 import {useSelector, useDispatch} from 'react-redux';
-import {setCHANGE} from '../../reduxToolkit/features/change/trackChangeSlice';
-import CustomModal from '../../components/modal/CustomModal';
-import SuccessFailModal from '../../components/modal/SuccessFailModal';
-import {resetTotalSale} from '../../database/services/totalSaleService';
-import IncrementDecrement from '../../components/button/IncrementDecrement';
-import CustomDropDown from '../../components/input/CustomDropDown';
+import {setCHANGE} from '../../../reduxToolkit/features/change/trackChangeSlice';
+import CustomModal from '../../../components/modal/CustomModal';
+import SuccessFailModal from '../../../components/modal/SuccessFailModal';
+import {resetTotalSale} from '../../../database/services/totalSaleService';
+import IncrementDecrement from '../../../components/button/IncrementDecrement';
+import CustomDropDown from '../../../components/input/CustomDropDown';
+import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 
 const AddProduct = ({navigation}) => {
   const dispatch = useDispatch();
   const realmItemData = useGetItems();
+  const realmCategoryList = useGetRealmData('Category');
+  const [newInputData, setNewInputData] = useState({
+    name: null,
+    id: null,
+    desc: null,
+    price: null,
+    quantity: 0,
+    category: null,
+  });
   const [productName, setProductName] = useState('');
+  const [productDesc, setProductDesc] = useState('');
   const [id, setId] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -39,7 +50,9 @@ const AddProduct = ({navigation}) => {
   const [showModal, setShowModal] = useState(false);
   const [itemTobeAdded, setItemTobeAdded] = useState({});
   const [succesModal, setSuccessModal] = useState(false);
-  const [isDroped, setIsDroped] = useState(false);
+
+  // console.log('CategoryItemList:', realmCategoryList);
+  console.log('newInputData:', newInputData);
 
   const handleAddImage = async () => {
     const result = await ImagePicker.launchImageLibrary();
@@ -125,6 +138,31 @@ const AddProduct = ({navigation}) => {
     console.log('Total Sale Reseted!');
     dispatch(setCHANGE('Changed!'));
   };
+
+  function handleQuantityIncrement() {
+    setNewInputData({...newInputData, quantity: newInputData.quantity + 1});
+    console.log('handle Increment Pressed!');
+  }
+
+  function handleQuantityDecrement() {
+    setNewInputData({
+      ...newInputData,
+      quantity:
+        parseInt(newInputData.quantity) > 0 && newInputData.quantity - 1,
+    });
+    console.log('handle Decrement Pressed!');
+  }
+
+  function handleQuanitityInput(id, input) {
+    console.log('passed INput', input);
+    setNewInputData({...newInputData, quantity: input});
+    console.log('handleQuantityInput');
+  }
+
+  function handleQuantitiyInputOnBlur() {
+    setNewInputData({...newInputData, quantity: 0})
+    console.log('Input Blurred!');
+  }
 
   const ProductInfo = ({property, value}) => {
     return (
@@ -226,19 +264,24 @@ const AddProduct = ({navigation}) => {
       />
       <ScrollView style={{flex: 1}} nestedScrollEnabled={true}>
         <View style={{paddingHorizontal: 8, gap: 10}}>
+          {/* Custome Inputs */}
           <CustomTextInput
             label={'Product Name'}
             placeholder={'Product Name'}
-            input={productName}
-            setInput={setProductName}
+            input={newInputData.name}
+            setInput={input => {
+              setNewInputData({...newInputData, name: input});
+            }}
             icon={<AntDesign name={'tagso'} size={24} color={color.gray} />}
             autoCapitalize={'words'}
           />
           <CustomTextInput
             label={'Product Description'}
             placeholder={'Product Description'}
-            input={id}
-            setInput={setId}
+            input={newInputData.desc}
+            setInput={input => {
+              setNewInputData({...newInputData, desc: input});
+            }}
             icon={
               <Ionicons
                 name="document-text-outline"
@@ -246,13 +289,14 @@ const AddProduct = ({navigation}) => {
                 color={color.gray}
               />
             }
-            keyboardType={'number-pad'}
           />
           <CustomTextInput
             label={'Product ID'}
             placeholder={'ID'}
-            input={id}
-            setInput={setId}
+            input={newInputData.id}
+            setInput={input => {
+              setNewInputData({...newInputData, id: input});
+            }}
             icon={<AntDesign name="idcard" size={24} color={color.gray} />}
             keyboardType={'number-pad'}
           />
@@ -260,12 +304,23 @@ const AddProduct = ({navigation}) => {
             label={'Price'}
             placeholder={'0.00'}
             lastPlaceholder={'ETB'}
-            input={price}
-            setInput={setPrice}
+            input={newInputData.price}
+            setInput={input => {
+              setNewInputData({...newInputData, price: input});
+            }}
             keyboardType={'number-pad'}
           />
 
-          <CustomDropDown label={"Select Category"} data={["Mobile", "Vehicle", "Laptop", "Phone", "Fashion", "Mouse", "Camera"]} />
+          <CustomDropDown
+            label={'Select Category'}
+            data={
+              realmCategoryList.length > 0 &&
+              realmCategoryList?.map(item => item.name)
+            }
+            setSelected={input =>
+              setNewInputData({...newInputData, category: input})
+            }
+          />
 
           {/* Quantity handle Component */}
           <View
@@ -277,10 +332,18 @@ const AddProduct = ({navigation}) => {
             }}>
             <Text style={{fontSize: 20, fontWeight: '500'}}>Available</Text>
             <View>
-              <IncrementDecrement />
+              <IncrementDecrement
+                qty={newInputData.quantity}
+                handleQtyIncrement={handleQuantityIncrement}
+                handleQtyDecrement={handleQuantityDecrement}
+                handleQuantityInput={handleQuanitityInput}
+                handleEventOnBlur={handleQuantitiyInputOnBlur}
+              />
             </View>
           </View>
-          <TouchableOpacity style={{marginVertical: 10}} onPress={handleAddImage}>
+          <TouchableOpacity
+            style={{marginVertical: 10}}
+            onPress={handleAddImage}>
             {imagePath ? (
               <View style={{width: '100%', height: 200, paddingHorizontal: 10}}>
                 <FastImage

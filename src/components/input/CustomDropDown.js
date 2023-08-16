@@ -15,12 +15,17 @@ const CustomDropDown = ({data, label, setSelected}) => {
 
   return (
     <View>
-      {label && <Text style={{
-          marginVertical: 5,
-          marginLeft: 2,
-          fontSize: 17,
-          color: color.gray,
-        }}>{label}</Text>}
+      {label && (
+        <Text
+          style={{
+            marginVertical: 5,
+            marginLeft: 2,
+            fontSize: 17,
+            color: color.gray,
+          }}>
+          {label}
+        </Text>
+      )}
       <View
         style={{
           borderWidth: 1,
@@ -55,6 +60,8 @@ const CustomDropDown = ({data, label, setSelected}) => {
                       //   backgroundColor: color.lightGray,
                       paddingHorizontal: 10,
                       paddingVertical: 8,
+                      paddingTop: index === 0 ? 20 : 0,
+                      paddingBottom: index === data.length - 1 ? 20 : 13,
                     }}
                     onPress={() => handleOnPress(item)}>
                     <Text

@@ -34,7 +34,7 @@ export const textStyles = {
   text_normal: {
     fontSize: 19,
     color: color.black,
-    fontWeight: '500'
+    fontWeight: '500',
   },
 
   text_sm: {
@@ -48,16 +48,29 @@ export const textStyles = {
   },
 };
 
-
 export const containerStyles = {
   mainContainer: {
     flex: 1,
-    // paddingHorizontal: 12,
-    backgroundColor: "white",
-    borderColor: "red",
+    paddingHorizontal: 8,
+    backgroundColor: 'white',
+    borderColor: 'red',
   },
   bodyContainer: {
     flex: 1,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
   },
-}
+
+  shadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+};

@@ -36,7 +36,7 @@ const CustomTextInput = ({
             borderRadius: 10,
             paddingLeft: 15,
             paddingRight: 10,
-            paddingVertical: 8,
+            paddingVertical: 6,
           },
         ]}>
         {icon}

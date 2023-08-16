@@ -202,6 +202,7 @@ const AllProducts = ({navigation}) => {
             backIcon
             middleLabel={'All Products'}
             thirdIcon
+            onPressBack={() => navigation.goBack()}
             onPressGo={() => navigation.navigate('add-product')}
           />
 

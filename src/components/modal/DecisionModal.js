@@ -30,7 +30,7 @@ const DecisionModal = ({modalVisibility, setModalVisibility, modalParam}) => {
           <TouchableWithoutFeedback>
             <View style={styles.innerContainer}>
               <Text style={{textAlign: 'center', fontSize: 22, marginTop: 5}}>
-                {modalParam.message}
+                {modalParam?.message}
               </Text>
               <View style={{flexDirection: 'row', gap: 15, marginTop: 40}}>
                 <View style={{flex: 1}}>
@@ -38,7 +38,7 @@ const DecisionModal = ({modalVisibility, setModalVisibility, modalParam}) => {
                     theme={'primary'}
                     label={modalParam?.accept}
                     height={55}
-                    onPress={modalParam.handleAccept}
+                    onPress={modalParam?.handleAccept}
                   />
                 </View>
                 <View style={{flex: 1}}>
@@ -46,7 +46,7 @@ const DecisionModal = ({modalVisibility, setModalVisibility, modalParam}) => {
                     theme={'secondary'}
                     label={modalParam?.reject}
                     height={55}
-                    onPress={modalParam.handleReject}
+                    onPress={modalParam?.handleReject}
                   />
                 </View>
               </View>

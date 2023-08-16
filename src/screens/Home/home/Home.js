@@ -13,6 +13,7 @@ import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
 import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
+import { containerStyles } from '../../../styles/Styles';
 
 const Home = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
@@ -129,7 +130,7 @@ const Home = ({navigation}) => {
 
   /* Main Function Return */
   return (
-    <View style={styles.mainContainer}>
+    <View style={containerStyles.mainContainer}>
       <View style={{flex: 1, borderWidth: 0, borderColor: 'green'}}>
         {/* Search Bar */}
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
