@@ -59,7 +59,7 @@ const SignUp = ({navigation}) => {
             end={{x: 1, y: 0}}>
             <Text>M-POS</Text>
           </LinearTextGradient>
-          <Text style={{fontSize: 25, fontWeight: 600}}>Sign In</Text>
+          <Text style={{fontSize: 25, fontWeight: 600}}>Sign Up</Text>
           <View style={{ marginTop: verticalScale(15) }}>
             <Text
               style={{
@@ -411,7 +411,7 @@ const SignUp = ({navigation}) => {
           </View>
           
           <Pressable
-          onPress={()=>navigation.navigate("MainStack")}
+          onPress={()=>navigation.navigate("OTP")}
               style={{
                 borderRadius: 10,
                 backgroundColor: theme.color.primary,

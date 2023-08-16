@@ -8,7 +8,7 @@ import { phoneData } from '../../../data/phonedata'
 import PhoneCode from '../../components/modal/PhoneCode'
 
 
-const ForgotPassword = ({navigation}) => {
+const OTP = ({navigation}) => {
   const [phoneModal, setPhoneModal] = useState(false);
   const [phoneCode, setPhoneCode] = useState(phoneData.find((d)=>d.dial_code=="+251"))
   return (
@@ -53,51 +53,28 @@ const ForgotPassword = ({navigation}) => {
             end={{x: 1, y: 0}}>
             <Text>M-POS</Text>
           </LinearTextGradient>
-          <Text style={{fontSize: 25, fontWeight: 600}}>Forgot Password</Text>
+          <Text style={{fontSize: 25, fontWeight: 600}}>Enter OTP</Text>
           <View style={{width:'100%',alignItems:'center',paddingHorizontal:scale(20)}}>
-         <View style={{marginVertical:20}}><Text style={{fontSize:18,fontWeight:500}}>Please enter your Phone Number</Text></View>
+         <View style={{marginVertical:20}}><Text style={{fontSize:18,fontWeight:500}}>We have sent the code to your Phone Number</Text></View>
         <View style={{width:"100%"}}>
-        <View style={{ marginTop: verticalScale(15),width:'100%' }}>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            fontWeight: 500,
-                            height: 25,
-                            marginBottom: 6,
-                            color: theme.color.gray
-                        }}
-                    >
-                        Phone Number
-                    </Text>
-                    <Pressable
-                    onPress={()=>setPhoneModal(true)}
-                        style={{
-                          flexDirection: "row",
-                          width: "100%",
-                          borderRadius: 10,
-                          borderWidth: 1.5,
-                          borderColor: theme.color.blue,
-                          fontSize: 18,
-                          paddingLeft: 20,
-                          alignItems: "center",
-                        }}
-                    >
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            {<phoneCode.Flag />}
-                            <Text style={{ fontSize: 18, paddingLeft: 9 }}>{phoneCode.dial_code}</Text>
-                            <Iconify icon="mdi:menu-down" size={18} />
-                        </View>
-
-                        <TextInput
-                            style={{ fontSize: 18, alignItems: "center" }}
-                            placeholderTextColor={theme.color.gray}
-                            placeholder="911223344"
-                        />
-                    </Pressable>
-                </View>
+          <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
+          <View style={{borderWidth:1,borderColor:theme.color.blue,}}>
+    <TextInput style={styles.inputCode}  maxLength={1} keyboardType='numeric' />
+        </View>
+        <View style={{borderWidth:1,borderColor:theme.color.blue,}}>
+    <TextInput style={styles.inputCode}  maxLength={1} keyboardType='numeric' />
+        </View>
+        <View style={{borderWidth:1,borderColor:theme.color.blue,}}>
+    <TextInput style={styles.inputCode}  maxLength={1} keyboardType='numeric' />
+        </View>
+        <View style={{borderWidth:1,borderColor:theme.color.blue,}}>
+    <TextInput style={styles.inputCode}  maxLength={1} keyboardType='numeric' />
+        </View>
+          </View>
+        
         </View>
         <Pressable
-          onPress={()=>navigation.navigate("ResetPassword")}
+          onPress={()=>navigation.navigate("MainStack")}
               style={{
                 borderRadius: 10,
                 backgroundColor: theme.color.primary,
@@ -119,6 +96,14 @@ const ForgotPassword = ({navigation}) => {
   )
 }
 
-export default ForgotPassword
+export default OTP
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({inputCode:{
+  backgroundColor:'#F9F7F7',
+  //padding:0,
+  fontSize:40,
+  paddingHorizontal:verticalScale(20),
+  color:theme.color.blue,
+
+  
+}})
