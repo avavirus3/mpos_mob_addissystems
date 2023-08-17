@@ -34,6 +34,8 @@ const AddProduct = ({navigation}) => {
   const [showModal, setShowModal] = useState(false);
   const [itemTobeAdded, setItemTobeAdded] = useState({});
   const [succesModal, setSuccessModal] = useState(false);
+  const [succesFailModalMessage, setSuccessFailModalMessage] = useState('');
+  const [isFailModal, setIsFailModal] = useState(false);
   const [newInputData, setNewInputData] = useState({
     name: '',
     id: '',
@@ -93,6 +95,9 @@ const AddProduct = ({navigation}) => {
     dispatch(setCHANGE('Changed!'));
 
     setShowModal(false);
+
+    setSuccessFailModalMessage('Product Added Successfully!');
+    setIsFailModal(false);
     setSuccessModal(true);
     setTimeout(() => {
       navigation.navigate('all-product');
@@ -110,7 +115,14 @@ const AddProduct = ({navigation}) => {
       category: newInputData.category,
     };
 
-    if (!isFormFilled) {
+    const isIDtaken = realmItemData.find(item => item._id === newItem._id);
+
+    if (isIDtaken) {
+      console.log('ID is reserved in another Item');
+      setSuccessFailModalMessage('Item ID is Reserved!');
+      setIsFailModal(true);
+      setSuccessModal(true);
+    } else if (!isFormFilled && !isIDtaken) {
       try {
         setItemTobeAdded(newItem);
         setShowModal(true);
@@ -211,9 +223,10 @@ const AddProduct = ({navigation}) => {
         onPressBack={() => navigation.goBack()}
       />
       <SuccessFailModal
+        fail={isFailModal}
         modalVisibility={succesModal}
         setModalVisibility={setSuccessModal}
-        message={'Product Added Successfully!'}
+        message={succesFailModalMessage}
       />
       <CustomModal
         modalVisibility={showModal}
