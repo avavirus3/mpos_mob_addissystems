@@ -162,6 +162,10 @@ const AllProducts = ({navigation}) => {
     setDecisionModal(true);
   }
 
+  function handleEditItem() {
+    
+  }
+
   /* Main Return */
   return (
     <View style={containerStyles.mainContainer}>
@@ -239,6 +243,7 @@ const AllProducts = ({navigation}) => {
                   handleEventOnBlur={handleEventOnBlur}
                   editMode
                   handleDeleteItem={handleDeleteItem}
+                  handleEditItem={handleEditItem}
                 />
               </View>
             )}

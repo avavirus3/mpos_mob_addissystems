@@ -11,7 +11,6 @@ export const theme = {
     lightBlue: '#3222C61A',
     blue: "#3222C6",
     lighterGray:'#F9F7F7',
-    white:'#fff'
   },
 };
 export const color= {
