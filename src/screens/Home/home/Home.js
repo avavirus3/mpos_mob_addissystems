@@ -137,7 +137,7 @@ const Home = ({navigation}) => {
           {/* Heading Component */}
           <HomeHeading user={'Abebe Kebede'} sale={'50,000'} />
 
-          {false ? (
+          {0 ? (
             <InitialHomeComponent navigation={navigation} />
           ) : CurrentProduct.length > 0 ? (
             <MainComponent
