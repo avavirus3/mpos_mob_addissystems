@@ -20,9 +20,6 @@ const Draft = ({navigation}) => {
     }
   });
 
-  // console.log("data:", data);
-  // console.log("Local Draft:", localDraft);
-
   const SALES_INVOICE = [
     {
       name: 'Abebe Kebede',
@@ -76,7 +73,6 @@ const Draft = ({navigation}) => {
   ];
 
   const handleDraft = (index, item) => {
-    // console.log("item:", item)
     if (item.transaction_completed) {
       navigation.navigate('invoice-qr', {
         transaction_draft: data.draft[index],
@@ -89,8 +85,6 @@ const Draft = ({navigation}) => {
       });
     }
   };
-
-  console.log('Draft Data:', data.draft);
 
   const PAID_INVOICE = SALES_INVOICE.filter(
     invoice => invoice.status === 'Paid',
@@ -112,10 +106,7 @@ const Draft = ({navigation}) => {
     }
   };
 
-  //   console.log(PAID_INVOICE);
-
   const renderData = ({item, index}) => {
-    // console.log("Log Item", item);
     return (
       <TouchableOpacity
         style={{

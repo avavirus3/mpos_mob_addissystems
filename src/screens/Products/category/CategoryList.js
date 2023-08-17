@@ -27,21 +27,17 @@ const CategoryList = ({navigation}) => {
 
   const handleEditCategory = name => {
     const isThereTheCategory = categoryData.some(item => item.name === name);
-    console.log('isThere', isThereTheCategory);
     if (isThereTheCategory) {
       deleteCategory(name);
     }
-    console.log('Category name of:' + name + 'is Edited');
   };
 
   const handleDeleteCategory = name => {
     const isThereTheCategory = categoryData.some(item => item.name === name);
-    console.log('isThere', isThereTheCategory);
     if (isThereTheCategory) {
       setCategoryNameTobeDeleted(name);
       setDecisionModal(true);
     }
-    console.log('Category name of:' + name + 'is Deleted!');
   };
 
   function handleModalAccept() {

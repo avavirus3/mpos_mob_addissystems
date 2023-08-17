@@ -24,8 +24,6 @@ const SelectProduct = ({navigation}) => {
   const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
   const [search, setSearch] = useState('');
 
-  console.log("realmItemList of SelectProduct:", realmItemList)
-
   useEffect(() => {
     const newZeroItems = PRODUCT_DATA.slice().map(
       item =>
@@ -46,8 +44,6 @@ const SelectProduct = ({navigation}) => {
       item => item._id === id && item,
     )[0].quantity;
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
-
-    // console.log("Sale Item:", Prev_Item_Qty)
 
     if (Prev_Item_Qty - (Sale_Item.quantity + 1) >= 0) {
       Sale_Item.quantity += 1;
@@ -78,10 +74,8 @@ const SelectProduct = ({navigation}) => {
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
 
     if (Prev_Item_Qty - (Sale_Item.quantity + inputNum) >= 0) {
-      // console.log('Can be Deducted!');
       Sale_Item.quantity = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
-      // console.log("Item Can't Set!");
       Toast.show({
         type: 'error',
         text1: 'There Is No This Amount of Items',
@@ -97,7 +91,6 @@ const SelectProduct = ({navigation}) => {
 
   const handleEventOnBlur = id => {
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
-    // console.log('OnBlur Event Fired!');
     if (Sale_Item.quantity === '') {
       Sale_Item.quantity = 0;
       setInitialZeroQtyItems([...initialZeroQtyItems]);
@@ -107,13 +100,10 @@ const SelectProduct = ({navigation}) => {
   const selectedProducts = initialZeroQtyItems.filter(
     product => product.quantity > 0,
   );
-  // console.log("Selected Products:", selectedProducts);
 
   const selectedItemNumber = selectedProducts
     .map(item => item.quantity)
     .reduce((acc, cur) => acc + cur, 0);
-
-  // console.log(selectedItemNumber);
 
   const handleOnDone = () => {
     if (selectedProducts.length > 0) {

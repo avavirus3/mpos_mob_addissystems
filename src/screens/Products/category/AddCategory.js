@@ -48,7 +48,6 @@ const AddCategory = ({navigation}) => {
     }
   }
 
-  console.log('Category Data:', categoryData);
   return (
     <View style={containerStyles.mainContainer}>
       <SuccessFailModal

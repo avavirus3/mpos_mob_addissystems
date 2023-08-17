@@ -28,7 +28,6 @@ const SaleHome = ({navigation}) => {
     }
   }, [data]);
 
-  // console.log(draftNumber);
 
   const SALE_DATA = {
     Today: {

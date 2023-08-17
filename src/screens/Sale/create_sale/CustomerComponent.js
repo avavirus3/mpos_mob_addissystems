@@ -15,7 +15,6 @@ const CustomerComponent = ({customer, setCustomer, navigation}) => {
       paddingHorizontal: 20,
       // borderWidth: 1,
     }}>
-    {console.log('Customer:', customer)} 
     <Text style={{fontSize: 20, fontWeight: '600'}}>Customer</Text>
     {customer?.fullname !== 'Guest' ? (
       <View

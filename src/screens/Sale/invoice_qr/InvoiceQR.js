@@ -28,9 +28,6 @@ const InvoiceQR = ({navigation, route}) => {
   const [passedDiscount, setPassedDiscount] = useState(0)
   const incomingData = route.params;
 
-  // console.log("incoming Data:", incomingData) 
-  // console.log("recievedProductData:", recievedProductData)
-
   useEffect(() => { 
     try {
       setRecievedProductData(incomingData?.passedData);

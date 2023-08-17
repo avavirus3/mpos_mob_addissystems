@@ -38,7 +38,6 @@ const MainTabNavigation = () => {
             category: item.category,
           },
       );
-    console.log('Initial Render UseEffect Console!');
     dispatch(setPRODUCT(newZeroItems));
     dispatch(setCHANGE("Unchanged!"))
   }, [changeTracker]);

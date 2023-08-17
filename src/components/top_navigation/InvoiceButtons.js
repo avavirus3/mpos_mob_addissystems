@@ -13,7 +13,6 @@ import {color, textStyles, containerStyles} from '../../styles/Styles';
 
 const {width, height} = Dimensions.get('window');
 
-console.log(width);
 const InvoiceButtons = ({onSharePress, onPrintPress}) => {
   return (
     <View

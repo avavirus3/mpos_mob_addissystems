@@ -49,15 +49,6 @@ const AddProduct = ({navigation}) => {
   const isFormFilled = Object.values(newInputData).some(value => value == '');
 
   const handleAddImage = async () => {
-    // const result = await ImagePicker.launchImageLibrary();
-    // if (result.canceled) {
-    //   console.log('Not Canceled');
-    //   return;
-    // }
-    // if (!result.canceled) {
-    //   setNewInputData({...newInputData, image: result.assets[0].uri});
-    //   console.log('Not Canceled');
-    // }
 
     const resultObject = await ImagePicker.launchImageLibrary({
       mediaType: 'photo',
@@ -71,13 +62,8 @@ const AddProduct = ({navigation}) => {
       setNewInputData({...newInputData, image: uri});
     } else {
       // The user canceled the image selection
-      // console.log('Image selection canceled');
     }
 
-    // const resultObject = await ImageCropPicker.openPicker({
-    //   mediaType: 'photo',
-    //   cropping: true
-    // });
   };
 
   const imageUploadDAta = {
@@ -118,7 +104,6 @@ const AddProduct = ({navigation}) => {
     const isIDtaken = realmItemData.find(item => item._id === newItem._id);
 
     if (isIDtaken) {
-      console.log('ID is reserved in another Item');
       setSuccessFailModalMessage('Item ID is Reserved!');
       setIsFailModal(true);
       setSuccessModal(true);
@@ -127,11 +112,9 @@ const AddProduct = ({navigation}) => {
         setItemTobeAdded(newItem);
         setShowModal(true);
       } catch (err) {
-        // console.log('Unable to add the Item!', err);
+        console.log('Unable to add the Item!', err);
       }
-    } else {
-      // console.log('The Item ID is Already Added!');
-    }
+    } 
   };
 
   const handleUpdateItem = async () => {
@@ -147,26 +130,22 @@ const AddProduct = ({navigation}) => {
       );
       if (itemsToUpdate) {
         updateItem(tobeUpdatedId, updatedData);
-        // console.log('Item Updated!');
-        // console.log('Items in Db:', realmItemData);
         dispatch(setCHANGE('Changed!'));
       } else {
-        // console.log('Unable to get the Item! check The item in the Database!');
+        console.log('Unable to get the Item! check The item in the Database!');
       }
     } catch (err) {
-      // console.log('Error while updating Item:', err);
+      console.log('Error while updating Item:', err);
     }
   };
 
   const handleResetTotalSale = async () => {
     await resetTotalSale();
-    // console.log('Total Sale Reseted!');
     dispatch(setCHANGE('Changed!'));
   };
 
   function handleQuantityIncrement() {
     setNewInputData({...newInputData, quantity: newInputData.quantity + 1});
-    // console.log('handle Increment Pressed!');
   }
 
   function handleQuantityDecrement() {
@@ -175,13 +154,10 @@ const AddProduct = ({navigation}) => {
       quantity:
         parseInt(newInputData.quantity) > 0 && newInputData.quantity - 1,
     });
-    // console.log('handle Decrement Pressed!');
   }
 
   function handleQuanitityInput(id, input) {
-    // console.log('passed INput', input);
     setNewInputData({...newInputData, quantity: input});
-    // console.log('handleQuantityInput');
   }
 
   function handleQuantitiyInputOnBlur() {
@@ -189,7 +165,6 @@ const AddProduct = ({navigation}) => {
       ...newInputData,
       quantity: newInputData.quantity === '' ? 0 : newInputData.quantity,
     });
-    // console.log('Input Blurred!');
   }
 
   const ProductInfo = ({property, value}) => {

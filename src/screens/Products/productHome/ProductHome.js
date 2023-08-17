@@ -1,8 +1,8 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {color, containerStyles, textStyles} from '../../styles/Styles';
-import TopNavigationBar from '../../components/top_navigation/TopNavigationBar';
-import SearchBar from '../../components/search/SearchBar';
+import {color, containerStyles, textStyles} from '../../../styles/Styles';
+import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
+import SearchBar from '../../../components/search/SearchBar';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -10,7 +10,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 function ListItems({icon, listName, goTo, navigation}) {
   return (
     <TouchableOpacity
-      style={{flexDirection: 'row', alignItems: 'center', gap: 15, paddingVertical: 10}}
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 15,
+        paddingVertical: 10,
+      }}
       onPress={() => navigation.navigate(goTo)}>
       {icon}
       <Text style={textStyles.heading_normal}>{listName}</Text>

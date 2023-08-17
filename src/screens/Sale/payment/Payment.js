@@ -32,8 +32,6 @@ const Payment = ({navigation, route}) => {
   const [TrNumber, setTrNumber] = useState();
   const [successModal, setSuccessModal] = useState(false);
 
-  console.log("Incoming Data:", price_Amount)
-
   const handleRadioCheck = radio => {
     const pattern = /Bank|QR|Card/gi;
     setSelectedPaymentMethod(radio);

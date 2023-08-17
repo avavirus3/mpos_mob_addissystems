@@ -20,15 +20,12 @@ const CustomerList = ({navigation}) => {
   const customers = useGetRealmData('Customer');
   const [selectedCustomer, setSelectedCustomer] = useState([]);
 
-  console.log('Selected Customer:', selectedCustomer);
-
   const handleAddCustomer = () => {
     navigation.navigate('create-sale', {selected_Customer: selectedCustomer});
   };
 
   const renderItem = ({item}) => {
     const {fullname, tin, _id} = item;
-    console.log('Customer Destructuring:', item);
     return (
       <TouchableOpacity
         style={{

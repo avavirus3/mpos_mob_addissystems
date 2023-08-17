@@ -51,13 +51,10 @@ const AllProducts = ({navigation}) => {
   }, [PRODUCT_DATA]);
 
   useEffect(() => {
-    console.log('Second Dependent useEffect Rendered!');
     if (itemIdTobeEdited !== null) {
       const isItemDeleted = !initialZeroQtyItems.some(
         item => item._id == itemIdTobeEdited,
       );
-      console.log('selectedItemId:', itemIdTobeEdited);
-      console.log('isItemDeleted:', isItemDeleted);
       isItemDeleted && setIsDeleting(false);
       setTimeout(() => {
         setLoadingModal(false)
@@ -70,8 +67,6 @@ const AllProducts = ({navigation}) => {
       item => item._id === id && item,
     )[0].quantity;
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
-
-    // console.log("Sale Item:", Prev_Item_Qty)
 
     if (Prev_Item_Qty - (Sale_Item.quantity + 1) >= 0) {
       Sale_Item.quantity += 1;
@@ -102,10 +97,8 @@ const AllProducts = ({navigation}) => {
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
 
     if (Prev_Item_Qty - (Sale_Item.quantity + inputNum) >= 0) {
-      // console.log('Can be Deducted!');
       Sale_Item.quantity = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
-      // console.log("Item Can't Set!");
       Toast.show({
         type: 'error',
         text1: 'There Is No This Amount of Items',
@@ -121,7 +114,6 @@ const AllProducts = ({navigation}) => {
 
   const handleEventOnBlur = id => {
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
-    // console.log('OnBlur Event Fired!');
     if (Sale_Item.quantity === '') {
       Sale_Item.quantity = 0;
       setInitialZeroQtyItems([...initialZeroQtyItems]);
@@ -131,13 +123,10 @@ const AllProducts = ({navigation}) => {
   const selectedProducts = initialZeroQtyItems.filter(
     product => product.quantity > 0,
   );
-  // console.log("Selected Products:", selectedProducts);
 
   const selectedItemNumber = selectedProducts
     .map(item => item.quantity)
     .reduce((acc, cur) => acc + cur, 0);
-
-  // console.log(selectedItemNumber);
 
   const handleOnDone = () => {
     if (selectedProducts.length > 0) {
@@ -148,8 +137,6 @@ const AllProducts = ({navigation}) => {
     }
   };
 
-  console.log('isDeleting!', isDeleting);
-
   function handleModalAccept() {
     // Confirm Item Deletion!
     const checkItem = realmItemList.some(item => item._id === itemIdTobeEdited);
@@ -159,7 +146,7 @@ const AllProducts = ({navigation}) => {
       setDecisionModal(false);
       setLoadingModal(true);
     } else {
-      console.log('The Item is not in the Database!');
+      
     }
   }
 
