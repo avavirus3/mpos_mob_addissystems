@@ -3,7 +3,7 @@ import React from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { color } from '../../styles/Styles'
 
-const SuccessFailModal = ({modalVisibility = false, setModalVisibility, message, type}) => {
+const SuccessFailModal = ({modalVisibility = false, setModalVisibility, message, fail}) => {
   return (
     <Modal
         animationType="fade"
@@ -53,15 +53,15 @@ const SuccessFailModal = ({modalVisibility = false, setModalVisibility, message,
                       width: 70,
                       justifyContent: 'center',
                       alignItems: 'center',
-                      backgroundColor: type === 'fail'
+                      backgroundColor: fail
                         ? color.lightPrimary
                         : color.lightGreen,
                       borderRadius: 100,
                     }}>
                     <AntDesign
-                      name={type === 'fail' ? 'close' : 'check'}
+                      name={fail ? 'close' : 'check'}
                       size={45}
-                      color={type === 'fail' ? color.primary : color.green}
+                      color={fail ? color.primary : color.green}
                     />
                   </View>
                 </View>

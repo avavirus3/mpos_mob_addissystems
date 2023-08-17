@@ -9,8 +9,6 @@ const AllSales = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [selectedHead, setSelectedHead] = useState('Paid');
 
-  console.log(search);
-
   const SALES_INVOICE = [
     {
       name: 'Abebe Kebede',
@@ -89,8 +87,6 @@ const AllSales = ({navigation}) => {
         break;
     }
   };
-
-  //   console.log(PAID_INVOICE);
 
   const renderData = ({item}) => {
     const {name, time, qty, price, status} = item;

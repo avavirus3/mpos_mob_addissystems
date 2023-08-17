@@ -27,7 +27,7 @@ const HomeHeading = ({navigation, user, sale}) => {
           <Text style={textStyles.heading_bold}>Home</Text>
           <TouchableOpacity
             style={{borderWidth: 0, padding: 3}}
-            onPress={() => console.log('Navigate to Notification')}>
+            onPress={() => null}>
             <FontAwesome name="bell" size={24} color="black" />
             <View
               style={{

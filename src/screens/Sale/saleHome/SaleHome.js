@@ -6,7 +6,7 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
-import {color, textStyles} from '../../../styles/Styles';
+import { color, containerStyles, textStyles } from '../../../styles/Styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SearchBar from '../../../components/search/SearchBar';
@@ -28,7 +28,6 @@ const SaleHome = ({navigation}) => {
     }
   }, [data]);
 
-  // console.log(draftNumber);
 
   const SALE_DATA = {
     Today: {
@@ -47,8 +46,8 @@ const SaleHome = ({navigation}) => {
 
   /* Main Component Return */
   return (
-    <View style={styles.mainContainer}>
-      <View style={{paddingHorizontal: 0}}>
+    <View style={containerStyles.mainContainer}>
+      <View style={{}}>
         <TopNavigationBar
           backLabel={'Sale'}
           thirdIcon={true}
@@ -164,15 +163,6 @@ const SaleHome = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    paddingHorizontal: 12,
-    backgroundColor: 'white',
-    // paddingTop: 25,
-    // borderWidth: 1,
-    // alignSelf: 'center',
-    borderColor: 'red',
-  },
 });
 
 export default SaleHome;

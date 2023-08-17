@@ -6,23 +6,33 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
-import SellProductTopBar from '../../../components/top_navigation/SellProductTopBar';
 import SearchBar from '../../../components/search/SearchBar';
 import ProductCard from '../../../components/card/ProductCard';
-import CategoryHead from './CategoryHead';
+import CategoryHead from '../../../components/selector/CategoryHead';
 import Toast from 'react-native-toast-message';
 import {useSelector, useDispatch} from 'react-redux';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
-import {getItems} from '../../../database/services/itemServices';
-import useGetItems from '../../../hooks/customHooks/useGetItems';
+import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
+import DecisionModal from '../../../components/modal/DecisionModal';
+import {deleteItem} from '../../../database/services/itemServices';
+import {setCHANGE} from '../../../reduxToolkit/features/change/trackChangeSlice';
+import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
+import LoadingActivityIndicator from '../../../components/loading/LoadingActivityIndicator';
+import CustomModal from '../../../components/modal/CustomModal';
+import LoadingModal from '../../../components/loading/LoadingModal';
 import { containerStyles } from '../../../styles/Styles';
 
-const SelectProduct = ({navigation}) => {
+const AllProducts = ({navigation}) => {
+  const dispatch = useDispatch();
   const PRODUCT_DATA = useSelector(state => state.product.items);
+  const realmItemList = useGetRealmData('Items');
   const [CurrentProduct, setCurrentProduct] = useState('All');
-  const realmItemList = useGetItems();
   const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
   const [search, setSearch] = useState('');
+  const [decisionModal, setDecisionModal] = useState(false);
+  const [itemIdTobeEdited, setItemIdTobeEdited] = useState(null);
+  const [loadingModal, setLoadingModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(true);
 
   useEffect(() => {
     const newZeroItems = PRODUCT_DATA.slice().map(
@@ -35,9 +45,22 @@ const SelectProduct = ({navigation}) => {
           image: item.image,
           category: item.category,
         },
-    ); 
+    );
     setInitialZeroQtyItems(newZeroItems);
-  }, []);
+    // setIsDeleting(false)
+  }, [PRODUCT_DATA]);
+
+  useEffect(() => {
+    if (itemIdTobeEdited !== null) {
+      const isItemDeleted = !initialZeroQtyItems.some(
+        item => item._id == itemIdTobeEdited,
+      );
+      isItemDeleted && setIsDeleting(false);
+      setTimeout(() => {
+        setLoadingModal(false)
+      },200)
+    }
+  }, [isDeleting, itemIdTobeEdited, realmItemList]);
 
   const handleQtyIncrement = id => {
     const Prev_Item_Qty = realmItemList.filter(
@@ -114,17 +137,61 @@ const SelectProduct = ({navigation}) => {
     }
   };
 
+  function handleModalAccept() {
+    // Confirm Item Deletion!
+    const checkItem = realmItemList.some(item => item._id === itemIdTobeEdited);
+    if (checkItem) {
+      deleteItem(itemIdTobeEdited);
+      dispatch(setCHANGE('Changed!'));
+      setDecisionModal(false);
+      setLoadingModal(true);
+    } else {
+      
+    }
+  }
+
+  function handleModalReject() {
+    // Cancel Item Deletion and clear the Id from the reserved!
+    setItemIdTobeEdited(null);
+    setDecisionModal(false);
+  }
+
+  function handleDeleteItem(id) {
+    // This will reserve the id for later delete the Item after the modal confirmation!
+    setItemIdTobeEdited(id);
+    setDecisionModal(true);
+  }
+
   /* Main Return */
   return (
     <View style={containerStyles.mainContainer}>
+      <LoadingModal
+        type={'success'}
+        modalVisibility={loadingModal}
+        setModalVisibility={setLoadingModal}
+        isLoading={isDeleting}
+      />
+      {/* Are you sure Modal */}
+      <DecisionModal
+        modalVisibility={decisionModal}
+        setModalVisibility={setDecisionModal}
+        modalParam={{
+          message: 'Are you sure?',
+          accept: 'Yes',
+          reject: 'No',
+          handleAccept: handleModalAccept,
+          handleReject: handleModalReject,
+        }}
+      />
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <>
           {/* Top Heading Component  */}
-          <SellProductTopBar
-            label1={'Select Products'}
-            cartNumber={selectedProducts.length}
-            onDone={handleOnDone}
-            onCancel={() => navigation.goBack()}
+          <TopNavigationBar
+            backIcon
+            middleLabel={'All Products'}
+            thirdIcon
+            onPressBack={() => navigation.goBack()}
+            onPressGo={() => navigation.navigate('add-product')}
           />
 
           {/* Category Selector  */}
@@ -163,13 +230,17 @@ const SelectProduct = ({navigation}) => {
             }
             numColumns={2}
             renderItem={({item}) => (
-              <ProductCard
-                item={item}
-                handleQtyDecrement={handleQtyDecrement}
-                handleQtyIncrement={handleQtyIncrement}
-                handleQuantityInput={handleQuantityInput}
-                handleEventOnBlur={handleEventOnBlur}
-              />
+              <View style={{flex: 1, maxWidth: '50%'}}>
+                <ProductCard
+                  item={item}
+                  handleQtyDecrement={handleQtyDecrement}
+                  handleQtyIncrement={handleQtyIncrement}
+                  handleQuantityInput={handleQuantityInput}
+                  handleEventOnBlur={handleEventOnBlur}
+                  editMode
+                  handleDeleteItem={handleDeleteItem}
+                />
+              </View>
             )}
             keyExtractor={item => item._id}
             showsVerticalScrollIndicator={false}
@@ -191,4 +262,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SelectProduct;
+export default AllProducts;

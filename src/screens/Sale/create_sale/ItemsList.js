@@ -27,7 +27,7 @@ const ItemsList = ({
         backgroundColor: color.lightGray,
         paddingTop: 15,
         paddingBottom: 15,
-        paddingHorizontal: 15,
+        paddingHorizontal: 20,
         // borderWidth: 1,
       }}>
       {/* Items and Remove All Bar Component */}
