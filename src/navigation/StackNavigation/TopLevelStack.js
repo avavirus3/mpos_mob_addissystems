@@ -1,13 +1,17 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import LoginStack from './authStack/LoginStack';
+import MainTabNavigation from '../TabNavigation/mainNavigation/MainTabNavigation';
 const Stack = createNativeStackNavigator();
 
 const TopLevelStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="main">
-      {/* <Stack.Screen name="main" component={} /> */}
+  >
+      <Stack.Screen name="LoginStack" component={LoginStack} />
+      <Stack.Screen name="MainStack" component={MainTabNavigation} />
+      
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );
