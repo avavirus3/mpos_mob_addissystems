@@ -48,7 +48,7 @@ const CreateSale = ({route}) => {
     return obj1._id === obj2._id;
   }
 
-  useEffect(() => {
+ useEffect(() => {
     const newUpcomingProduct =
       incomingData?.hasOwnProperty('passed_selected_product') &&
       incomingData?.passed_selected_product.filter(
@@ -71,7 +71,7 @@ const CreateSale = ({route}) => {
 
     const getDataFromRealmDb = async () => {
       try {
-        const items = await getItems();
+        const items =  getItems();
         setRealmItemList(items);
       } catch (err) {
         console.log('Error Retriving RealmDb:', err);
@@ -202,29 +202,6 @@ const CreateSale = ({route}) => {
         dispatch(setCHANGE('Changed!'))
       }
     });
-
-    // setProductStore(products_after_qty_deduction);
-
-    // const newDraftData = data;
-
-    // incomingDraftIndex != null
-    //   ? (data.draft[incomingDraftIndex] = {
-    //       customerData: customer === 'Guest' ? {name: customer} : customer,
-    //       items: passedData,
-    //       totalPrice: TOTAL_PRODUCT_PRICE,
-    //       time: moment(currentTime).format('h:mm:ss a'),
-    //       transaction_completed: true,
-    //     })
-    //   : (newDraftData.draft = [
-    //       ...data.draft,
-    //       {
-    //         customerData: customer === 'Guest' ? {name: customer} : customer,
-    //         items: passedData,
-    //         totalPrice: TOTAL_PRODUCT_PRICE,
-    //         time: moment(currentTime).format('h:mm:ss a'),
-    //         transaction_completed: true,
-    //       },
-    //     ]);
 
     // setData(newDraftData);
     setTransactionModal(true);
