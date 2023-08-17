@@ -14,6 +14,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FastImage from 'react-native-fast-image';
 import * as ImagePicker from 'react-native-image-picker';
+import ImageCropPicker from 'react-native-image-crop-picker';
 import Button from '../../../components/button/Button';
 import useGetItems from '../../../hooks/customHooks/useGetItems';
 import {addItem, updateItem} from '../../../database/services/itemServices';
@@ -25,7 +26,6 @@ import {resetTotalSale} from '../../../database/services/totalSaleService';
 import IncrementDecrement from '../../../components/button/IncrementDecrement';
 import CustomDropDown from '../../../components/input/CustomDropDown';
 import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
-import {assets} from '../../../../react-native.config';
 
 const AddProduct = ({navigation}) => {
   const dispatch = useDispatch();
@@ -57,7 +57,9 @@ const AddProduct = ({navigation}) => {
     //   console.log('Not Canceled');
     // }
 
-    const resultObject = await ImagePicker.launchImageLibrary();
+    const resultObject = await ImagePicker.launchImageLibrary({
+      mediaType: 'photo',
+    });
     const {didCancel} = resultObject;
 
     // Check if the image path is defined
@@ -67,8 +69,13 @@ const AddProduct = ({navigation}) => {
       setNewInputData({...newInputData, image: uri});
     } else {
       // The user canceled the image selection
-      console.log('Image selection canceled');
+      // console.log('Image selection canceled');
     }
+
+    // const resultObject = await ImageCropPicker.openPicker({
+    //   mediaType: 'photo',
+    //   cropping: true
+    // });
   };
 
   const imageUploadDAta = {
