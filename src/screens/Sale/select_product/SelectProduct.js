@@ -15,6 +15,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
 import {getItems} from '../../../database/services/itemServices';
 import useGetItems from '../../../hooks/customHooks/useGetItems';
+import { containerStyles } from '../../../styles/Styles';
 
 const SelectProduct = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
@@ -125,7 +126,7 @@ const SelectProduct = ({navigation}) => {
 
   /* Main Return */
   return (
-    <View style={styles.mainContainer}>
+    <View style={containerStyles.mainContainer}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <>
           {/* Top Heading Component  */}

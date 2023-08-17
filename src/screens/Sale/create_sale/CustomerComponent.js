@@ -12,7 +12,7 @@ const CustomerComponent = ({customer, setCustomer, navigation}) => {
       backgroundColor: color.lightGray,
       paddingTop: 15,
       paddingBottom: 25,
-      paddingHorizontal: 15,
+      paddingHorizontal: 20,
       // borderWidth: 1,
     }}>
     {console.log('Customer:', customer)} 

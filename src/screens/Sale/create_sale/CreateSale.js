@@ -295,7 +295,7 @@ const CreateSale = ({route}) => {
   return (
     <View style={styles.mainContainer}>
       {/* Top Bar */}
-      <View style={{paddingHorizontal: 12}}>
+      <View style={{paddingHorizontal: 20}}>
         <TopNavigationBar
           backIcon={true}
           middleLabel={'Create Sale'}
@@ -350,7 +350,7 @@ const CreateSale = ({route}) => {
               backgroundColor: color.lightGray,
               paddingTop: 15,
               paddingBottom: 25,
-              paddingHorizontal: 15,
+              paddingHorizontal: 20,
               // borderWidth: 1,
             }}>
             <Text style={{fontSize: 20, fontWeight: '600'}}>Payment</Text>

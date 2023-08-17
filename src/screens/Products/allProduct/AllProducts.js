@@ -20,6 +20,7 @@ import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 import LoadingActivityIndicator from '../../../components/loading/LoadingActivityIndicator';
 import CustomModal from '../../../components/modal/CustomModal';
 import LoadingModal from '../../../components/loading/LoadingModal';
+import { containerStyles } from '../../../styles/Styles';
 
 const AllProducts = ({navigation}) => {
   const dispatch = useDispatch();
@@ -176,7 +177,7 @@ const AllProducts = ({navigation}) => {
 
   /* Main Return */
   return (
-    <View style={styles.mainContainer}>
+    <View style={containerStyles.mainContainer}>
       <LoadingModal
         type={'success'}
         modalVisibility={loadingModal}

@@ -6,7 +6,7 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
-import {color, containerStyles, textStyles} from '../../../styles/Styles';
+import { color, containerStyles, textStyles } from '../../../styles/Styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SearchBar from '../../../components/search/SearchBar';

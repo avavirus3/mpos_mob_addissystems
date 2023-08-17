@@ -51,7 +51,7 @@ export const textStyles = {
 export const containerStyles = {
   mainContainer: {
     flex: 1,
-    paddingHorizontal: 8,
+    paddingHorizontal: 20,
     backgroundColor: 'white',
     borderColor: 'red',
   },

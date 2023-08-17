@@ -16,7 +16,7 @@ import {RadioButton} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {color} from '../../../styles/Styles';
+import {color, containerStyles} from '../../../styles/Styles';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import SuccessFailModal from '../../../components/modal/SuccessFailModal';
 import QRModalComponent from './QRModalComponent';
@@ -266,7 +266,7 @@ const Payment = ({navigation, route}) => {
 
   /* Main Component Return */
   return (
-    <View style={styles.mainContainer}>
+    <View style={containerStyles.mainContainer}>
       {/* Top Navigation */}
       <TopNavigationBar
         backIcon={true}

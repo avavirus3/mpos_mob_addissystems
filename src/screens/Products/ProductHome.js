@@ -23,7 +23,7 @@ const Product = ({navigation}) => {
 
   return (
     <View style={containerStyles.mainContainer}>
-      <View style={[containerStyles.bodyContainer]}>
+      <View style={{}}>
         <TopNavigationBar
           backLabel={'Products'}
           thirdIcon

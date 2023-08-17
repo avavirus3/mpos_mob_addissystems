@@ -134,7 +134,7 @@ const Home = ({navigation}) => {
       <View style={{flex: 1, borderWidth: 0, borderColor: 'green'}}>
         {/* Search Bar */}
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <View style={{paddingTop: 35, marginHorizontal: 10}}>
+          <View style={{paddingTop: 25,}}>
             <SearchBar
               placeholder={'Search'}
               search={search}
@@ -144,7 +144,7 @@ const Home = ({navigation}) => {
         </TouchableWithoutFeedback>
 
         {/* Main Body Container */}
-        <View style={styles.bodyContainer}>
+        <View style={{flex: 1}}>
           {/* Heading Component */}
           <HomeHeading user={'Abebe Kebede'} sale={'50,000'} />
 

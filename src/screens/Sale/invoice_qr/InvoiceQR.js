@@ -155,7 +155,7 @@ const InvoiceQR = ({navigation, route}) => {
 
   /* Main Component Return */
   return (
-    <View style={styles.mainContainer}>
+    <View style={containerStyles.mainContainer}>
       <PaymentModal />
       <TopNavigationBar
         backIcon={true}

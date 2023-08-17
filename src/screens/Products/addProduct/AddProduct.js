@@ -4,8 +4,6 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Touchable,
-  FlatList,
 } from 'react-native';
 import React, {useState} from 'react';
 import {color, containerStyles} from '../../../styles/Styles';
@@ -27,41 +25,60 @@ import {resetTotalSale} from '../../../database/services/totalSaleService';
 import IncrementDecrement from '../../../components/button/IncrementDecrement';
 import CustomDropDown from '../../../components/input/CustomDropDown';
 import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
+import {assets} from '../../../../react-native.config';
 
 const AddProduct = ({navigation}) => {
   const dispatch = useDispatch();
   const realmItemData = useGetItems();
   const realmCategoryList = useGetRealmData('Category');
-  const [newInputData, setNewInputData] = useState({
-    name: null,
-    id: null,
-    desc: null,
-    price: null,
-    quantity: 0,
-    category: null,
-  });
-  const [productName, setProductName] = useState('');
-  const [productDesc, setProductDesc] = useState('');
-  const [id, setId] = useState('');
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [category, setCategory] = useState('');
-  const [imagePath, setImagePath] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [itemTobeAdded, setItemTobeAdded] = useState({});
   const [succesModal, setSuccessModal] = useState(false);
+  const [newInputData, setNewInputData] = useState({
+    name: '',
+    id: '',
+    desc: '',
+    price: '',
+    quantity: 0,
+    category: '',
+    image: '',
+  });
 
-  // console.log('CategoryItemList:', realmCategoryList);
-  console.log('newInputData:', newInputData);
+  const isFormFilled = Object.values(newInputData).some(value => value == '');
 
   const handleAddImage = async () => {
-    const result = await ImagePicker.launchImageLibrary();
-    if (result.canceled) {
-      return;
+    // const result = await ImagePicker.launchImageLibrary();
+    // if (result.canceled) {
+    //   console.log('Not Canceled');
+    //   return;
+    // }
+    // if (!result.canceled) {
+    //   setNewInputData({...newInputData, image: result.assets[0].uri});
+    //   console.log('Not Canceled');
+    // }
+
+    const resultObject = await ImagePicker.launchImageLibrary();
+    const {didCancel} = resultObject;
+
+    // Check if the image path is defined
+    if (!didCancel) {
+      const {fileName, fileSize, height, width, type, uri} =
+        resultObject['assets'][0];
+      setNewInputData({...newInputData, image: uri});
+    } else {
+      // The user canceled the image selection
+      console.log('Image selection canceled');
     }
-    if (!result.canceled) {
-      setImagePath(result.assets[0].uri);
-    }
+  };
+
+  const imageUploadDAta = {
+    assets: [
+      {
+        fileName: 'this is file name',
+        fileSize: 546546,
+        uri: 'file/path/c/',
+      },
+    ],
   };
 
   const handleConfirmAddItem = async () => {
@@ -70,42 +87,31 @@ const AddProduct = ({navigation}) => {
 
     setShowModal(false);
     setSuccessModal(true);
-    console.log('Item Successfully Added!');
-
     setTimeout(() => {
       navigation.navigate('all-product');
       setSuccessModal(false);
-      setProductName(''),
-        setId(''),
-        setPrice(''),
-        setQuantity(''),
-        setCategory(''),
-        setImagePath('');
     }, 1300);
   };
 
   const handleAddItem = async () => {
     const newItem = {
-      name: productName,
-      _id: parseInt(id),
-      price: parseFloat(price),
-      quantity: parseInt(quantity),
-      image: imagePath,
-      category: category,
+      name: newInputData.name,
+      _id: parseInt(newInputData.id),
+      price: parseFloat(newInputData.price),
+      quantity: parseInt(newInputData.quantity),
+      image: newInputData.image,
+      category: newInputData.category,
     };
 
-    const hasEmptyValue = Object.values(newItem).some(value => value === '');
-
-    try {
-      const isItemAdded = realmItemData.find(item => item._id == newItem._id);
-      if (!isItemAdded && !hasEmptyValue) {
+    if (!isFormFilled) {
+      try {
         setItemTobeAdded(newItem);
         setShowModal(true);
-      } else {
-        console.log('The Item ID is Already Added!');
+      } catch (err) {
+        // console.log('Unable to add the Item!', err);
       }
-    } catch (err) {
-      console.log('Unable to add the Item!', err);
+    } else {
+      // console.log('The Item ID is Already Added!');
     }
   };
 
@@ -122,26 +128,26 @@ const AddProduct = ({navigation}) => {
       );
       if (itemsToUpdate) {
         updateItem(tobeUpdatedId, updatedData);
-        console.log('Item Updated!');
-        console.log('Items in Db:', realmItemData);
+        // console.log('Item Updated!');
+        // console.log('Items in Db:', realmItemData);
         dispatch(setCHANGE('Changed!'));
       } else {
-        console.log('Unable to get the Item! check The item in the Database!');
+        // console.log('Unable to get the Item! check The item in the Database!');
       }
     } catch (err) {
-      console.log('Error while updating Item:', err);
+      // console.log('Error while updating Item:', err);
     }
   };
 
   const handleResetTotalSale = async () => {
     await resetTotalSale();
-    console.log('Total Sale Reseted!');
+    // console.log('Total Sale Reseted!');
     dispatch(setCHANGE('Changed!'));
   };
 
   function handleQuantityIncrement() {
     setNewInputData({...newInputData, quantity: newInputData.quantity + 1});
-    console.log('handle Increment Pressed!');
+    // console.log('handle Increment Pressed!');
   }
 
   function handleQuantityDecrement() {
@@ -150,18 +156,21 @@ const AddProduct = ({navigation}) => {
       quantity:
         parseInt(newInputData.quantity) > 0 && newInputData.quantity - 1,
     });
-    console.log('handle Decrement Pressed!');
+    // console.log('handle Decrement Pressed!');
   }
 
   function handleQuanitityInput(id, input) {
-    console.log('passed INput', input);
+    // console.log('passed INput', input);
     setNewInputData({...newInputData, quantity: input});
-    console.log('handleQuantityInput');
+    // console.log('handleQuantityInput');
   }
 
   function handleQuantitiyInputOnBlur() {
-    setNewInputData({...newInputData, quantity: 0})
-    console.log('Input Blurred!');
+    setNewInputData({
+      ...newInputData,
+      quantity: newInputData.quantity === '' ? 0 : newInputData.quantity,
+    });
+    // console.log('Input Blurred!');
   }
 
   const ProductInfo = ({property, value}) => {
@@ -224,7 +233,7 @@ const AddProduct = ({navigation}) => {
               }}>
               <FastImage
                 style={{height: '100%', width: '100%', resizeMode: 'resize'}}
-                source={{uri: imagePath}}
+                source={{uri: itemTobeAdded.image}}
               />
             </View>
             <Text
@@ -237,11 +246,23 @@ const AddProduct = ({navigation}) => {
               Product Info
             </Text>
             <View style={{gap: 10, marginTop: 10, marginBottom: 20}}>
-              <ProductInfo property={'Product Name'} value={productName} />
-              <ProductInfo property={'Product ID'} value={id} />
-              <ProductInfo property={'Product Price'} value={price} />
-              <ProductInfo property={'Product Quantity'} value={quantity} />
-              <ProductInfo property={'Product Category'} value={category} />
+              <ProductInfo
+                property={'Product Name'}
+                value={itemTobeAdded.name}
+              />
+              <ProductInfo property={'Product ID'} value={itemTobeAdded._id} />
+              <ProductInfo
+                property={'Product Price'}
+                value={itemTobeAdded.price}
+              />
+              <ProductInfo
+                property={'Product Quantity'}
+                value={itemTobeAdded.quantity}
+              />
+              <ProductInfo
+                property={'Product Category'}
+                value={itemTobeAdded.category}
+              />
             </View>
             <View style={{flexDirection: 'row', gap: 15}}>
               <View style={{flex: 1}}>
@@ -344,11 +365,11 @@ const AddProduct = ({navigation}) => {
           <TouchableOpacity
             style={{marginVertical: 10}}
             onPress={handleAddImage}>
-            {imagePath ? (
+            {newInputData.image !== '' ? (
               <View style={{width: '100%', height: 200, paddingHorizontal: 10}}>
                 <FastImage
                   style={{height: '100%', width: '100%', resizeMode: 'scale'}}
-                  source={{uri: imagePath}}
+                  source={{uri: newInputData.image}}
                 />
               </View>
             ) : (
@@ -360,22 +381,10 @@ const AddProduct = ({navigation}) => {
           </TouchableOpacity>
           <View style={{marginBottom: 15}}>
             <Button
-              theme={'primary'}
-              label={'Add Product'}
+              label={'Save'}
+              btnBG={!isFormFilled ? color.primary : color.gray}
               onPress={handleAddItem}
             />
-            {/* <View style={{}}>
-              <Button
-                theme={'secondary'}
-                label={'Update Existing'}
-                onPress={handleUpdateItem}
-              />
-              <Button
-                theme={'secondary'}
-                label={'Reset Total Sale'}
-                onPress={handleResetTotalSale}
-              />
-            </View> */}
           </View>
         </View>
       </ScrollView>
