@@ -5,8 +5,10 @@ import HeadSelector from '../../../components/HeadSelector';
 import SearchBar from '../../../components/search/SearchBar';
 import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import {color} from '../../../styles/Styles';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Draft = ({navigation}) => {
+  const DRAFT = useSelector(state => state.draftItem.draft)
   const {data} = useContext(AuthContext);
   const [localDraft, setLocalDraft] = useState([]);
   const [search, setSearch] = useState('');
@@ -202,7 +204,7 @@ const Draft = ({navigation}) => {
         <FlatList
           contentContainerStyle={{gap: 12, marginTop: 5, paddingBottom: 50}}
           data={
-            data.draft
+            DRAFT
             // filter((invoice) =>
             // new RegExp(search, "gi").test(invoice.name))
           }
