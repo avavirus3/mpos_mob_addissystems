@@ -35,14 +35,14 @@ export const myProfileData={
 export const Customer={
 name:"Customer",
 properties: {
-  _id:'int',
+  _id:'string',
   fullname:'string',
   email:'string?',
   phonecode:'string',
   phone:'string',
   address:'string?',
   tin:'string?',
-  userid:'string?'
+  profileId:'string?'
   
 },
 primaryKey:'_id',
@@ -50,8 +50,8 @@ primaryKey:'_id',
 export const Image={
 name:"Image",
 properties: {
-  _id:'int',
-  userid:'string?',
+  _id:'string',
+  profileId:'string?',
  name:'string',
   type:'string',
   uri:'string',

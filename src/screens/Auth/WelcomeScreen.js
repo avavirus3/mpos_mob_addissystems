@@ -14,12 +14,16 @@ import React, {useEffect, useState} from 'react';
 import {theme} from '../../styles/stylesheet';
 import {LinearTextGradient} from 'react-native-text-gradient';
 import {scale, verticalScale} from 'react-native-size-matters';
+import { getToken } from '../../auth/token/Token';
+
 
 const WelcomeScreen = ({navigation}) => {
   const [timeLeft, setTimeLeft] = useState(2);
   const intialBg = require('../../assets/images/welcomebg.png');
   const finalBg = require('../../assets/images/loginbg.png');
+  const img = "https://avataaars.io/?avatarStyle=Circle&topType=WinterHat1&accessoriesType=Wayfarers&hatColor=Black&facialHairType=MoustacheMagnum&facialHairColor=Platinum&clotheType=ShirtVNeck&clotheColor=Pink&eyeType=Happy&eyebrowType=DefaultNatural&mouthType=Disbelief&skinColor=Brown"
   console.log(timeLeft);
+
   useEffect(() => {
     // exit early when we reach 0
     if (!timeLeft) return;

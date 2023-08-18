@@ -16,14 +16,20 @@ import realm from "../../database/index";
 import { phoneData } from "../../../data/phonedata";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import useFetchRealm from "../../hooks/customHooks/useFetchRealm";
+import { getToken,loadCredentials } from "../../auth/token/Token";
 
 
 
 
 const Edit = ({ navigation }) => {
-  const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
+  
+  // const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
+  const [profiledata, setProfiledata] = useState()
+
   const [phoneModal, setPhoneModal] = useState(false);
   const [fullname, setFullname] = useState('');
+  const [token, setToken] = useState()
+  const[id,setId] = useState()
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [organization, setOrganization] = useState('');
@@ -31,39 +37,25 @@ const Edit = ({ navigation }) => {
   const [tin, setTin] = useState('');
   const[profdata,setProfdata]=useState('');
   const [phoneCode, setPhoneCode] = useState()
-  const[imgUri, setImgUri] = useState("https://randomuser.me/api/portraits/women/93.jpg")
-  const getData= ()=>{
+  const[imgUri, setImgUri] = useState("https://avatars.dicebear.com/v2/avataaars/c9b7a24f10562a9f9bc899431f4c9d26.svg")
+  const[imgdata,setImgdata]=useState()
 
-    const profile = realm.objects('MyProfileData').filtered('_id == 457');
-    const profileimg = realm.objects('Image').filtered('_id == 300')[0];
-    profileimg?setImgUri(profileimg.uri):null;
-    setProfdata(profile[0])
-   //console.log("profdata",profileimg)
-  }
-//   (realm.write(() => {
-//     try{realm.create('MyProfileData', {
-//       _id:457,
-//       fullname:"fullname",
-//       email:"email",
-//       phonecode:phoneCode?phoneCode.dial_code:'+251',
-//       phone:"25485664",
-//       tin:"558228",
-//     });
-// }catch(e){console.log(e)}
-// console.log("save")
-// }))
-  const setData=()=>(realm.write )
-  //console.log(phoneCode?.dial_code,profdata)
   useEffect(()=>{
-    getData();
+    loadCredentials().then((r)=>r?setProfiledata(r):null)
   },[])
+
   useEffect(()=>{
-    if(profdata)setPhoneCode(phoneData.find(phonecodes => phonecodes?.dial_code === profdata?.phonecode));
-    //console.log("update:",'\n\r',profdata,'\n\r',phoneData.find(phonecodes => phonecodes?.dial_code === profdata.phonecode));
-  },[profdata])
+    const img = realm.objects("Image")
+    if(profiledata)setPhoneCode(phoneData.find(phonecodes => phonecodes?.dial_code === profiledata[0].phonecode));
+    const d=realm.objects("Image")
+    //if(profiledata) console.log(d.length?realm.objects("Image"):`https://robohash.org/${profiledata[0]._id}=&size=400x400`)
+    if(img.length>0 && profiledata)setImgdata(img?img.filter(d=>d.profileId==profiledata[0]._id):null)
+    //console.log("update:",'\n\r',profiledata,'\n\r',phoneData.find(phonecodes => phonecodes?.dial_code === profiledata.phonecode));
+  },[profiledata])
 
   const onSaveCreateProfile = ()=> realm.write(() => {
-    const taskToUpdate = realm.objects('MyProfileData').filtered('_id == 457')[0];
+    const taskToUpdate = realm.objects('Profile').find(e=>e._id==profiledata[0]._id);
+
     if (taskToUpdate) {
       // console.log(phoneCode.dial_code!=profdata.phonecode)
       if(phoneCode.dial_code!=taskToUpdate.phonecode){taskToUpdate.phonecode = phoneCode.dial_code;}
@@ -74,7 +66,8 @@ const Edit = ({ navigation }) => {
       if(phoneNumber){taskToUpdate.phone = phoneNumber}
       if(organization){taskToUpdate.organization = organization}
     }
-  })
+  }
+  )
   const options =   {
     title: 'Select Image',
     type: 'library',
@@ -84,14 +77,8 @@ const Edit = ({ navigation }) => {
       includeBase64: false,
     },}
   const goToGallery =async()=>{
-    // realm.write(() => {
-    //   const taskToDelete = realm.objects('Image').filtered('_id == 300')[0];
-    //   if (taskToDelete) {
-    //     realm.delete(taskToDelete);
-    //   }
-    // })
     const open = await launchImageLibrary(options)
-    const profile = realm.objects('Image')
+    //const profile = realm.objects('Image')
       //console.log(profile)
       // realm.write(() => {
       //   realm.create('Image', {
@@ -102,9 +89,12 @@ const Edit = ({ navigation }) => {
       //   });
       // });
     if(open){
-      setImgUri(open.assets[0].uri)
+      //setImgUri(open.assets[0].uri)
+  
       try{realm.write(() => {
-        const imgHolder = realm.objects('Image').filtered('_id == 300')[0];
+        const img=realm.objects('Image')
+        const imgHolder = img.filter(d=>d._id==imgdata[0]._id)[0];
+        console.log("open",imgHolder.name)
         if(imgHolder) {
           imgHolder.name= open.assets[0].fileName
           imgHolder.uri= open.assets[0].uri
@@ -146,7 +136,7 @@ const Edit = ({ navigation }) => {
       <ScrollView>
         <View style={{ alignItems: "center", marginHorizontal: scale(25) }}>
           <View><Image
-            source={{ uri: imgUri }}
+            source={{ uri: imgdata?imgdata[0].uri:`https://robohash.org/${Math.random() * 100}=&size=400x400` }}
             style={{
               height: 131,
               width: 131,
@@ -187,7 +177,7 @@ const Edit = ({ navigation }) => {
                   flex: 1,
                   color: 'black',
                 }}
-                placeholder={profdata?.fullname}
+                placeholder={profiledata?profiledata[0].fullname:'fullname'}
                 placeholderTextColor='black'
               />
             </View>
@@ -214,7 +204,7 @@ const Edit = ({ navigation }) => {
                   paddingLeft: 20,
                   color: 'black'
                 }}
-                placeholder={profdata?.email}
+                placeholder={profiledata?profiledata[0].email:'email'}
                 placeholderTextColor='black'
               />
             </View>
@@ -253,7 +243,7 @@ const Edit = ({ navigation }) => {
                   keyboardType="numeric"
                   style={{ fontSize: 18, alignItems: "center", flex: 1, color: 'black' }}
                   placeholderTextColor={"black"}
-                  placeholder={profdata?.phone}
+                  placeholder={profiledata?profiledata[0].phone:'phone number'}
                 />
               </Pressable>
             </View>
@@ -281,7 +271,7 @@ const Edit = ({ navigation }) => {
                   flex: 1,
                   color: 'black',
                 }}
-                placeholder={profdata?.organization}
+                placeholder={profiledata?profiledata[0].organization:'organization'}
                 placeholderTextColor={'black'}
               />
             </View>
@@ -309,7 +299,7 @@ const Edit = ({ navigation }) => {
                   paddingLeft: 20,
                   color: 'black',
                 }}
-                placeholder={profdata?.license}
+                placeholder={profiledata?profiledata[0].license:'license'}
                 placeholderTextColor={'black'}
               />
             </View>
@@ -337,7 +327,7 @@ const Edit = ({ navigation }) => {
                   paddingLeft: 20,
                   color: 'black',
                 }}
-                placeholder={profdata?.tin}
+                placeholder={profiledata?profiledata[0].tin:'tin'}
                 placeholderTextColor={'black'}
               />
             </View>

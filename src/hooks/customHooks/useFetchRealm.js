@@ -6,18 +6,18 @@ const useFetchRealm = ({uri, id}) => {
   const [pending, setPending] = useState(true);
   useEffect(() => {
     const d = id
-      ? realm.objects(uri).filtered(`_id == ${id}`)[0]
-      : realm.objects(uri);
+       ? realm.objects(uri).filtered(`_id == ${id}`)[0]
+       : realm.objects(uri);
     setData(d);
   }, []);
   useEffect(() => setPending(false), [data]);
   useFocusEffect(
     React.useCallback(() => {
       const d = id
-        ? realm.objects(uri).filtered(`_id == ${id}`)[0]
-        : realm.objects(uri);
+         ? realm.objects(uri).filtered(`_id == ${id}`)[0]
+         : realm.objects(uri);
       setData(d);
-      //  console.log("hi");
+      //console.log(d);
 
       return () => setData(d);
     }, []),

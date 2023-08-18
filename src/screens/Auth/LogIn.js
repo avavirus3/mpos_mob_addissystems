@@ -8,27 +8,75 @@ import {
   Image,
   Pressable
 } from 'react-native';
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import {theme} from '../../styles/stylesheet';
 import {Iconify} from 'react-native-iconify';
 import {LinearTextGradient} from 'react-native-text-gradient';
 import {verticalScale, scale} from 'react-native-size-matters';
 import realm from '../../database';
-import useFetchRealm from '../../hooks/customHooks/useFetchRealm';
+// import useFetchRealm from '../../hooks/customHooks/useFetchRealm';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import { getToken } from '../../auth/token/Token';
+import * as Keychain from 'react-native-keychain';
 
 const LogIn = ({navigation}) => {
   const [email, setEmail] = useState('')
   const [incorrect, setIncorrect] = useState(false)
   const [password, setPassword] = useState('')
-  const onLogin=()=>{
-    const data=  realm.objects("Profile");
-  try{
-    let d=data.filter(d=>email==d.email)[0]
-  console.log(data.filter(d=>email==d.email)[0].password==password)
-  if(data.filter(d=>email==d.email)[0]==undefined||data.filter(d=>email==d.email)[0].password!=password)return setIncorrect(true)
-  if(data.filter(d=>email==d.email)[0].password==password)navigation.navigate("MainStack")
+  //const [token,setToken]=useState()
+  const saveCredentials = async (email,password) => {
+    try {
+      await Keychain.setGenericPassword(email,password);
 
+    } catch (error) {
+      console.error('Error saving credentials:', error);
+    }
+  };
+  const loadCredentials = async (user,password) => {
+    try {
+      const credentials = await Keychain.getGenericPassword();
+      if (credentials) {
+        let x
+        x=(user==credentials.username&& password==credentials.password)
+        return x
+      } else {
+  
+        return null
+      }
+    } catch (error) {
+      console.error('Error retrieving credentials:', error);
+    }
+  };
+ 
+  useEffect(()=>{
+    
+  },[])
+  const onLogin=()=>{
+if(email&&password){
+  const data=  realm.objects("Profile");
+  //console.log("New",data)
+  
+  
 }
+   const data=  realm.objects("Profile");
+  
+  try{
+    let d=data.filter(d=>email==d.email)
+  
+  if(!password || !email || 
+    (data.filter(d=>email==d.email)[0]==undefined||data.filter(d=>email==d.email)[0].password!=password))return setIncorrect(true)
+  if(password && 
+    data.filter(d=>email==d.email)[0].password==password){
+    
+ loadCredentials(data?.filter(d=>email==d.email)[0]._id,password).then(result=>result?navigation.navigate("MainStack"):saveCredentials(data.filter(d=>email==d.email)[0]._id,password))
+
+     
+      
+      
+      //loadCredentials(data.filter(d=>email==d.email)[0]._id,password).then(result=>console.log(result))
+      navigation.navigate("MainStack")
+
+}}
   catch(e){
     console.log(e)
   } 

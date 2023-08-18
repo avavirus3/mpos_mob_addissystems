@@ -8,7 +8,9 @@ import { Iconify } from 'react-native-iconify'
 import useFetchRealm from '../../hooks/customHooks/useFetchRealm'
 import { useFocusEffect } from '@react-navigation/native'
 import i18n  from '../../language/i18n';
+import uuid from 'react-native-uuid'
 import realm from '../../database'
+import { getToken,loadCredentials } from '../../auth/token/Token'
 
 const Main = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(true)
@@ -16,25 +18,36 @@ const Main = ({navigation}) => {
   const toggleSwitch = () => setIsEnabled(previousState => !previousState)
   const toggleSwitch2S = () => setIsEnabled2S(previousState => !previousState);
   const [modalVisible, setModalVisible] = useState(false);
-  const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:300})
-  const {data:profiledata,pending:pendingprofile} = useFetchRealm({uri:"MyProfileData",id:457})
+  // const {data:imgdata,pending:pendingimage} = useFetchRealm({uri:"Image",id:"300"})
+   const[imgdata,setImgdata]=useState() //.filter(`_id==`)  
+  const [token,setToken]= useState()
+  const [profiledata, setProfiledata] = useState()
+  // const {data:profiledata,pending:pendingprofile} = useFetchRealm({uri:"Profile",id:token})
    
-  useEffect(()=>
-    realm.write(() => {
-      try{realm.create('MyProfileData', {
-        _id:457,
-        fullname:"fullname",
-        email:"email",
-        phonecode:'+251',
-        phone:"25485664",
-        tin:"558228",
-        organization:'Abc plc'
-      });
-      console.log("save")
-  }catch(e){console.log(e)}
-  
-  })
-  ,[])
+
+useEffect(() => {
+ loadCredentials().then((r)=>r?setProfiledata(r):null)
+}, []);
+//imgdata?imgdata[0].uri:imgdata
+useEffect(()=>{
+const img =realm.objects("Image")
+if(img.length<=0 && profiledata){
+realm.write(()=>realm.create("Image",{
+  _id:uuid.v4(),
+  profileId:profiledata[0]._id,
+  type:'url',
+  name:'profilename',
+  uri:`https://robohash.org/${profiledata[0]._id}=&size=400x400`
+}))}
+if(img.length>0 && profiledata)setImgdata(img?img.filter(d=>d.profileId==profiledata[0]._id):null)
+},[profiledata])
+useFocusEffect(
+  React.useCallback(() => {
+    loadCredentials().then(r => (r ? setProfiledata(r) : null));
+
+    return () => loadCredentials().then(r => (r ? setProfiledata(r) : null));
+  }, []),
+);
   
   return (
     <View style={{flex: 1,backgroundColor:"white"}}>
@@ -114,7 +127,7 @@ const Main = ({navigation}) => {
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
-                 source={{ uri:(pendingimage|!imgdata)?"https://randomuser.me/api/portraits/women/93.jpg":imgdata?.uri }}
+                 source={{uri:imgdata?imgdata[0].uri:"https://robohash.org/${profiledata[0]._id}=&size=400x400" }}
                 style={{
                   height: 64,
                   width: 64,
@@ -126,7 +139,7 @@ const Main = ({navigation}) => {
               />
               <View style={{paddingHorizontal: scale(10)}}>
                 <Text style={{fontSize: scale(20), fontWeight: 600,color:theme.color.blue}}>
-                {profiledata?.organization}
+                {profiledata?profiledata[0].organization:'new'}
                 </Text>
                 <Text
                   style={{
@@ -134,7 +147,7 @@ const Main = ({navigation}) => {
                     color: theme.color.gray,
                     fontWeight: 500,
                   }}>
-                  {profiledata?.phonecode + " " + profiledata?.phone}
+                  {profiledata?profiledata[0].phonecode:'new'} { (profiledata?profiledata[0].phone:null)}
                 </Text>
               </View>
             </View>

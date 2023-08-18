@@ -11,9 +11,8 @@ import realm from '../../database'
 
 const SignUp = ({navigation}) => {
   const onSignUp=()=>{
-    let id=uuid.v4()
       console.log("Profile",{
-        _id:id,
+        _id:"id",
         fullname:fullname,
         email:email,
         phone:phoneNumber,
@@ -24,8 +23,9 @@ const SignUp = ({navigation}) => {
         phonecode:phoneCode.dial_code,
         
       })
-      return realm.write(()=>realm.create("Profile",{
-        _id:id,
+      if(fullname && email && password && phoneCode && phoneNumber)
+        return realm.write(()=>realm.create("Profile",{
+        _id:uuid.v4(),
         fullname:fullname,
         email:email,
         phone:phoneNumber,
@@ -36,6 +36,9 @@ const SignUp = ({navigation}) => {
         phonecode:phoneCode.dial_code,
         
       }))
+      else{
+        console.log('no input')
+      }
 
   }
   const [phoneModal, setPhoneModal] = useState(false);
@@ -219,60 +222,7 @@ const SignUp = ({navigation}) => {
             </View>
             
           </View>
-          {/* <View style={{ marginTop: verticalScale(15) }}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 500,
-                height: 25,
-                marginBottom: 6,
-                color: "#cacaca"
-              }}
-            >
-             {" "}  Phone Number
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                borderRadius: 10,
-                borderWidth: 1.5,
-                borderColor: theme.color.blue,
-                fontSize: 18,
-                paddingLeft: 20,
-                alignItems: "center",
-              }}
-            >
-             <Pressable
-                onPress={() => setPhoneModal(true)}
-                style={{
-                  width: "100%",
-                  borderRadius: 10,
-                  borderWidth: 1.5,
-                  borderColor: theme.color.blue,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingLeft: 20,
-                }}
-              >
-                {phoneCode?<View style={{ flexDirection: "row", alignItems: "center",}}>
-                 {<phoneCode.Flag />}
-                  <Text style={{ fontSize: 18, paddingLeft: 9 }}>{phoneCode?.dial_code}</Text>
-                  <Iconify icon="mdi:menu-down" size={18} />
-                </View>:null}
-
-                <TextInput
-                  value={phoneNumber}
-                  onChangeText={(text) => setPhoneNumber(text)}
-                  keyboardType="numeric"
-                  style={{ fontSize: 18, alignItems: "center", flex: 1, color: 'black' }}
-                  placeholderTextColor={"black"}
-                  placeholder={profdata?.phone}
-                />
-              </Pressable>
-            </View>
-            
-          </View> */}
+         
           <View style={{ marginTop: verticalScale(15),width:'100%' }}>
                     <Text
                         style={{
@@ -305,6 +255,8 @@ const SignUp = ({navigation}) => {
                         </View>
 
                         <TextInput
+                        value={phoneNumber}
+                        onChangeText={text=>setPhoneNumber(text)}
                             style={{ flex:1,fontSize: 18, alignItems: "center" ,color:'black'}}
                             keyboardType='numeric'
                             placeholderTextColor={theme.color.gray}

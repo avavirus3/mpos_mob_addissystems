@@ -9,9 +9,12 @@ import TopNavigationBar from '../../components/top_navigation/TopNavigationBar'
 import { DoneModals} from '../../components/modal/Modals'
 import PhoneCode from "../../components/modal/PhoneCode";
 import { phoneData } from "../../../data/phonedata";
+import uuid from 'react-native-uuid'
 
 import realm from '../../database/index'
+import { loadCredentials } from '../../auth/token/Token'
 const AddCustomer = ({ navigation }) => {
+  const [profiledata, setProfiledata] = useState()
   const [phoneNumber, setPhoneNumber] = useState('');
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
@@ -27,7 +30,8 @@ const AddCustomer = ({ navigation }) => {
   
   const CreateCustomer = ()=>(realm.write(() => {
     try{if(fullname&&email&&phoneNumber&&tin)realm.create('Customer', {
-      _id:Math.random()*200,
+      _id:uuid.v4(),
+      profileId:profiledata[0]._id,
       fullname:fullname,
       email:email,
       phonecode:phoneCode.dial_code,
@@ -38,6 +42,9 @@ const AddCustomer = ({ navigation }) => {
 }catch(e){console.log(e)}
 console.log("save")
 }))
+useEffect(()=>{
+  loadCredentials().then((r)=>r?setProfiledata(r):null)
+},[])
   return (
     <View style={{flex:1}}>
     <DoneModals message={"done"} modalVisible={done} setModalVisible={setDone}/>
