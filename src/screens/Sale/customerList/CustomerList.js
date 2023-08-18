@@ -11,11 +11,9 @@ import TopNavigationBar from '../../../components/top_navigation/TopNavigationBa
 import SearchBar from '../../../components/search/SearchBar';
 import {color, textStyles, containerStyles} from '../../../styles/Styles';
 import Button from '../../../components/button/Button';
-import {getCustomers} from '../../../database/services/customerServices';
 import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 
 const CustomerList = ({navigation}) => {
-  const CUSTOMERS = useSelector(state => state.customerList.customers)
   const [search, setSearch] = useState('');
   const customers = useGetRealmData('Customer');
   const [selectedCustomer, setSelectedCustomer] = useState([]);

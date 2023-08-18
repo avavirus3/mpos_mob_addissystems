@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {color, textStyles} from '../../styles/Styles';
 import IncrementDecrement from '../button/IncrementDecrement';
@@ -16,10 +16,15 @@ const ProductCard = ({
   handleEditItem,
   handleDeleteItem,
   editMode,
+  navigation,
+  goTo,
 }) => {
   const {name, price, quantity, image, category, _id} = item;
   return (
-    <View style={[styles.productContainer, {}]} key={_id}>
+    <TouchableOpacity
+      style={[styles.productContainer, {}]}
+      key={_id}
+      onPress={() => goTo && navigation.navigate(goTo, _id)}>
       <View style={styles.imageContainer}>
         <FastImage
           style={{height: '100%', width: '100%', resizeMode: 'cover'}}
@@ -60,7 +65,7 @@ const ProductCard = ({
           />
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

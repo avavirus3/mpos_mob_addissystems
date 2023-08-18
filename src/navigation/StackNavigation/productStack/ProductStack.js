@@ -5,7 +5,7 @@ import AddProduct from '../../../screens/Products/addProduct/AddProduct';
 import AllProducts from '../../../screens/Products/allProduct/AllProducts';
 import CategoryList from '../../../screens/Products/category/CategoryList';
 import AddCategory from '../../../screens/Products/category/AddCategory';
-import ItemDetail from '../../../screens/Products/ItemDetail/ItemDetail';
+import index from '../../../screens/Products/ItemDetail/index';
 const Stack = createNativeStackNavigator();
 
 const ProductStack = () => {
@@ -18,7 +18,7 @@ const ProductStack = () => {
       <Stack.Screen name="add-product" component={AddProduct} />
       <Stack.Screen name="add-category" component={AddCategory} />
       <Stack.Screen name="category-list" component={CategoryList} />
-      <Stack.Screen name="item-detail" component={ItemDetail} />
+      <Stack.Screen name="item-detail" component={index} />
       {/* add your screens here following the rules listed bellow */}
     </Stack.Navigator>
   );

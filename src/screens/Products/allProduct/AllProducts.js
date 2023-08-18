@@ -20,7 +20,7 @@ import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 import LoadingActivityIndicator from '../../../components/loading/LoadingActivityIndicator';
 import CustomModal from '../../../components/modal/CustomModal';
 import LoadingModal from '../../../components/loading/LoadingModal';
-import { containerStyles } from '../../../styles/Styles';
+import {containerStyles} from '../../../styles/Styles';
 
 const AllProducts = ({navigation}) => {
   const dispatch = useDispatch();
@@ -57,8 +57,8 @@ const AllProducts = ({navigation}) => {
       );
       isItemDeleted && setIsDeleting(false);
       setTimeout(() => {
-        setLoadingModal(false)
-      },200)
+        setLoadingModal(false);
+      }, 200);
     }
   }, [isDeleting, itemIdTobeEdited, realmItemList]);
 
@@ -146,7 +146,6 @@ const AllProducts = ({navigation}) => {
       setDecisionModal(false);
       setLoadingModal(true);
     } else {
-      
     }
   }
 
@@ -162,9 +161,7 @@ const AllProducts = ({navigation}) => {
     setDecisionModal(true);
   }
 
-  function handleEditItem() {
-    
-  }
+  function handleEditItem() {}
 
   /* Main Return */
   return (
@@ -244,6 +241,8 @@ const AllProducts = ({navigation}) => {
                   editMode
                   handleDeleteItem={handleDeleteItem}
                   handleEditItem={handleEditItem}
+                  navigation={navigation}
+                  goTo={'item-detail'}
                 />
               </View>
             )}
