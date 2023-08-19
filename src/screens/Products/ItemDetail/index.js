@@ -37,8 +37,6 @@ const ItemDetail = ({navigation, route}) => {
         )
       : [];
 
-  console.log('ready Item:', readyToPassToCreatSale);
-
   useEffect(() => {
     const getRealmData = () => {
       try {
@@ -80,8 +78,6 @@ const ItemDetail = ({navigation, route}) => {
   function handleStockModalCancel() {
     setStockModal(false);
   }
-
-  console.log('updatedQua', updatedQuntitiy);
 
   return (
     <View style={containerStyles.mainContainer}>
