@@ -35,7 +35,7 @@ const CreateSale = ({route}) => {
   const navigation = useNavigation();
   const incomingData = route.params;
   const [passedData, setPassedData] = useState([]);
-  const [customer, setCustomer] = useState({name: 'Guest'});
+  const [customer, setCustomer] = useState({fullname: 'Guest'});
   const [incomingDraftIndex, setIncomingDraftIndex] = useState(null);
   const [transactionModal, setTransactionModal] = useState(false);
   const [draftModal, setDraftModal] = useState(false);
@@ -44,15 +44,11 @@ const CreateSale = ({route}) => {
   const currentTime = new Date();
   const dispatch = useDispatch();
 
-  // console.log('incomingData:', incomingData);
-
-  // console.log('incomingData:', incomingData);
-
   function isEqual(obj1, obj2) {
     return obj1._id === obj2._id;
   }
 
-  useEffect(() => {
+ useEffect(() => {
     const newUpcomingProduct =
       incomingData?.hasOwnProperty('passed_selected_product') &&
       incomingData?.passed_selected_product.filter(
@@ -75,8 +71,7 @@ const CreateSale = ({route}) => {
 
     const getDataFromRealmDb = async () => {
       try {
-        const items = await getItems();
-        console.log('realm items', items);
+        const items =  getItems();
         setRealmItemList(items);
       } catch (err) {
         console.log('Error Retriving RealmDb:', err);
@@ -126,8 +121,6 @@ const CreateSale = ({route}) => {
     )[0].quantity;
     const Sale_Item = passedData.filter(item => item._id === id)[0];
 
-    console.log('Sale Item:', Sale_Item);
-
     if (Prev_Item_Qty - (Sale_Item.quantity + 1) >= 0) {
       Sale_Item.quantity += 1;
       setPassedData([...passedData]);
@@ -154,10 +147,8 @@ const CreateSale = ({route}) => {
     const Sale_Item = passedData.filter(item => item._id == id)[0];
 
     if (Prev_Item_Qty - (Sale_Item.quantity + inputNum) >= 0) {
-      // console.log('Can be Deducted!');
       Sale_Item.quantity = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
-      // console.log("Item Can't Set!");
       Toast.show({
         type: 'error',
         text1: 'There Is No This Amount of Items',
@@ -180,11 +171,8 @@ const CreateSale = ({route}) => {
     }
   };
 
-  // console.log('Passed Data', passedData);
-
   const handleDeleteItem = id => {
     const updatedProduct = passedData?.filter(item => item._id != id);
-    // console.log(updatedProduct);
     setPassedData(updatedProduct);
   };
 
@@ -209,35 +197,11 @@ const CreateSale = ({route}) => {
           quantity:
             quantityResult == 1 ? 1 : quantityResult > 1 ? quantityResult : 0,
         };
-        await updateItem(realm._id, deductFromRealm); // Updating the sold item quantity from the database
-        await updateTotalSale(TOTAL_VAT_INCLUSIVE)
+        updateItem(realm._id, deductFromRealm); // Updating the sold item quantity from the database
+        updateTotalSale(TOTAL_VAT_INCLUSIVE)
         dispatch(setCHANGE('Changed!'))
-        console.log('deductFromRealm:', deductFromRealm);
       }
     });
-
-    // setProductStore(products_after_qty_deduction);
-
-    // const newDraftData = data;
-
-    // incomingDraftIndex != null
-    //   ? (data.draft[incomingDraftIndex] = {
-    //       customerData: customer === 'Guest' ? {name: customer} : customer,
-    //       items: passedData,
-    //       totalPrice: TOTAL_PRODUCT_PRICE,
-    //       time: moment(currentTime).format('h:mm:ss a'),
-    //       transaction_completed: true,
-    //     })
-    //   : (newDraftData.draft = [
-    //       ...data.draft,
-    //       {
-    //         customerData: customer === 'Guest' ? {name: customer} : customer,
-    //         items: passedData,
-    //         totalPrice: TOTAL_PRODUCT_PRICE,
-    //         time: moment(currentTime).format('h:mm:ss a'),
-    //         transaction_completed: true,
-    //       },
-    //     ]);
 
     // setData(newDraftData);
     setTransactionModal(true);
@@ -295,7 +259,7 @@ const CreateSale = ({route}) => {
   return (
     <View style={styles.mainContainer}>
       {/* Top Bar */}
-      <View style={{paddingHorizontal: 12}}>
+      <View style={{paddingHorizontal: 20}}>
         <TopNavigationBar
           backIcon={true}
           middleLabel={'Create Sale'}
@@ -350,7 +314,7 @@ const CreateSale = ({route}) => {
               backgroundColor: color.lightGray,
               paddingTop: 15,
               paddingBottom: 25,
-              paddingHorizontal: 15,
+              paddingHorizontal: 20,
               // borderWidth: 1,
             }}>
             <Text style={{fontSize: 20, fontWeight: '600'}}>Payment</Text>

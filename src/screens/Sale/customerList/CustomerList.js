@@ -9,10 +9,8 @@ import {
 import React, {useState, useContext, useEffect} from 'react';
 import TopNavigationBar from '../../../components/top_navigation/TopNavigationBar';
 import SearchBar from '../../../components/search/SearchBar';
-import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import {color, textStyles, containerStyles} from '../../../styles/Styles';
 import Button from '../../../components/button/Button';
-import {getCustomers} from '../../../database/services/customerServices';
 import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
 
 const CustomerList = ({navigation}) => {
@@ -20,15 +18,12 @@ const CustomerList = ({navigation}) => {
   const customers = useGetRealmData('Customer');
   const [selectedCustomer, setSelectedCustomer] = useState([]);
 
-  console.log('Selected Customer:', selectedCustomer);
-
   const handleAddCustomer = () => {
     navigation.navigate('create-sale', {selected_Customer: selectedCustomer});
   };
 
   const renderItem = ({item}) => {
     const {fullname, tin, _id} = item;
-    console.log('Customer Destructuring:', item);
     return (
       <TouchableOpacity
         style={{

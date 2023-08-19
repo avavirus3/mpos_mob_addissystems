@@ -12,12 +12,12 @@ import MainComponent from './MainComponent';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import ProductItemSkeletonGrid from '../../../components/loading/ProductItemSkeletonGrid';
-import useGetItems from '../../../hooks/customHooks/useGetItems';
 import useGetRealmData from '../../../hooks/customHooks/useGetRealmData';
+import { containerStyles } from '../../../styles/Styles';
 
 const Home = ({navigation}) => {
   const PRODUCT_DATA = useSelector(state => state.product.items);
-  const realmItemList = useGetItems();
+  const realmItemList = useGetRealmData("Items");
   const [search, setSearch] = useState('');
   const [CurrentProduct, setCurrentProduct] = useState('All');
   const [initialZeroQtyItems, setInitialZeroQtyItems] = useState([]);
@@ -39,10 +39,6 @@ const Home = ({navigation}) => {
     setInitialZeroQtyItems(newZeroItems);
   }, [PRODUCT_DATA]);
 
-  // console.log('Realm List List Data:', realmItemList); 
-  // console.log('PRODUCT ITEM:', PRODUCT_DATA); 
-  // console.log('initial Zero Item:', initialZeroQtyItems);
-
    /* This is to activate the "Make Sale" Button to go to the next step */
    const selectedProducts = initialZeroQtyItems.filter(
     item => item.quantity > 0,
@@ -54,12 +50,8 @@ const Home = ({navigation}) => {
     )[0].quantity;
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
 
-    // console.log('Sale Item', Sale_Item);
-
     if (Prev_Item_Qty - (Sale_Item.quantity + 1) >= 0) {
       Sale_Item.quantity += 1;
-      console.log('Sale Item', Sale_Item.quantity);
-      // console.log("initial Zero Item:", initialZeroQtyItems)
       setInitialZeroQtyItems([...initialZeroQtyItems]);
     } else if (Prev_Item_Qty - (Sale_Item.quantity + 1) < 0) {
       Toast.show({
@@ -87,10 +79,8 @@ const Home = ({navigation}) => {
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
 
     if (Prev_Item_Qty - (Sale_Item.quantity + inputNum) >= 0) {
-      // console.log('Can be Deducted!');
       Sale_Item.quantity = inputNum;
     } else if (inputNum > Prev_Item_Qty) {
-      // console.log("Item Can't Set!");
       Toast.show({
         type: 'error',
         text1: 'There Is No This Amount of Items',
@@ -106,7 +96,6 @@ const Home = ({navigation}) => {
 
   const handleEventOnBlur = id => {
     const Sale_Item = initialZeroQtyItems.filter(item => item._id == id)[0];
-    // console.log('OnBlur Event Fired!');
     if (Sale_Item.quantity === '') {
       Sale_Item.quantity = 0;
       setInitialZeroQtyItems([...initialZeroQtyItems]);
@@ -130,11 +119,11 @@ const Home = ({navigation}) => {
 
   /* Main Function Return */
   return (
-    <View style={styles.mainContainer}>
+    <View style={containerStyles.mainContainer}>
       <View style={{flex: 1, borderWidth: 0, borderColor: 'green'}}>
         {/* Search Bar */}
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <View style={{paddingTop: 35, marginHorizontal: 10}}>
+          <View style={{paddingTop: 25,}}>
             <SearchBar
               placeholder={'Search'}
               search={search}
@@ -144,11 +133,11 @@ const Home = ({navigation}) => {
         </TouchableWithoutFeedback>
 
         {/* Main Body Container */}
-        <View style={styles.bodyContainer}>
+        <View style={{flex: 1}}>
           {/* Heading Component */}
           <HomeHeading user={'Abebe Kebede'} sale={'50,000'} />
 
-          {false ? (
+          {0 ? (
             <InitialHomeComponent navigation={navigation} />
           ) : CurrentProduct.length > 0 ? (
             <MainComponent

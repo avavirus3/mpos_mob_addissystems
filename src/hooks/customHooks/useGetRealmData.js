@@ -21,30 +21,8 @@ const useGetRealmData = schemaName => {
     };
 
     getRealmData();
-    // dispatch(setCHANGE('Unchanged!'));
-  }, []);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      // Actions to be performed when the screen comes into focus
-      // For example: fetch data, start timers, etc.
-      try {
-        const data = realm.objects(schemaName);
-        setFetchedData(data);
-      } catch (err) {
-        console.log('Error while retriving realmDatabase:', err);
-      }
-
-      console.log('The Screen Is Active!');
-
-      return () => {
-        // Actions to be performed when the screen goes out of focus
-        // For example: cleanup tasks, stop timers, etc.
-        // setFetchedData(data);
-        console.log('The screen goes and Inactive!');
-      };
-    }, []),
-  );
+    dispatch(setCHANGE('Unchanged!'));
+  }, [changeTracker]);
 
   return fetchedData;
 };

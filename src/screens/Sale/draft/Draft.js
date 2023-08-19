@@ -5,8 +5,10 @@ import HeadSelector from '../../../components/HeadSelector';
 import SearchBar from '../../../components/search/SearchBar';
 import {AuthContext} from '../../../hooks/useContext/AuthContext';
 import {color} from '../../../styles/Styles';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Draft = ({navigation}) => {
+  const DRAFT = useSelector(state => state.draftItem.draft)
   const {data} = useContext(AuthContext);
   const [localDraft, setLocalDraft] = useState([]);
   const [search, setSearch] = useState('');
@@ -19,9 +21,6 @@ const Draft = ({navigation}) => {
       console.log(error);
     }
   });
-
-  // console.log("data:", data);
-  // console.log("Local Draft:", localDraft);
 
   const SALES_INVOICE = [
     {
@@ -76,7 +75,6 @@ const Draft = ({navigation}) => {
   ];
 
   const handleDraft = (index, item) => {
-    // console.log("item:", item)
     if (item.transaction_completed) {
       navigation.navigate('invoice-qr', {
         transaction_draft: data.draft[index],
@@ -89,8 +87,6 @@ const Draft = ({navigation}) => {
       });
     }
   };
-
-  console.log('Draft Data:', data.draft);
 
   const PAID_INVOICE = SALES_INVOICE.filter(
     invoice => invoice.status === 'Paid',
@@ -112,10 +108,7 @@ const Draft = ({navigation}) => {
     }
   };
 
-  //   console.log(PAID_INVOICE);
-
   const renderData = ({item, index}) => {
-    // console.log("Log Item", item);
     return (
       <TouchableOpacity
         style={{
@@ -211,7 +204,7 @@ const Draft = ({navigation}) => {
         <FlatList
           contentContainerStyle={{gap: 12, marginTop: 5, paddingBottom: 50}}
           data={
-            data.draft
+            DRAFT
             // filter((invoice) =>
             // new RegExp(search, "gi").test(invoice.name))
           }

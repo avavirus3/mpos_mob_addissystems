@@ -6,9 +6,6 @@ import { color } from '../../../styles/Styles';
 const DiscountModal = ({discount, setDiscount, showModal, setShowModal}) => {
     const [inputChange, setInputChange] = useState(discount ? discount : 0);
 
-    // console.log(discount);
-    // console.log("Type of inputChange:", typeof parseFloat(inputChange));
-
     const handleDiscount = () => {
       setDiscount(parseFloat(inputChange));
       setShowModal(false);

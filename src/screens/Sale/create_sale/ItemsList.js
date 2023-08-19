@@ -23,11 +23,11 @@ const ItemsList = ({
     <View
       style={{
         // flex: 1,
-        marginTop: 5,
+        marginTop: 0,
         backgroundColor: color.lightGray,
         paddingTop: 15,
         paddingBottom: 15,
-        paddingHorizontal: 15,
+        paddingHorizontal: 20,
         // borderWidth: 1,
       }}>
       {/* Items and Remove All Bar Component */}
