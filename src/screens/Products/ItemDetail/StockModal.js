@@ -99,7 +99,9 @@ const StockModal = ({
                 theme={'primary'}
                 label={'Save'}
                 height={50}
-                onPress={handleSave}
+                onPress={() => {
+                  handleSave(), setInputValue(0);
+                }}
               />
             </View>
             <View style={{flex: 1}}>

@@ -12,11 +12,14 @@ import ItemComponent from './itemData';
 import realm from '../../../database';
 import Button from '../../../components/button/Button';
 import StockModal from './StockModal';
+import {updateItem} from '../../../database/services/itemServices';
+import SuccessFailModal from '../../../components/modal/SuccessFailModal';
 
 const ItemDetail = ({navigation, route}) => {
   const [itemData, setItemData] = useState(null);
-  const [stockModal, setStockModal] = useState(true);
+  const [stockModal, setStockModal] = useState(false);
   const [updatedQuntitiy, setUpdatedQuantity] = useState(0);
+  const [successModal, setSuccessModal] = useState(false);
 
   const readyToPassToCreatSale =
     itemData !== null
@@ -64,7 +67,15 @@ const ItemDetail = ({navigation, route}) => {
     setStockModal(true);
   }
 
-  function handleStockModalAccept() {}
+  function handleStockModalAccept() {
+    updateItem(route.params, {quantity: itemData.quantity + updatedQuntitiy});
+    setStockModal(false);
+    setSuccessModal(true);
+    setTimeout(() => {
+      setSuccessModal(false);
+      setUpdatedQuantity(0);
+    }, 1500);
+  }
 
   function handleStockModalCancel() {
     setStockModal(false);
@@ -74,6 +85,11 @@ const ItemDetail = ({navigation, route}) => {
 
   return (
     <View style={containerStyles.mainContainer}>
+      <SuccessFailModal
+        modalVisibility={successModal}
+        setModalVisibility={setSuccessModal}
+        message={'Quantity Updated!'}
+      />
       <StockModal
         modalVisibility={stockModal}
         setModalVisibility={setStockModal}
