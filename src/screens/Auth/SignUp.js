@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,ScrollView, Pressable, Image, TextInput } from 'react-native'
+import { StyleSheet, Text, View,ScrollView, Pressable, Image, TextInput, NativeModules } from 'react-native'
 import React,{useState} from 'react'
 import { theme } from '../../styles/stylesheet'
 import { scale, verticalScale } from 'react-native-size-matters'
@@ -11,20 +11,21 @@ import realm from '../../database'
 
 const SignUp = ({navigation}) => {
   const onSignUp=()=>{
-      console.log("Profile",{
-        _id:"id",
-        fullname:fullname,
-        email:email,
-        phone:phoneNumber,
-        license:license,
-        organization:organization,
-        tin:tin,
-        password:password,
-        phonecode:phoneCode.dial_code,
+      // console.log("Profile",{
+      //   _id:"id",
+      //   fullname:fullname,
+      //   email:email,
+      //   phone:phoneNumber,
+      //   license:license,
+      //   organization:organization,
+      //   tin:tin,
+      //   password:password,
+      //   phonecode:phoneCode.dial_code,
         
-      })
-      if(fullname && email && password && phoneCode && phoneNumber)
-        return realm.write(()=>realm.create("Profile",{
+      // })
+      if(fullname && email && password && phoneCode && phoneNumber){
+
+        return (realm.write(()=>realm.create("Profile",{
         _id:uuid.v4(),
         fullname:fullname,
         email:email,
@@ -35,7 +36,9 @@ const SignUp = ({navigation}) => {
         password:password,
         phonecode:phoneCode.dial_code,
         
-      }))
+      })),navigation.navigate("OTP"))
+
+    }
       else{
         console.log('no input')
       }

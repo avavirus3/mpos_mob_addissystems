@@ -29,9 +29,11 @@ useEffect(() => {
  loadCredentials().then((r)=>r?setProfiledata(r):null)
 }, []);
 //imgdata?imgdata[0].uri:imgdata
+// console.log(imgdata,profiledata)
 useEffect(()=>{
 const img =realm.objects("Image")
 if(img.length<=0 && profiledata){
+  
 realm.write(()=>realm.create("Image",{
   _id:uuid.v4(),
   profileId:profiledata[0]._id,
@@ -39,7 +41,20 @@ realm.write(()=>realm.create("Image",{
   name:'profilename',
   uri:`https://robohash.org/${profiledata[0]._id}=&size=400x400`
 }))}
-if(img.length>0 && profiledata)setImgdata(img?img.filter(d=>d.profileId==profiledata[0]._id):null)
+if(img.length>0 && profiledata){
+
+  
+  console.log('!img.filter(d=>d.profileId==profiledata[0]._id',img.filter(d=>d.profileId==profiledata[0]._id).length)
+  if(img.filter(d=>d.profileId==profiledata[0]._id)?.length==0)
+  realm.write(()=>realm.create("Image",{
+    _id:uuid.v4(),
+    profileId:profiledata[0]._id,
+    type:'url',
+    name:'profilename',
+    uri:`https://robohash.org/${profiledata[0]._id}=&size=400x400`
+  }))
+}
+if(img.length>0 && profiledata)setImgdata(img?img.filter(d=>d.profileId==profiledata[0]._id)?img.filter(d=>d.profileId==profiledata[0]._id):null:null)
 },[profiledata])
 useFocusEffect(
   React.useCallback(() => {
@@ -127,7 +142,7 @@ useFocusEffect(
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
-                 source={{uri:imgdata?imgdata[0].uri:"https://robohash.org/${profiledata[0]._id}=&size=400x400" }}
+                 source={{uri:imgdata?.length?imgdata[0].uri:"https://robohash.org/${profiledata[0]._id}=&size=400x400" }}//
                 style={{
                   height: 64,
                   width: 64,
