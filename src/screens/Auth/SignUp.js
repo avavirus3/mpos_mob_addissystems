@@ -22,6 +22,7 @@ import DismissKeyboardHOC from '../../components/DismissKeyboard';
 import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 import {createUser, isLicence, isTin} from '../../auth/api/fetchData';
+import { fonts } from '../../styles/unistyle';
 
 const SignUp = ({navigation}) => {
   const queryClient = useQueryClient();
@@ -206,7 +207,7 @@ const SignUp = ({navigation}) => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginTop: verticalScale(30),
+                  marginTop: verticalScale(20),
                 }}>
                 <Pressable
                   onPress={() => navigation.goBack()}
@@ -229,8 +230,8 @@ const SignUp = ({navigation}) => {
                 <LinearTextGradient
                   style={{
                     fontWeight: '600',
-                    fontSize: 25,
-                    marginVertical: verticalScale(20),
+                    fontSize: 24,
+                    marginVertical: verticalScale(10),
                   }}
                   locations={[0, 1]}
                   colors={[theme.color.blue, theme.color.primary]}
@@ -238,13 +239,13 @@ const SignUp = ({navigation}) => {
                   end={{x: 1, y: 0}}>
                   <Text>M-POS</Text>
                 </LinearTextGradient>
-                <Text style={{fontSize: 25, fontWeight: 600}}>Sign Up</Text>
+                <Text style={[fonts.h1]}>Sign Up</Text>
                 {/* <View style={{marginTop: verticalScale(15)}}>
                   <Text
                     style={{
                       fontSize: 18,
                       fontWeight: 500,
-                      height: 25,
+                   
                       marginBottom: 6,
                       color: '#cacaca',
                     }}>
@@ -282,13 +283,11 @@ const SignUp = ({navigation}) => {
                 </View> */}
                 <View style={{marginTop: verticalScale(15)}}>
                   <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: 500,
-                      height: 25,
+                    style={[{
+                   
                       marginBottom: 6,
                       color: '#cacaca',
-                    }}>
+                    },fonts.ptext]}>
                     {' '}
                     Email
                   </Text>
@@ -299,7 +298,6 @@ const SignUp = ({navigation}) => {
                       borderRadius: 10,
                       borderWidth: 1.5,
                       borderColor: theme.color.blue,
-                      fontSize: 18,
                       paddingLeft: 20,
                       alignItems: 'center',
                     }}>
@@ -311,11 +309,10 @@ const SignUp = ({navigation}) => {
                     <TextInput
                       value={email}
                       onChangeText={text => setEmail(text)}
-                      style={{
-                        fontSize: 18,
+                      style={[{
                         flex: 1,
                         color: 'black',
-                      }}
+                      },fonts.h3]}
                       placeholder="Email"
                       placeholderTextColor={theme.color.gray}
                     />
@@ -326,7 +323,7 @@ const SignUp = ({navigation}) => {
                     style={{
                       fontSize: 18,
                       fontWeight: 500,
-                      height: 25,
+                   
                       marginBottom: 6,
                       color: '#cacaca',
                     }}>
@@ -365,13 +362,11 @@ const SignUp = ({navigation}) => {
 
                 <View style={{marginTop: verticalScale(15), width: '100%'}}>
                   <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: 500,
-                      height: 25,
+                    style={[{
+                  
                       marginBottom: 6,
                       color: theme.color.gray,
-                    }}>
+                    },fonts.ptext]}>
                     Phone Number
                   </Text>
                   <Pressable
@@ -382,13 +377,12 @@ const SignUp = ({navigation}) => {
                       borderRadius: 10,
                       borderWidth: 1.5,
                       borderColor: theme.color.blue,
-                      fontSize: 18,
                       paddingLeft: 20,
                       alignItems: 'center',
                     }}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       {<phoneCode.Flag />}
-                      <Text style={{fontSize: 18, paddingLeft: 9}}>
+                      <Text style={[{ paddingLeft: 9},fonts.ptext]}>
                         {phoneCode.dial_code}
                       </Text>
                       <Iconify icon="mdi:menu-down" size={18} />
@@ -399,12 +393,11 @@ const SignUp = ({navigation}) => {
                       onChangeText={text =>{
                         if (/^\d+$/.test(text)||text === '')setPhoneNumber(text);
                       }}
-                      style={{
+                      style={[{
                         flex: 1,
-                        fontSize: 18,
                         alignItems: 'center',
                         color: 'black',
-                      }}
+                      },fonts.h3]}
                       keyboardType="numeric"
                       placeholderTextColor={theme.color.gray}
                       placeholder="911223344"
@@ -413,13 +406,11 @@ const SignUp = ({navigation}) => {
                 </View>
                 <View style={{marginTop: verticalScale(15)}}>
                   <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: 500,
-                      height: 25,
+                    style={[{
+                   
                       marginBottom: 6,
                       color: '#cacaca',
-                    }}>
+                    },fonts.ptext]}>
                     {' '}
                     Organization
                   </Text>
@@ -430,7 +421,6 @@ const SignUp = ({navigation}) => {
                       borderRadius: 10,
                       borderWidth: 1.5,
                       borderColor: theme.color.blue,
-                      fontSize: 18,
                       paddingLeft: 20,
                       alignItems: 'center',
                     }}>
@@ -442,11 +432,10 @@ const SignUp = ({navigation}) => {
                     <TextInput
                       value={organization}
                       onChangeText={text => setOrganization(text)}
-                      style={{
-                        fontSize: 18,
+                      style={[{
                         flex: 1,
                         color: 'black',
-                      }}
+                      },fonts.h3]}
                       placeholder="organization"
                       placeholderTextColor={theme.color.gray}
                     />
@@ -454,13 +443,12 @@ const SignUp = ({navigation}) => {
                 </View>
                 <View style={{marginTop: verticalScale(15)}}>
                   <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: 500,
-                      height: 25,
+                    style={[{
+                    
+                   
                       marginBottom: 6,
                       color: '#cacaca',
-                    }}>
+                    },fonts.ptext]}>
                     {' '}
                     License
                   </Text>
@@ -471,7 +459,6 @@ const SignUp = ({navigation}) => {
                       borderRadius: 10,
                       borderWidth: 1.5,
                       borderColor: theme.color.blue,
-                      fontSize: 18,
                       paddingLeft: 20,
                       alignItems: 'center',
                     }}>
@@ -484,11 +471,10 @@ const SignUp = ({navigation}) => {
                       value={license}
                       //keyboardType='numeric'
                       onChangeText={debounceLicence}
-                      style={{
-                        fontSize: 18,
+                      style={[{
                         flex: 1,
                         color: 'black',
-                      }}
+                      },fonts.h3]}
                       placeholder="license"
                       placeholderTextColor={theme.color.gray}
                     />
@@ -496,13 +482,10 @@ const SignUp = ({navigation}) => {
                 </View>
                 <View style={{marginTop: verticalScale(15)}}>
                   <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: 500,
-                      height: 25,
+                    style={[{
                       marginBottom: 6,
                       color: '#cacaca',
-                    }}>
+                    },fonts.ptext]}>
                     {' '}
                     TIN
                   </Text>
@@ -513,7 +496,6 @@ const SignUp = ({navigation}) => {
                       borderRadius: 10,
                       borderWidth: 1.5,
                       borderColor: theme.color.blue,
-                      fontSize: 18,
                       paddingLeft: 20,
                       alignItems: 'center',
                     }}>
@@ -526,11 +508,10 @@ const SignUp = ({navigation}) => {
                       value={tin}
                       keyboardType="numeric"
                       onChangeText={debounceTin}
-                      style={{
-                        fontSize: 18,
+                      style={[{
                         flex: 1,
                         color: 'black',
-                      }}
+                      },fonts.h3]}
                       placeholder="TIN"
                       placeholderTextColor={theme.color.gray}
                     />
@@ -558,11 +539,11 @@ const SignUp = ({navigation}) => {
                     paddingVertical: 18,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginVertical: verticalScale(60),
+                    marginVertical: verticalScale(40),
 
                     width: '100%',
                   }}>
-                  <Text style={{color: 'white', fontSize: 22, fontWeight: 600}}>
+                  <Text style={[{color: 'white',},fonts.h1]}>
                     SIGN UP
                   </Text>
                 </Pressable>
@@ -572,16 +553,14 @@ const SignUp = ({navigation}) => {
                     alignItems: 'center',
                     columnGap: scale(7),
                   }}>
-                  <Text style={{fontSize: 20, fontWeight: 500}}>
+                  <Text style={[fonts.ptext]}>
                     Have an account?
                   </Text>
                   <Pressable onPress={() => navigation.navigate('LogIn')}>
                     <Text
-                      style={{
-                        fontSize: 20,
-                        fontWeight: 600,
+                      style={[{
                         color: theme.color.primary,
-                      }}>
+                      },fonts.ptext]}>
                       SIGN IN
                     </Text>
                   </Pressable>

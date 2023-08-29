@@ -13,6 +13,7 @@ import {Iconify} from 'react-native-iconify';
 import {LinearTextGradient} from 'react-native-text-gradient';
 import {phoneData} from '../../../data/phonedata';
 import PhoneCode from '../../components/modal/PhoneCode';
+import { fonts } from '../../styles/unistyle';
 
 const ResetPassword = ({navigation}) => {
   const [password, setPassword] = useState('');
@@ -49,7 +50,7 @@ const ResetPassword = ({navigation}) => {
         <LinearTextGradient
           style={{
             fontWeight: '600',
-            fontSize: 25,
+            fontSize: 24,
             marginVertical: verticalScale(20),
           }}
           locations={[0, 1]}
@@ -58,7 +59,7 @@ const ResetPassword = ({navigation}) => {
           end={{x: 1, y: 0}}>
           <Text>M-POS</Text>
         </LinearTextGradient>
-        <Text style={{fontSize: 25, fontWeight: 600}}>Reset Password</Text>
+        <Text style={[fonts.h1]}>Reset Password</Text>
         <View
           style={{
             width: '100%',
@@ -66,20 +67,17 @@ const ResetPassword = ({navigation}) => {
             paddingHorizontal: scale(20),
           }}>
           <View style={{marginVertical: 20}}>
-            <Text style={{fontSize: 18, fontWeight: 500}}>
+            <Text style={[fonts.ptext]}>
               Please enter your New Password
             </Text>
           </View>
           <View style={{width: '100%'}}>
             <View style={{marginTop: verticalScale(15)}}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  height: 25,
+                style={[{
                   marginBottom: 6,
                   color: '#cacaca',
-                }}>
+                },fonts.ptext]}>
                 {' '}
                 New Password
               </Text>
@@ -90,7 +88,6 @@ const ResetPassword = ({navigation}) => {
                   borderRadius: 10,
                   borderWidth: 1.5,
                   borderColor: theme.color.blue,
-                  fontSize: 18,
                   paddingLeft: 20,
                   alignItems: 'center',
                 }}>
@@ -102,11 +99,10 @@ const ResetPassword = ({navigation}) => {
                 <TextInput
                   value={password}
                   onChangeText={text => setPassword(text)}
-                  style={{
-                    fontSize: 18,
+                  style={[{
                     flex: 1,
                     color: 'black',
-                  }}
+                  },fonts.h3]}
                   placeholder="New Password"
                   placeholderTextColor={theme.color.gray}
                 />
@@ -114,13 +110,10 @@ const ResetPassword = ({navigation}) => {
             </View>
             <View style={{marginTop: verticalScale(15)}}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  height: 25,
+                style={[{
                   marginBottom: 6,
                   color: '#cacaca',
-                }}>
+                },fonts.ptext]}>
                 {' '}
                 Confirm Password
               </Text>
@@ -131,7 +124,6 @@ const ResetPassword = ({navigation}) => {
                   borderRadius: 10,
                   borderWidth: 1.5,
                   borderColor: theme.color.blue,
-                  fontSize: 18,
                   paddingLeft: 20,
                   alignItems: 'center',
                 }}>
@@ -143,11 +135,10 @@ const ResetPassword = ({navigation}) => {
                 <TextInput
                   value={ConfirmPassword}
                   onChangeText={text => setConfirmPassword(text)}
-                  style={{
-                    fontSize: 18,
+                  style={[{
                     flex: 1,
                     color: 'black',
-                  }}
+                  },fonts.h3]}
                   placeholder="Confirm Password"
                   placeholderTextColor={theme.color.gray}
                 />
@@ -166,7 +157,7 @@ const ResetPassword = ({navigation}) => {
 
               width: '100%',
             }}>
-            <Text style={{color: 'white', fontSize: 22, fontWeight: 600}}>
+            <Text style={[{color: 'white',},fonts.h1]}>
               Reset
             </Text>
           </Pressable>

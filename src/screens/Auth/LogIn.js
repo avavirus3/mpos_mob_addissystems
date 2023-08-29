@@ -19,6 +19,7 @@ import DismissKeyboardHOC from '../../components/DismissKeyboard';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { getToken } from '../../auth/token/Token';
 import * as Keychain from 'react-native-keychain';
+import { fonts } from '../../styles/unistyle';
 
 const LogIn = ({navigation}) => {
   const [email, setEmail] = useState('')
@@ -96,7 +97,7 @@ if(email&&password){
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginTop: verticalScale(30),
+            marginTop: verticalScale(20),
           }}>
           <View
             style={{
@@ -117,8 +118,8 @@ if(email&&password){
           <LinearTextGradient
             style={{
               fontWeight: '600',
-              fontSize: 25,
-              marginVertical: verticalScale(20),
+              fontSize: 24,
+              marginVertical: verticalScale(10),
             }}
             locations={[0, 1]}
             colors={[theme.color.blue, theme.color.primary]}
@@ -126,16 +127,14 @@ if(email&&password){
             end={{x: 1, y: 0}}>
             <Text>M-POS</Text>
           </LinearTextGradient>
-          <Text style={{fontSize: 25, fontWeight: 600}}>Sign In</Text>
+          <Text style={[fonts.h1]}>Sign In</Text>
           <View style={{ marginTop: verticalScale(15) }}>
             <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 500,
+              style={[{
                 height: 25,
                 marginBottom: 6,
                 color: "#cacaca"
-              }}
+              },fonts.ptext]}
             >
              {" "}  Email
             </Text>
@@ -146,7 +145,6 @@ if(email&&password){
                 borderRadius: 10,
                 borderWidth: 1.5,
                 borderColor: theme.color.blue,
-                fontSize: 18,
                 paddingLeft: 20,
                 alignItems: "center",
               }}
@@ -159,11 +157,11 @@ if(email&&password){
               <TextInput
               value={email}
               onChangeText={(text)=>setEmail(text)}
-                style={{
-                  fontSize: 18,
+                style={[{
+              
                   flex: 1,
                   color:'black'
-                }}
+                },fonts.h3]}
                 placeholder="Email"
                 placeholderTextColor={theme.color.gray}
               />
@@ -171,13 +169,11 @@ if(email&&password){
           </View>
           <View style={{ marginTop: verticalScale(15) }}>
             <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 500,
+              style={[{
                 height: 25,
                 marginBottom: 6,
                 color: "#cacaca"
-              }}
+              },fonts.ptext]}
             >
              {" "}  Password
             </Text>
@@ -188,7 +184,6 @@ if(email&&password){
                 borderRadius: 10,
                 borderWidth: 1.5,
                 borderColor: theme.color.blue,
-                fontSize: 18,
                 paddingLeft: 20,
                 alignItems: "center",
               }}
@@ -201,17 +196,16 @@ if(email&&password){
               <TextInput
               value={password}
               onChangeText={(text)=>setPassword(text)}
-                style={{
-                  fontSize: 18,
+                style={[{
                   flex: 1,
                   color:'black'
-                }}
+                },fonts.h3]}
                 placeholder="Password"
                 placeholderTextColor={theme.color.gray}
               />
             </View>
           </View>
-          <View style={{width:'100%',alignItems:'flex-start',justifyContent:'space-between',flexDirection:'row',paddingHorizontal:scale(8),marginTop:verticalScale(10)}}><Text style={{color:theme.color.primary,fontSize:18,fontWeight:600}}>{incorrect?"Incorrect Input":null}</Text><Pressable onPress={()=>navigation.navigate("ForgotPassword")}><Text style={{color:theme.color.primary,fontSize:18,fontWeight:600}}>Forgot Password?</Text></Pressable></View>
+          <View style={{width:'100%',alignItems:'flex-start',justifyContent:'space-between',flexDirection:'row',paddingHorizontal:scale(8),marginTop:verticalScale(10)}}><Text style={[{color:theme.color.primary,},fonts.smText]}>{incorrect?"Incorrect Input":null}</Text><Pressable onPress={()=>navigation.navigate("ForgotPassword")}><Text style={[{color:theme.color.primary,},fonts.smText]}>Forgot Password?</Text></Pressable></View>
           <Pressable
           onPress={()=>{
             onLogin()
@@ -223,16 +217,16 @@ if(email&&password){
                 paddingVertical: 18,
                 alignItems: "center",
                 justifyContent: "center",
-                marginVertical: verticalScale(60),
+                marginVertical: verticalScale(50),
                 
                 width:'100%'
               }}
             >
-              <Text style={{ color: "white", fontSize: 22, fontWeight: 600 }}>
+              <Text style={[{ color: "white",},fonts.h1]}>
                 SIGN IN
               </Text>
             </Pressable>
-            <View style={{flexDirection:'row',alignItems:'center',columnGap:scale(7)}}><Text style={{fontSize:20,fontWeight:500}}>Don’t have an account?</Text><Pressable onPress={()=>navigation.navigate("SignUp")}><Text style={{fontSize:20,fontWeight:600,color:theme.color.primary}}>SIGN UP</Text></Pressable></View>
+            <View style={{flexDirection:'row',alignItems:'center',columnGap:scale(7)}}><Text style={[fonts.ptext]}>Don’t have an account?</Text><Pressable onPress={()=>navigation.navigate("SignUp")}><Text style={[{color:theme.color.primary},fonts.ptext]}>SIGN UP</Text></Pressable></View>
         </View>
       </View>
     </View></DismissKeyboardHOC>

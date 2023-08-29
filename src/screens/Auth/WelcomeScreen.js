@@ -15,6 +15,7 @@ import {theme} from '../../styles/stylesheet';
 import {LinearTextGradient} from 'react-native-text-gradient';
 import {scale, verticalScale} from 'react-native-size-matters';
 import { getToken } from '../../auth/token/Token';
+import { fonts } from '../../styles/unistyle';
 
 
 const WelcomeScreen = ({navigation}) => {
@@ -58,7 +59,7 @@ const WelcomeScreen = ({navigation}) => {
         style={{height: 200, width: 210}}
       />
       <LinearTextGradient
-        style={{fontWeight: '600', fontSize: 25}}
+        style={{fontWeight: '600', fontSize: 24}}
         locations={[0, 1]}
         colors={[theme.color.blue, theme.color.primary]}
         start={{x: 0, y: 0}}
@@ -84,7 +85,7 @@ const WelcomeScreen = ({navigation}) => {
                 elevation:5
               }}
             >
-              <Text style={{ color: "white", fontSize: 22, fontWeight: "bold" }}>
+              <Text style={[{ color: "white" },fonts.h1]}>
                 Sign In
               </Text>
             </Pressable>
@@ -102,7 +103,7 @@ const WelcomeScreen = ({navigation}) => {
                 borderColor:theme.color.primary
               }}
             >
-              <Text style={{ color: theme.color.primary, fontSize: 22, fontWeight: "bold" }}>
+              <Text style={[{ color: theme.color.primary },fonts.h1]}>
                 Sign Up
               </Text>
             </Pressable>

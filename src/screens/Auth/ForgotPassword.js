@@ -6,6 +6,7 @@ import { Iconify } from 'react-native-iconify'
 import { LinearTextGradient } from 'react-native-text-gradient'
 import { phoneData } from '../../../data/phonedata'
 import PhoneCode from '../../components/modal/PhoneCode'
+import { fonts } from '../../styles/unistyle'
 
 
 const ForgotPassword = ({navigation}) => {
@@ -44,7 +45,7 @@ const ForgotPassword = ({navigation}) => {
         <LinearTextGradient
             style={{
               fontWeight: '600',
-              fontSize: 25,
+              fontSize: 24,
               marginVertical: verticalScale(20),
             }}
             locations={[0, 1]}
@@ -53,19 +54,16 @@ const ForgotPassword = ({navigation}) => {
             end={{x: 1, y: 0}}>
             <Text>M-POS</Text>
           </LinearTextGradient>
-          <Text style={{fontSize: 25, fontWeight: 600}}>Forgot Password</Text>
+          <Text style={[fonts.h1]}>Forgot Password</Text>
           <View style={{width:'100%',alignItems:'center',paddingHorizontal:scale(20)}}>
-         <View style={{marginVertical:20}}><Text style={{fontSize:18,fontWeight:500}}>Please enter your Phone Number</Text></View>
+         <View style={{marginVertical:20}}><Text style={[fonts.ptext]}>Please enter your Phone Number</Text></View>
         <View style={{width:"100%"}}>
         <View style={{ marginTop: verticalScale(15),width:'100%' }}>
                     <Text
-                        style={{
-                            fontSize: 18,
-                            fontWeight: 500,
-                            height: 25,
+                        style={[{
                             marginBottom: 6,
                             color: theme.color.gray
-                        }}
+                        },fonts.ptext]}
                     >
                         Phone Number
                     </Text>
@@ -77,19 +75,18 @@ const ForgotPassword = ({navigation}) => {
                           borderRadius: 10,
                           borderWidth: 1.5,
                           borderColor: theme.color.blue,
-                          fontSize: 18,
                           paddingLeft: 20,
                           alignItems: "center",
                         }}
                     >
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             {<phoneCode.Flag />}
-                            <Text style={{ fontSize: 18, paddingLeft: 9 }}>{phoneCode.dial_code}</Text>
+                            <Text style={[{ paddingLeft: 9 },fonts.ptext]}>{phoneCode.dial_code}</Text>
                             <Iconify icon="mdi:menu-down" size={18} />
                         </View>
 
                         <TextInput
-                            style={{ fontSize: 18, alignItems: "center" }}
+                            style={[{ alignItems: "center" },fonts.h3]}
                             placeholderTextColor={theme.color.gray}
                             placeholder="911223344"
                         />
@@ -109,7 +106,7 @@ const ForgotPassword = ({navigation}) => {
                 width:'100%'
               }}
             >
-              <Text style={{ color: "white", fontSize: 22, fontWeight: 600 }}>
+              <Text style={[{ color: "white"},fonts.h1]}>
                 Next
               </Text>
             </Pressable>
