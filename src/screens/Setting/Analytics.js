@@ -13,6 +13,7 @@ import {
 import { Iconify } from 'react-native-iconify';
 import { color } from '../../styles/Styles';
 import { theme } from '../../styles/stylesheet';
+import { fonts } from '../../styles/unistyle';
 
 
 
@@ -70,23 +71,23 @@ const Analytics = ({ navigation }) => {
             <View style={{ paddingHorizontal: 20, marginVertical: scale(15), }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor: '#fff', marginVertical: verticalScale(25) }}>
                     <Pressable onPress={() => setTotal('Sales')} style={[{ borderRadius: 10, alignItems: 'center', paddingHorizontal: scale(30), paddingVertical: verticalScale(29) }, Total == 'Sales' ? { backgroundColor: color.primary } : { backgroundColor: "#F9F7F7" }]}>
-                        <Iconify icon='mdi:percent-box' size={40} color={Total == 'Sales' ? "#fff" : '#000'} />
-                        <Text style={{ color: Total == 'Sales' ? "#fff" : '#000', fontSize: 22 }}>Total Sales</Text></Pressable>
+                        <Iconify icon='mdi:percent-box' size={30} color={Total == 'Sales' ? "#fff" : '#000'} />
+                        <Text style={[{ color: Total == 'Sales' ? "#fff" : '#000',},fonts.h3]}>Total Sales</Text></Pressable>
                     <Pressable onPress={() => setTotal('Items')} style={[{ borderRadius: 10, alignItems: 'center', paddingHorizontal: scale(30), paddingVertical: verticalScale(29) }, Total == "Items" ? { backgroundColor: color.primary } : { backgroundColor: "#F9F7F7" }]}>
-                        <Iconify icon='mingcute:download-line' size={40} color={Total == 'Items' ? "#fff" : '#000'} />
-                        <Text style={{ color: Total == "Items" ? "#fff" : '#000', fontSize: 22 }}>Total Items</Text></Pressable>
+                        <Iconify icon='mingcute:download-line' size={30} color={Total == 'Items' ? "#fff" : '#000'} />
+                        <Text style={[{ color: Total == "Items" ? "#fff" : '#000', },fonts.h3]}>Total Items</Text></Pressable>
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, }}>
-                    {Total == "Sales" ? <Text style={{ fontSize: 20 }}>Total Sales</Text> : <Text style={{ fontSize: 20 }}>Total Items</Text>}
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10,marginBottom:30 }}>
+                    {Total == "Sales" ? <Text style={[fonts.ptext]}>Total Sales</Text> : <Text style={[fonts.ptext]}>Total Items</Text>}
                     <View style={{ flexDirection: 'row', gap: 10 }}>
                         <Pressable onPress={() => setActiveTime('day')} style={[{ paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 10, }, activeTime == "day" ? { backgroundColor: theme.color.blue } : {}]}>
-                            <Text style={[activeTime == "day" ? { color: 'white' } : {}, { fontSize: 17 }]}>Day</Text>
+                            <Text style={[activeTime == "day" ? { color: 'white' } : {},fonts.ptext]}>Day</Text>
                         </Pressable>
                         <Pressable onPress={() => setActiveTime('month')} style={[{ paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 10, }, activeTime == "month" ? { backgroundColor: theme.color.blue } : {}]}>
-                            <Text style={[activeTime == "month" ? { color: 'white' } : {}, { fontSize: 17 }]}>Month</Text>
+                            <Text style={[activeTime == "month" ? { color: 'white' } : {}, fonts.ptext]}>Month</Text>
                         </Pressable>
                         <Pressable onPress={() => setActiveTime('year')} style={[{ paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 10, }, activeTime == "year" ? { backgroundColor: theme.color.blue } : {}]}>
-                            <Text style={[activeTime == "year" ? { color: 'white' } : {}, { fontSize: 17 }]}>Year</Text>
+                            <Text style={[activeTime == "year" ? { color: 'white' } : {}, fonts.ptext]}>Year</Text>
                         </Pressable>
                     </View>
                 </View>

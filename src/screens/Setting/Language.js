@@ -6,6 +6,8 @@ import { theme } from "../../styles/stylesheet";
 import { getLocales } from "react-native-localize";
 import { phoneData } from "../../../data/phonedata";
 import i18n  from '../../language/i18n';
+import { fonts } from "../../styles/unistyle";
+import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 
 const Language = ({ navigation }) => {
@@ -32,7 +34,7 @@ const Language = ({ navigation }) => {
         <Pressable onPress={() => navigation.goBack()}>
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
-        <Text style={{ fontSize: scale(22), fontWeight: 600 }}>{i18n.t('language')}</Text>
+        <Text style={[fonts.h1]}>{i18n.t('language')}</Text>
         <Pressable></Pressable>
       </View>
       <View style={{}}>
@@ -47,7 +49,7 @@ const Language = ({ navigation }) => {
         paddingHorizontal: 32,
         marginBottom:verticalScale(10)}}>
         <Iconify icon="ion:search" size={18} color={theme.color.gray}/>
-        <TextInput placeholder="Search for language" style={{fontSize:18,fontWeight:"500",flex:1}}/></View>
+        <TextInput placeholder="Search for language" style={[{flex:1,color:"black"},fonts.h3]}/></View>
         <FlatList
            showsVerticalScrollIndicator={false}
             data={flagLanguageName}
@@ -90,7 +92,7 @@ const RadioButton = ({ name, state, setState, Flag,langCode,navigation }) => {
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         {<flagIcon.Flag />}
-        <Text style={{ fontSize: 20, paddingLeft: 10 }}>{name}</Text>
+        <Text style={[{ paddingLeft: 10 },fonts.ptext]}>{name}</Text>
       </View>
       {state == name ? (
         <Iconify

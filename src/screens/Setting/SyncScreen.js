@@ -4,6 +4,7 @@ import {Iconify} from 'react-native-iconify';
 import {verticalScale, scale} from 'react-native-size-matters';
 import {theme} from '../../styles/stylesheet';
 import {white} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import { fonts } from '../../styles/unistyle';
 
 const SyncScreen = ({navigation}) => {
   return (
@@ -21,7 +22,7 @@ const SyncScreen = ({navigation}) => {
         <Pressable onPress={() => navigation.goBack()}>
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
-        <Text style={{fontSize: scale(22), fontWeight: 600}}>{'Sync'}</Text>
+        <Text style={[fonts.h1]}>{'Sync'}</Text>
         <Pressable onPress={() => navigation.navigate('SyncHistory')}>
           <Iconify icon="ic:outline-history" size={20} />
         </Pressable>
@@ -37,10 +38,10 @@ const SyncScreen = ({navigation}) => {
             marginTop: 10,
           }}>
           <View>
-            <Text style={{fontSize: 18, fontWeight: 600}}>Total</Text>
+            <Text style={[fonts.h3]}>Total</Text>
           </View>
           <View>
-            <Text style={{fontSize: 18, fontWeight: 600}}>Unsynced</Text>
+            <Text style={[fonts.h3]}>Unsynced</Text>
           </View>
           <View>
             <Iconify
@@ -63,18 +64,18 @@ const SyncScreen = ({navigation}) => {
             paddingHorizontal: 21,
           }}>
           <View style={styles.titlelable}>
-            <Text style={{fontSize: 18, fontWeight: 600}}>Sale</Text>
+            <Text style={[fonts.h3]}>Sale</Text>
           </View>
           <View>
-            <Text style={{fontSize: 18, fontWeight: 400}}>20</Text>
+            <Text style={[fonts.ptext]}>20</Text>
           </View>
           <View>
-            <Text style={{fontSize: 18, fontWeight: 400}}>2</Text>
+            <Text style={[fonts.ptext]}>2</Text>
           </View>
           <View>
             <Iconify
               icon="eva:sync-fill"
-              size={20}
+              size={18}
               color={theme.color.primary}
             />
           </View>
@@ -92,13 +93,13 @@ const SyncScreen = ({navigation}) => {
             paddingHorizontal: 21,
           }}>
           <View style={styles.titlelable}>
-            <Text style={{fontSize: 18, fontWeight: 600}}>Product</Text>
+            <Text style={[fonts.h3]}>Product</Text>
           </View>
           <View>
-            <Text style={{fontSize: 18, fontWeight: 400}}>10</Text>
+            <Text style={[fonts.ptext]}>10</Text>
           </View>
           <View>
-            <Text style={{fontSize: 18, fontWeight: 400}}></Text>
+            <Text style={[fonts.ptext]}></Text>
           </View>
           <View>
             <Iconify icon="eva:sync-fill" size={20} color={theme.color.green} />
@@ -117,13 +118,13 @@ const SyncScreen = ({navigation}) => {
             paddingHorizontal: 21,
           }}>
           <View style={styles.titlelable}>
-            <Text style={{fontSize: 18, fontWeight: 600}}>Customer</Text>
+            <Text style={[fonts.h3]}>Customer</Text>
           </View>
           <View>
-            <Text style={{fontSize: 18, fontWeight: 400}}>20</Text>
+            <Text style={[fonts.ptext]}>20</Text>
           </View>
           <View>
-            <Text style={{fontSize: 18, fontWeight: 400}}>10</Text>
+            <Text style={[fonts.ptext]}>10</Text>
           </View>
           <View>
             <Iconify
@@ -142,7 +143,7 @@ const SyncScreen = ({navigation}) => {
             justifyContent: 'center',
             marginVertical: verticalScale(15),
           }}>
-          <Text style={{color: 'white', fontSize: 22, fontWeight: 600}}>
+          <Text style={[{color: 'white', },fonts.h1]}>
             Sync Now
           </Text>
         </Pressable>

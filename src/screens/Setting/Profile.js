@@ -8,6 +8,7 @@ import realm from '../../database/index';
 import useFetchRealm from '../../hooks/customHooks/useFetchRealm';
 import {useFocusEffect} from '@react-navigation/native';
 import {getToken, loadCredentials} from '../../auth/token/Token';
+import { fonts } from '../../styles/unistyle';
 
 const Profile = ({navigation}) => {
   const imageuri = `https://robohash.org/${Math.random() * 100}=&size=400x400`;
@@ -64,14 +65,12 @@ const Profile = ({navigation}) => {
         <Pressable onPress={() => navigation.goBack()}>
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
-        <Text style={{fontSize: scale(22), fontWeight: 600}}>Profile</Text>
+        <Text style={[fonts.h1]}>Profile</Text>
         <Pressable onPress={() => navigation.navigate('Edit')}>
           <Text
-            style={{
-              fontSize: scale(22),
+            style={[{
               color: theme.color.primary,
-              fontWeight: 600,
-            }}>
+            },fonts.h1]}>
             Edit
           </Text>
         </Pressable>
@@ -100,7 +99,7 @@ const Profile = ({navigation}) => {
           }}
         />
         <View style={{marginVertical: 20, height: verticalScale(27)}}>
-          <Text style={styles.boldMd}>
+          <Text style={[fonts.h3]}>
             {profiledata ? profiledata[0].organization : 'ABC Plc'}
           </Text>
         </View>
@@ -111,7 +110,7 @@ const Profile = ({navigation}) => {
               size={20}
               color={theme.color.blue}
             />
-            <Text style={{paddingHorizontal: 10, fontSize: 20}}>
+            <Text style={[{paddingHorizontal: 10,},fonts.ptext]}>
               {profiledata ? profiledata[0].fullname : 'abebe'}
             </Text>
           </View>
@@ -121,18 +120,17 @@ const Profile = ({navigation}) => {
               size={20}
               color={theme.color.blue}
             />
-            <Text style={{paddingHorizontal: 10, fontSize: 20}}>
+            <Text style={[{paddingHorizontal: 10,},fonts.ptext]}>
               {profiledata ? profiledata[0].email : 'abc@gmail.com'}
             </Text>
           </View>
           <View style={{flexDirection: 'row', height: verticalScale(27)}}>
             <Iconify icon="tabler:phone" size={20} color={theme.color.blue} />
             <Text
-              style={{
+              style={[{
                 paddingHorizontal: 10,
-                fontSize: 20,
                 height: verticalScale(27),
-              }}>
+              },fonts.ptext]}>
               {profiledata
                 ? profiledata[0]?.phonecode + ' ' + profiledata[0]?.phone
                 : '+2518254558'}
@@ -140,7 +138,7 @@ const Profile = ({navigation}) => {
           </View>
           <View style={{flexDirection: 'row', height: verticalScale(27)}}>
             <Iconify icon="carbon:license" size={20} color={theme.color.blue} />
-            <Text style={{paddingHorizontal: 10, fontSize: 20}}>
+            <Text style={[{paddingHorizontal: 10},fonts.ptext]}>
               {profiledata ? profiledata[0].license : '762345'}
             </Text>
           </View>
@@ -155,7 +153,7 @@ const Profile = ({navigation}) => {
               size={20}
               color={theme.color.blue}
             />
-            <Text style={{paddingHorizontal: 10, fontSize: 20}}>
+            <Text style={[{paddingHorizontal: 10},fonts.ptext]}>
               {profiledata ? profiledata[0].tin : '65432345'}
             </Text>
           </View>

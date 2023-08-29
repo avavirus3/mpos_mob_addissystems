@@ -5,6 +5,7 @@ import { Iconify } from "react-native-iconify";
 import { theme } from "../../styles/stylesheet";
 // import { DoneModals } from "../../components/Modal/Modals";
 import {DoneModals} from '../../components/modal/Modals'
+import { fonts } from "../../styles/unistyle";
 const PINScreen = ({ navigation }) => {
   const [comfirm,setComfirm]=useState(false)
 
@@ -25,16 +26,15 @@ const PINScreen = ({ navigation }) => {
         <Pressable onPress={() => navigation.goBack()}>
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
-        <Text style={{ fontSize: scale(22), fontWeight: 600 }}>PIN</Text>
+        <Text style={[fonts.h1]}>PIN</Text>
         <Pressable
         onPress={()=>setComfirm(!comfirm)}
         >
         <Text
-            style={{
-              fontSize: scale(22),
+            style={[{
+              
               color: theme.color.primary,
-              fontWeight: 600,
-            }}>
+            },fonts.h1]}>
            Save
           </Text></Pressable>
       </View>
@@ -47,13 +47,13 @@ const PINScreen = ({ navigation }) => {
         }}
       >
         <View style={{ alignItems: "center",width: "100%", }}>
-          <Text style={{ fontSize: 20, fontWeight: 500 }}>
+          <Text style={[fonts.ptext]}>
             Enter 4 digit pin
           </Text>
           <TextInput
             placeholder="****"
             keyboardType='numeric'
-            style={{ fontSize: 32, color: theme.color.blue, marginTop: 65,letterSpacing: 3,minWidth:200, textAlign:'center', }}
+            style={{ fontSize: 18, color: theme.color.blue, marginTop: 65,letterSpacing: 3,minWidth:200, textAlign:'center', }}
             maxLength={4}
             
             placeholderTextColor={theme.color.gray}

@@ -11,6 +11,7 @@ import i18n  from '../../language/i18n';
 import uuid from 'react-native-uuid'
 import realm from '../../database'
 import { getToken,loadCredentials } from '../../auth/token/Token'
+import { fonts } from '../../styles/unistyle'
 
 const Main = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(true)
@@ -44,7 +45,6 @@ realm.write(()=>realm.create("Image",{
 if(img.length>0 && profiledata){
 
   
-  console.log('!img.filter(d=>d.profileId==profiledata[0]._id',img.filter(d=>d.profileId==profiledata[0]._id).length)
   if(img.filter(d=>d.profileId==profiledata[0]._id)?.length==0)
   realm.write(()=>realm.create("Image",{
     _id:uuid.v4(),
@@ -114,14 +114,12 @@ useFocusEffect(
           paddingHorizontal: scale(25),
           alignItems: 'center',
         }}>
-        <Text style={{fontSize: scale(22), fontWeight: 600}}>Setting</Text>
+        <Text style={[fonts.h1]}>Setting</Text>
         <Pressable onPress={() => setModalVisible(!modalVisible)}>
           <Text
-            style={{
-              fontSize: scale(22),
+            style={[{
               color: theme.color.primary,
-              fontWeight: 600,
-            }}>
+            },fonts.h1]}>
             Log Out
           </Text>
         </Pressable>
@@ -153,15 +151,14 @@ useFocusEffect(
                 }}
               />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 600,color:theme.color.blue}}>
+                <Text style={[{color:theme.color.blue},fonts.h3]}>
                 {profiledata?profiledata[0].organization:'new'}
                 </Text>
                 <Text
-                  style={{
-                    fontSize: scale(15),
+                  style={[{
                     color: theme.color.gray,
-                    fontWeight: 500,
-                  }}>
+                    
+                  },fonts.smText]}>
                   {profiledata?profiledata[0].phonecode:'new'} { (profiledata?profiledata[0].phone:null)}
                 </Text>
               </View>
@@ -177,16 +174,15 @@ useFocusEffect(
           <View
             style={{
               marginHorizontal: scale(25),
-              height: 50,
+               
               justifyContent: 'center',
               marginTop: 10,
             }}>
             <Text
-              style={{
-                fontSize: scale(22),
+              style={[{
+                
                 color: theme.color.blue,
-                fontWeight: 600,
-              }}>
+              },fonts.h3]}>
               SECURITY
             </Text>
           </View>
@@ -196,7 +192,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("LockScreen")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -210,7 +206,7 @@ useFocusEffect(
                 size={scale(20)}
               />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={{fontSize: 18, fontWeight: 500}}>
                   Lock Screen
                 </Text>
               </View>
@@ -223,7 +219,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("ChangePassword")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -234,7 +230,7 @@ useFocusEffect(
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Iconify icon="mdi:password" size={scale(20)} />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                 {i18n.t('changepassword')}
                 </Text>
               </View>
@@ -246,7 +242,7 @@ useFocusEffect(
           <View
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -261,7 +257,7 @@ useFocusEffect(
                 color="#000"
               />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Two-Step Authentication
                 </Text>
               </View>
@@ -280,7 +276,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("SyncScreen")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -291,7 +287,7 @@ useFocusEffect(
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Iconify icon="eva:sync-fill" size={scale(20)} />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>Sync</Text>
+                <Text style={[fonts.ptext]}>Sync</Text>
               </View>
             </View>
             {<View>
@@ -302,16 +298,15 @@ useFocusEffect(
           <View
             style={{
               marginHorizontal: scale(25),
-              height: 50,
+               
               justifyContent: 'center',
               marginTop: 10,
             }}>
             <Text
-              style={{
-                fontSize: scale(22),
+              style={[{
                 color: theme.color.blue,
-                fontWeight: 600,
-              }}>
+                
+              },fonts.h3]}>
               PREFERENCE
             </Text>
           </View>
@@ -319,7 +314,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("Language")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -330,7 +325,7 @@ useFocusEffect(
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Iconify icon="clarity:language-solid" size={21} color="#000" />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                 {i18n.t('language')}
                 </Text>
               </View>
@@ -343,7 +338,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("Currency")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -354,7 +349,7 @@ useFocusEffect(
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Iconify icon="ri:currency-fill" size={21} color="#000" />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Currency
                 </Text>
               </View>
@@ -366,16 +361,14 @@ useFocusEffect(
           <View
             style={{
               marginHorizontal: scale(25),
-              height: 50,
+               
               justifyContent: 'center',
               marginTop: 10,
             }}>
             <Text
-              style={{
-                fontSize: scale(22),
+              style={[{
                 color: theme.color.blue,
-                fontWeight: 600,
-              }}>
+              },fonts.h3]}>
               CONTENT
             </Text>
           </View>
@@ -384,7 +377,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("Payment")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -399,7 +392,7 @@ useFocusEffect(
                 color="#000"
               />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Payment
                 </Text>
               </View>
@@ -412,7 +405,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("Customer")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -423,7 +416,7 @@ useFocusEffect(
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Iconify icon="fluent:people-32-filled" size={21} color="#000" />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Customer
                 </Text>
               </View>
@@ -436,7 +429,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("Analytics")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -447,7 +440,7 @@ useFocusEffect(
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Iconify icon="carbon:analytics" size={21} color="#000" />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Analytics
                 </Text>
               </View>
@@ -460,7 +453,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("ActiveSessionScreen")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -471,7 +464,7 @@ useFocusEffect(
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Iconify icon="fluent:phone-24-filled" size={21} color="#000" />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Active Sessions
                 </Text>
               </View>
@@ -484,7 +477,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("Notification")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -499,7 +492,7 @@ useFocusEffect(
                 color="#000"
               />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Notifications
                 </Text>
               </View>
@@ -512,7 +505,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("PrinterSettingcreen")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -523,7 +516,7 @@ useFocusEffect(
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Iconify icon="mdi:printer" size={21} color="#000" />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Printer Setting
                 </Text>
               </View>
@@ -536,7 +529,7 @@ useFocusEffect(
           onPress={()=>navigation.navigate("PaperWidth")}
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -547,7 +540,7 @@ useFocusEffect(
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Iconify icon="mingcute:paper-fill" size={21} color="#000" />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Paper Width
                 </Text>
               </View>
@@ -559,7 +552,7 @@ useFocusEffect(
           <View
             style={{
               backgroundColor: '#fff',
-              height: verticalScale(50),
+              paddingVertical:10,
               marginHorizontal: scale(25),
               flexDirection: 'row',
               alignItems: 'center',
@@ -574,7 +567,7 @@ useFocusEffect(
                 color="#000"
               />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.ptext]}>
                   Privacy
                 </Text>
               </View>
@@ -585,17 +578,18 @@ useFocusEffect(
           </View>
           <View
             style={{
-              height: 235,
+              height: 100,
+              marginBottom:50,
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: 'white',
             }}>
             <Text
-              style={{color: theme.color.gray, fontWeight: 600, fontSize: 17}}>
+              style={[{color: theme.color.gray,},fonts.smText]}>
               Copyright @ 2023 addissystems
             </Text>
             <Text
-              style={{color: theme.color.gray, fontWeight: 600, fontSize: 17}}>
+              style={[{color: theme.color.gray,},fonts.smText]}>
               Version 1.0.0
             </Text>
           </View>

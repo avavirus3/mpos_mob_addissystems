@@ -13,6 +13,8 @@ import uuid from 'react-native-uuid'
 
 import realm from '../../database/index'
 import { loadCredentials } from '../../auth/token/Token'
+import { fonts } from '../../styles/unistyle'
+import DismissKeyboardHOC from '../../components/DismissKeyboard'
 const AddCustomer = ({ navigation }) => {
   const [profiledata, setProfiledata] = useState()
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -46,6 +48,7 @@ useEffect(()=>{
   loadCredentials().then((r)=>r?setProfiledata(r):null)
 },[])
   return (
+    <DismissKeyboardHOC>
     <View style={{flex:1}}>
     <DoneModals message={"done"} modalVisible={done} setModalVisible={setDone}/>
     <PhoneCode modalVisible={phoneModal} setModalVisible={setPhoneModal} setResult={setPhoneCode} />
@@ -61,13 +64,12 @@ useEffect(()=>{
         <View style={{ marginHorizontal: scale(25),marginVertical:verticalScale(15) }}>
           <View style={{ marginBottom: verticalScale(15) }}>
             <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 500,
-                height: 25,
+              style={[{
+               
+                 
                 marginBottom: 6,
                 color: "#cacaca"
-              }}
+              },fonts.ptext]}
             >
               Full Name
             </Text>
@@ -78,7 +80,6 @@ useEffect(()=>{
                 borderRadius: 10,
                 borderWidth: 1.5,
                 borderColor: theme.color.blue,
-                fontSize: 18,
                 paddingLeft: 20,
                 alignItems: "center",
               }}
@@ -91,11 +92,11 @@ useEffect(()=>{
               <TextInput
               value={fullname}
               onChangeText={(text)=>setFullname(text)}
-                style={{
-                  fontSize: 18,
+                style={[ {
+                
                   flex: 1,
                   color:'black'
-                }}
+                },fonts.h3]}
                 placeholder="Full Name"
                 placeholderTextColor={theme.color.gray}
               />
@@ -103,13 +104,12 @@ useEffect(()=>{
           </View>
           <View style={{ marginBottom: verticalScale(15) }}>
             <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 500,
-                height: 25,
+              style={[{
+            
+                 
                 marginBottom: 6,
                 color: "#cacaca"
-              }}
+              },fonts.ptext]}
             >
               Email
             </Text>
@@ -120,7 +120,6 @@ useEffect(()=>{
                 borderRadius: 10,
                 borderWidth: 1.5,
                 borderColor: theme.color.blue,
-                fontSize: 18,
                 paddingLeft: 20,
                 alignItems: "center",
               }}
@@ -133,11 +132,10 @@ useEffect(()=>{
               <TextInput
               value={email}
               onChangeText={(text)=>setEmail(text)}
-                 style={{
-                  fontSize: 18,
+                 style={[{
                   flex: 1,
                   color:'black'
-                }}
+                },fonts.h3]}
                 placeholder="Email"
                 placeholderTextColor={theme.color.gray}
               />
@@ -145,13 +143,10 @@ useEffect(()=>{
           </View>
           <View style={{ marginBottom: verticalScale(15)}}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  height: 25,
+                style={[{
                   marginBottom: 6,
-                  color: 'gray'
-                }}
+                  color: '#cacaca'
+                },fonts.ptext]}
               >
                 Phone Number
               </Text>
@@ -169,7 +164,7 @@ useEffect(()=>{
               >
                 {phoneCode?<View style={{ flexDirection: "row", alignItems: "center" }}>
                  {<phoneCode.Flag />}
-                  <Text style={{ fontSize: 18, paddingLeft: 9 }}>{phoneCode?.dial_code}</Text>
+                  <Text style={[{ paddingLeft: 9 },fonts.h3]}>{phoneCode?.dial_code}</Text>
                   <Iconify icon="mdi:menu-down" size={18} />
                 </View>:null}
 
@@ -177,7 +172,7 @@ useEffect(()=>{
                   value={phoneNumber}
                   onChangeText={(text) => setPhoneNumber(text)}
                   keyboardType="numeric"
-                  style={{ fontSize: 18, alignItems: "center", flex: 1, color: 'black' }}
+                  style={[{ alignItems: "center", flex: 1, color: 'black' },fonts.ptext]}
                   placeholderTextColor={theme.color.gray}
                   placeholder={"98765433"}
                 />
@@ -185,13 +180,11 @@ useEffect(()=>{
             </View>
           <View style={{ marginBottom: verticalScale(15) }}>
             <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 500,
-                height: 25,
+              style={[{
+                 
                 marginBottom: 6,
                 color: "#cacaca"
-              }}
+              },fonts.ptext]}
             >
               Address
             </Text>
@@ -215,11 +208,11 @@ useEffect(()=>{
               <TextInput
               value={address}
               onChangeText={(text)=>setAdress(text)}
-               style={{
-                  fontSize: 18,
+               style={[ {
+                
                   flex: 1,
                   color:'black'
-                }}
+                },fonts.h3]}
                 placeholder="City, Street Address, Woreda, H.No"
                 placeholderTextColor={theme.color.gray}
               />
@@ -227,13 +220,11 @@ useEffect(()=>{
           </View>
           <View style={{ marginBottom: verticalScale(15) }}>
             <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 500,
-                height: 25,
+              style={[{
+                 
                 marginBottom: 6,
                 color: "#cacaca"
-              }}
+              },fonts.ptext]}
             >
               TIN
             </Text>
@@ -258,11 +249,11 @@ useEffect(()=>{
               value={tin}
               onChangeText={(text)=>setTin(text)}
               keyboardType='numeric'
-              style={{
-                  fontSize: 18,
+              style={[ {
+                
                   flex: 1,
                   color:'black'
-                }}
+                },fonts.h3]}
                 placeholder="TIN No"
                 placeholderTextColor={theme.color.gray}
               />
@@ -284,7 +275,7 @@ useEffect(()=>{
               </Text>
             </Pressable>
           </View></View>
-    </View>
+    </View></DismissKeyboardHOC>
   )
 }
 

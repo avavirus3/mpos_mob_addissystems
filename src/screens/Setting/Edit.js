@@ -17,6 +17,7 @@ import { phoneData } from "../../../data/phonedata";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import useFetchRealm from "../../hooks/customHooks/useFetchRealm";
 import { getToken,loadCredentials } from "../../auth/token/Token";
+import { fonts } from "../../styles/unistyle";
 
 
 
@@ -130,7 +131,7 @@ const Edit = ({ navigation }) => {
         <Pressable onPress={() => navigation.goBack()}>
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
-        <Text style={{ fontSize: scale(22), fontWeight: 600 }}>Edit</Text>
+        <Text style={[fonts.h1]}>Edit</Text>
         <View></View>
       </View>
       <ScrollView>
@@ -155,67 +156,60 @@ const Edit = ({ navigation }) => {
           <View style={{ width: "100%" }}>
             <View style={{ marginBottom: verticalScale(15) }}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  height: 25,
+                style={[{
+                  
+                  
                   marginBottom: 6,
-                }}
+                },fonts.ptext]}
               >
                 Full Name
               </Text>
               <TextInput
                 value={fullname}
                 onChangeText={(text) => setFullname(text)}
-                style={{
+                style={[{
                   width: "100%",
                   borderRadius: 10,
                   borderWidth: 1.5,
                   borderColor: theme.color.blue,
-                  fontSize: 18,
+                 
                   paddingLeft: 20,
                   flex: 1,
                   color: 'black',
-                }}
+                },fonts.h3]}
                 placeholder={profiledata?profiledata[0].fullname:'fullname'}
                 placeholderTextColor='black'
               />
             </View>
             <View style={{ marginBottom: verticalScale(15) }}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  height: 25,
+                style={[{
+                  
                   marginBottom: 6,
-                }}
+                },fonts.ptext]}
               >
                 Email
               </Text>
               <TextInput
                 value={email}
                 onChangeText={(text) => setEmail(text)}
-                style={{
+                style={[{
                   width: "100%",
                   borderRadius: 10,
                   borderWidth: 1.5,
                   borderColor: theme.color.blue,
-                  fontSize: 18,
                   paddingLeft: 20,
                   color: 'black'
-                }}
+                },fonts.h3]}
                 placeholder={profiledata?profiledata[0].email:'email'}
                 placeholderTextColor='black'
               />
             </View>
             <View style={{ marginBottom: verticalScale(15), backgroundColor: "white" }}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  height: 25,
+                style={[{
                   marginBottom: 6,
-                }}
+                },fonts.ptext]}
               >
                 Phone Number
               </Text>
@@ -233,7 +227,7 @@ const Edit = ({ navigation }) => {
               >
                 {phoneCode?<View style={{ flexDirection: "row", alignItems: "center" }}>
                  {<phoneCode.Flag />}
-                  <Text style={{ fontSize: 18, paddingLeft: 9 }}>{phoneCode?.dial_code}</Text>
+                  <Text style={[{ paddingLeft: 9 },fonts.h3]}>{phoneCode?.dial_code}</Text>
                   <Iconify icon="mdi:menu-down" size={18} />
                 </View>:null}
 
@@ -241,7 +235,7 @@ const Edit = ({ navigation }) => {
                   value={phoneNumber}
                   onChangeText={(text) => setPhoneNumber(text)}
                   keyboardType="numeric"
-                  style={{ fontSize: 18, alignItems: "center", flex: 1, color: 'black' }}
+                  style={[{  alignItems: "center", flex: 1, color: 'black' },fonts.h3]}
                   placeholderTextColor={"black"}
                   placeholder={profiledata?profiledata[0].phone:'phone number'}
                 />
@@ -249,40 +243,34 @@ const Edit = ({ navigation }) => {
             </View>
             <View style={{ marginBottom: verticalScale(15) }}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  height: 25,
+                style={ [{
                   marginBottom: 6,
-                }}
+                },fonts.ptext]}
               >
                 Organization Name
               </Text>
               <TextInput
                 value={organization}
                 onChangeText={(text) => setOrganization(text)}
-                style={{
+                style={[{
                   width: "100%",
                   borderRadius: 10,
                   borderWidth: 1.5,
                   borderColor: theme.color.blue,
-                  fontSize: 18,
+            
                   paddingLeft: 20,
                   flex: 1,
                   color: 'black',
-                }}
+                },fonts.h3]}
                 placeholder={profiledata?profiledata[0].organization:'organization'}
                 placeholderTextColor={'black'}
               />
             </View>
             <View style={{ marginBottom: verticalScale(15) }}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  height: 25,
+                style={ [{
                   marginBottom: 6,
-                }}
+                },fonts.ptext]}
               >
                 License Number
               </Text>
@@ -290,27 +278,23 @@ const Edit = ({ navigation }) => {
                 value={license}
                 onChangeText={(text) => setLicense(text)}
                 keyboardType="numeric"
-                style={{
+                style={[{
                   width: "100%",
                   borderRadius: 10,
                   borderWidth: 1.5,
                   borderColor: theme.color.blue,
-                  fontSize: 18,
                   paddingLeft: 20,
                   color: 'black',
-                }}
+                },fonts.h3]}
                 placeholder={profiledata?profiledata[0].license:'license'}
                 placeholderTextColor={'black'}
               />
             </View>
             <View style={{ marginBottom: verticalScale(15) }}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  height: 25,
+                style={ [{
                   marginBottom: 6,
-                }}
+                },fonts.ptext]}
               >
                 TIN
               </Text>
@@ -318,15 +302,14 @@ const Edit = ({ navigation }) => {
                 value={tin}
                 onChangeText={(text) => setTin(text)}
                 keyboardType="numeric"
-                style={{
+                style={[{
                   width: "100%",
                   borderRadius: 10,
                   borderWidth: 1.5,
                   borderColor: theme.color.blue,
-                  fontSize: 18,
                   paddingLeft: 20,
                   color: 'black',
-                }}
+                },fonts.h3]}
                 placeholder={profiledata?profiledata[0].tin:'tin'}
                 placeholderTextColor={'black'}
               />
@@ -342,7 +325,7 @@ const Edit = ({ navigation }) => {
                 marginVertical: verticalScale(15),
               }}
             >
-              <Text style={{ color: "white", fontSize: 22, fontWeight: 600 }}>
+              <Text style={[{ color: "white" },fonts.h1]}>
                 Save
               </Text>
             </Pressable>

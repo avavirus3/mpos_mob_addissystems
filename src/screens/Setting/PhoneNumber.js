@@ -5,6 +5,7 @@ import { theme } from '../../styles/stylesheet'
 import { verticalScale } from 'react-native-size-matters'
 import { Iconify } from 'react-native-iconify'
 import PhoneCode from '../../components/modal/PhoneCode'
+import { fonts } from '../../styles/unistyle'
 const PhoneNumber = ({ navigation }) => {
     const [phoneModal,setPhoneModal]= useState(false)
     const [phoneCode,setPhoneCode]=useState( {
@@ -20,13 +21,12 @@ const PhoneNumber = ({ navigation }) => {
             <View style={{ paddingHorizontal: 20 }}>
                 <View style={{ marginBottom: verticalScale(15) }}>
                     <Text
-                        style={{
-                            fontSize: 18,
-                            fontWeight: 500,
+                        style={[{
+                            
                             height: 25,
                             marginBottom: 6,
                             color: theme.color.lightGray
-                        }}
+                        },fonts.h3]}
                     >
                         Phone Number
                     </Text>
@@ -44,7 +44,7 @@ const PhoneNumber = ({ navigation }) => {
                     >
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             {<phoneCode.Flag />}
-                            <Text style={{ fontSize: 18, paddingLeft: 9 }}>{phoneCode.dial_code}</Text>
+                            <Text style={[{  paddingLeft: 9 },fonts.ptext]}>{phoneCode.dial_code}</Text>
                             <Iconify icon="mdi:menu-down" size={18} />
                         </View>
 

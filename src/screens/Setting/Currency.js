@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { verticalScale, scale } from "react-native-size-matters";
 import { Iconify } from "react-native-iconify";
 import { theme } from "../../styles/stylesheet";
+import { fonts } from "../../styles/unistyle";
 
 const RadioButton = ({ name, state, setState, flag }) => {
   //console.log(flag)
@@ -28,7 +29,7 @@ const RadioButton = ({ name, state, setState, flag }) => {
         ) : (
           <Iconify icon={"twemoji:flag-united-states"} size={20} />
         )}
-        <Text style={{ fontSize: 20, paddingLeft: 10 }}>{name}</Text>
+        <Text style={[{ paddingLeft: 10 },fonts.h3]}>{name}</Text>
       </View>
       {state == name ? (
         <Iconify

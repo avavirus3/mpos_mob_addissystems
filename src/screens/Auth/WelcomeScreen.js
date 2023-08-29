@@ -21,8 +21,7 @@ const WelcomeScreen = ({navigation}) => {
   const [timeLeft, setTimeLeft] = useState(2);
   const intialBg = require('../../assets/images/welcomebg.png');
   const finalBg = require('../../assets/images/loginbg.png');
-  const img = "https://avataaars.io/?avatarStyle=Circle&topType=WinterHat1&accessoriesType=Wayfarers&hatColor=Black&facialHairType=MoustacheMagnum&facialHairColor=Platinum&clotheType=ShirtVNeck&clotheColor=Pink&eyeType=Happy&eyebrowType=DefaultNatural&mouthType=Disbelief&skinColor=Brown"
-  console.log(timeLeft);
+ 
 
   useEffect(() => {
     // exit early when we reach 0

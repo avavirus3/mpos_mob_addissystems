@@ -4,6 +4,7 @@ import TopNavigationBar from '../../components/top_navigation/TopNavigationBar'
 import { theme } from '../../styles/stylesheet'
 import { verticalScale } from 'react-native-size-matters'
 import { Iconify } from 'react-native-iconify'
+import { fonts } from '../../styles/unistyle'
 const AccountNumber = ({ navigation }) => {
     return (
         <View style={{flex:1,backgroundColor:'#fff'}}>
@@ -12,13 +13,10 @@ const AccountNumber = ({ navigation }) => {
             <View style={{ paddingHorizontal: 20 }}>
             <View style={{ marginBottom: verticalScale(15) }}>
                 <Text
-                    style={{
-                        fontSize: 18,
-                        fontWeight: 500,
-                        height: 25,
+                    style={[{
                         marginBottom: 6,
                         color: "#cacaca"
-                    }}
+                    },fonts.ptext]}
                 >
                     Add Account Number
                 </Text>
@@ -29,7 +27,6 @@ const AccountNumber = ({ navigation }) => {
                         borderRadius: 10,
                         borderWidth: 1.5,
                         borderColor: theme.color.blue,
-                        fontSize: 18,
                         paddingLeft: 20,
                         alignItems: "center",
                     }}
@@ -40,10 +37,9 @@ const AccountNumber = ({ navigation }) => {
                         color={"#cacaca"}
                     />
                     <TextInput
-                        style={{
-                            fontSize: 18,
-                            flex: 1
-                        }}
+                        style={[{
+                            flex: 1,color:'black'
+                        },fonts.h3]}
                         placeholder="Enter Account Number"
                         placeholderTextColor={theme.color.lightGray}
                     />

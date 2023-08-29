@@ -5,6 +5,7 @@ import { Iconify } from 'react-native-iconify'
 import{scale,verticalScale} from 'react-native-size-matters'
 import Svg, { Use, Defs, Image,Path } from "react-native-svg"
 import { theme } from '../../styles/stylesheet'
+import { fonts } from '../../styles/unistyle'
 
 const NotificationView =({message='null'})=>{
   return (
@@ -13,7 +14,7 @@ const NotificationView =({message='null'})=>{
         <Iconify icon='charm:tick' size={18} color={'#fff'} />
       </View>
       <View style={{maxWidth:250}}>
-      <Text style={{fontSize:18,maxWidth:300}}>{message}</Text>
+      <Text style={[{maxWidth:300},fonts.ptext]}>{message}</Text>
       </View></View>
       <View style={{backgroundColor:theme.color.blue,width:scale(10),height:verticalScale(10),borderRadius:20}}></View>
       </View>
@@ -26,7 +27,7 @@ const Notification = ({navigation}) => {
       <View style={{paddingHorizontal:20}}><TopNavigationBar backIcon={true} onPressBack={()=>navigation.goBack()} middleLabel={'Notification'} /></View>
       <NotificationView width={25} height={25} message='You have successfully changed your password.' />
       <View style={{paddingHorizontal:20}}>
-      <View style={{borderBottomWidth:1,borderColor:theme.color.lightGray,paddingVertical:20}}><Text style={{fontSize:18}}>Update Available</Text></View></View>
+      <View style={{borderBottomWidth:1,borderColor:theme.color.lightGray,paddingVertical:20}}><Text style={[fonts.h3]}>Update Available</Text></View></View>
     </View>
   )
 }

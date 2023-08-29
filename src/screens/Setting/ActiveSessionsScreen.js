@@ -6,6 +6,7 @@ import { Iconify } from 'react-native-iconify'
 import { theme } from '../../styles/stylesheet'
 import { useState } from 'react'
 import {DoneModals,ComfirmationModal}from '../../components/modal/Modals'
+import { fonts } from '../../styles/unistyle'
 
 const ActiveSessionsScreen = ({ navigation }) => {
     const [comfirm, setcomfirm] = useState(false)
@@ -35,31 +36,31 @@ const ActiveSessionsScreen = ({ navigation }) => {
             <View style={{ paddingHorizontal: scale(20), }}>
                 <TopNavigationBar backIcon={true} onPressBack={() => navigation.goBack()} middleLabel={"Active Session"} />
                 <View>
-                    <Text style={{fontSize:20,fontWeight:500,color:theme.color.gray,marginVertical:16}}>THIS DEVICE</Text>
+                    <Text style={[{color:theme.color.gray,marginVertical:16},fonts.h3]}>THIS DEVICE</Text>
                     <View style={{borderRadius:scale(10), paddingVertical: verticalScale(15), paddingHorizontal: scale(10), flexDirection: 'row', justifyContent: 'space-between', backgroundColor: theme.color.lighterGray, alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Iconify icon='fluent:phone-24-filled' size={20} />
-                            <View style={{ paddingLeft: scale(5) }}><Text style={{ fontWeight: 600, fontSize: 20 }}>{phone[0].name}
+                            <View style={{ paddingLeft: scale(5) }}><Text style={[fonts.ptext]}>{phone[0].name}
                             </Text>
-                                <Text style={{ color: "#A8A8A8", fontSize: 16 }}>{phone[0].ip}  {phone[0].city}</Text>
+                                <Text style={[{ color: "#A8A8A8", },fonts.smText]}>{phone[0].ip}  {phone[0].city}</Text>
                             </View>
                         </View>
                         <View>{phone[0].online ? <Text style={{ color: theme.color.green }}>online</Text> : <View>
-                        <Text style={{ color: "#A8A8A8", fontSize: 16 }}>thu</Text>
+                        <Text style={[{ color: "#A8A8A8", },fonts.smText]}>thu</Text>
                             <Iconify icon='material-symbols:logout' color={theme.color.primary} size={24}/>
                         </View>}</View>
                     </View>
-                    <Text style={{fontSize:20,fontWeight:500,color:theme.color.gray,marginVertical:16}}>Active Sessions</Text>
+                    <Text style={[{color:theme.color.gray,marginVertical:16},fonts.h3]}>Active Sessions</Text>
                     {phone.map((i)=>(<View key={i.name} style={{marginBottom:15,borderRadius:scale(10), paddingVertical: verticalScale(15), paddingHorizontal: scale(10), flexDirection: 'row', justifyContent: 'space-between', backgroundColor: theme.color.lighterGray, alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Iconify icon='fluent:phone-24-filled' size={20} />
-                            <View style={{ paddingLeft: scale(5) }}><Text style={{ fontWeight: 600, fontSize: 20 }}>{i.name}
+                            <View style={{ paddingLeft: scale(5) }}><Text style={[fonts.ptext]}>{i.name}
                             </Text>
-                                <Text style={{ color: "#A8A8A8", fontSize: 16 }}>{i.ip}  {i.city}</Text>
+                                <Text style={[{ color: "#A8A8A8",},fonts.smText]}>{i.ip}  {i.city}</Text>
                             </View>
                         </View>
                         <View>{!phone[0].online ? <Text style={{ color: theme.color.green }}>online</Text> : <View>
-                        <Text style={{ color: "#A8A8A8", fontSize: 16 }}>thu</Text>
+                        <Text style={[{ color: "#A8A8A8",},fonts.smText]}>thu</Text>
                            <Pressable onPress={()=>setcomfirm(true)}><Iconify icon='material-symbols:logout' color={theme.color.primary} size={24}/></Pressable>
                         </View>}</View>
                     </View>))}

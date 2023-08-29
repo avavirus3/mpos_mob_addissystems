@@ -4,6 +4,7 @@ import { Iconify } from "react-native-iconify";
 import { verticalScale, scale } from "react-native-size-matters";
 import { theme } from "../../styles/stylesheet";
 import i18n from "../../language/i18n";
+import { fonts } from "../../styles/unistyle";
 const ChangePasswordScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -21,7 +22,7 @@ const ChangePasswordScreen = ({ navigation }) => {
         <Pressable onPress={() => navigation.goBack()}>
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
-        <Text style={{ fontSize: scale(22), fontWeight: 600 }}>
+        <Text style={[fonts.h1]}>
           {i18n.t("changepassword")}
         </Text>
         <View style={{ marginHorizontal: scale(25) }}></View>
@@ -29,13 +30,12 @@ const ChangePasswordScreen = ({ navigation }) => {
       <View style={{ marginHorizontal: scale(25) }}>
         <View style={{ marginBottom: verticalScale(15) }}>
           <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 500,
+            style={[{
+          
               height: 25,
               marginBottom: 6,
               color:"#cacaca"
-            }}
+            },fonts.ptext]}
           >
             New Password
           </Text>
@@ -46,7 +46,6 @@ const ChangePasswordScreen = ({ navigation }) => {
               borderRadius: 10,
               borderWidth: 1.5,
               borderColor: theme.color.blue,
-              fontSize: 18,
               paddingLeft: 20,
               alignItems: "center",
             }}
@@ -58,7 +57,8 @@ const ChangePasswordScreen = ({ navigation }) => {
             />
             <TextInput
               style={{
-                fontSize: 18,
+                fontSize: 16,
+                color:'black'
               }}
               placeholder="New Password"
             />
@@ -66,13 +66,11 @@ const ChangePasswordScreen = ({ navigation }) => {
         </View>
         <View style={{ marginBottom: verticalScale(15) }}>
           <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 500,
+            style={[{
               height: 25,
               marginBottom: 6,
               color:"#cacaca",
-            }}
+            },fonts.ptext]}
           >
             Comfirm Password
           </Text>
@@ -83,7 +81,6 @@ const ChangePasswordScreen = ({ navigation }) => {
               borderRadius: 10,
               borderWidth: 1.5,
               borderColor: theme.color.blue,
-              fontSize: 18,
               paddingLeft: 20,
               alignItems: "center",
             }}
@@ -95,7 +92,8 @@ const ChangePasswordScreen = ({ navigation }) => {
             />
             <TextInput
               style={{
-                fontSize: 18,
+                fontSize: 16,
+                color:'black'
               }}
               placeholder="Comfirm Password"
             />
@@ -111,7 +109,7 @@ const ChangePasswordScreen = ({ navigation }) => {
                 marginVertical: verticalScale(15),
               }}
             >
-              <Text style={{ color: "white", fontSize: 22, fontWeight: 600 }}>
+              <Text style={[{ color: "white", },fonts.h1]}>
                 Save
               </Text>
             </Pressable>

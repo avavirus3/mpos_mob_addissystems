@@ -3,6 +3,7 @@ import React from 'react'
 import { verticalScale,scale } from 'react-native-size-matters'
 import { Iconify } from 'react-native-iconify'
 import {theme} from '../../styles/stylesheet'
+import { fonts } from '../../styles/unistyle'
 
 const LockScreen = ({navigation}) => {
   return (
@@ -20,7 +21,7 @@ const LockScreen = ({navigation}) => {
         <Pressable onPress={() => navigation.goBack()}>
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
-        <Text style={{ fontSize: scale(22), fontWeight: 600 }}>Lock Screen</Text>
+        <Text style={[fonts.h1]}>Lock Screen</Text>
         <Pressable>
         </Pressable>
       </View>
@@ -42,7 +43,7 @@ const LockScreen = ({navigation}) => {
                 size={scale(20)}
               />
               <View style={{paddingHorizontal: scale(10)}}>
-                <Text style={{fontSize: scale(20), fontWeight: 500}}>
+                <Text style={[fonts.h1]}>
                  PIN
                 </Text>
               </View>

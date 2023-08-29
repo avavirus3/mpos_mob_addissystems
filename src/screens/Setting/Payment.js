@@ -7,6 +7,7 @@ import { Iconify } from 'react-native-iconify'
 import { MySvgComponent } from './Notification'
 import { ScrollView } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { fonts } from '../../styles/unistyle'
 
 const RadioButton = ({ name, state, setState,width,icon }) => {
   //console.log(flag)
@@ -29,7 +30,7 @@ const RadioButton = ({ name, state, setState,width,icon }) => {
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Image source={icon} style={{height:40,width:40}} resizeMode='contain' />
-        <Text style={{ fontSize: 20, paddingLeft: 10 }}>{name}</Text>
+        <Text style={[{paddingLeft: 10 },fonts.h3]}>{name}</Text>
       </View>
       {state == name ? (
         <Iconify
@@ -94,7 +95,7 @@ const Payment = ({ navigation }) => {
               <MySvgComponent width={30} height={30} />
             </View>
             <View style={{ paddingHorizontal: scale(0), }}>
-              <Text style={{ fontSize: scale(20), fontWeight: 500 }}>
+              <Text style={[fonts.h3]}>
                 Payment
               </Text>
             </View>
@@ -122,7 +123,7 @@ const Payment = ({ navigation }) => {
               color="#000"
             />
             <View style={{ paddingHorizontal: scale(10) }}>
-              <Text style={{ fontSize: scale(20), fontWeight: 500 }}>
+              <Text style={[fonts.h3]}>
                 NFC
               </Text>
             </View>
@@ -138,7 +139,7 @@ const Payment = ({ navigation }) => {
     <View style={{ alignItems: 'center',paddingHorizontal:20 ,marginTop:15}}>
     <TouchableOpacity onPress={()=>navigation.navigate("ChooseBank")} style={{ flexDirection: 'row', alignItems: 'center', width:'100%', gap: 10, borderWidth: 1,justifyContent:'center',borderRadius:10,paddingVertical:10,borderColor:theme.color.blue,elevation:3,backgroundColor:'#fff' }}>
     <Iconify size={22} color={theme.color.blue} icon='material-symbols:payments-rounded' />
-    <Text style={{fontSize:20,color:theme.color.blue}}>Add Another Account</Text>
+    <Text style={[{color:theme.color.blue},fonts.ptext]}>Add Another Account</Text>
     </TouchableOpacity>
     </View>
     <View style={{width:"100%",marginVertical:verticalScale(25),flex:1}}>

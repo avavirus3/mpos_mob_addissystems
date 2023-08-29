@@ -14,6 +14,7 @@ import {Iconify} from 'react-native-iconify';
 import {LinearTextGradient} from 'react-native-text-gradient';
 import {verticalScale, scale} from 'react-native-size-matters';
 import realm from '../../database';
+import DismissKeyboardHOC from '../../components/DismissKeyboard';
 // import useFetchRealm from '../../hooks/customHooks/useFetchRealm';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { getToken } from '../../auth/token/Token';
@@ -82,7 +83,7 @@ if(email&&password){
   } 
    
   }
-  return (
+  return (<DismissKeyboardHOC>
     <View style={{backgroundColor: theme.color.white, flex: 1}}>
       <StatusBar
         translucent={false}
@@ -234,7 +235,7 @@ if(email&&password){
             <View style={{flexDirection:'row',alignItems:'center',columnGap:scale(7)}}><Text style={{fontSize:20,fontWeight:500}}>Don’t have an account?</Text><Pressable onPress={()=>navigation.navigate("SignUp")}><Text style={{fontSize:20,fontWeight:600,color:theme.color.primary}}>SIGN UP</Text></Pressable></View>
         </View>
       </View>
-    </View>
+    </View></DismissKeyboardHOC>
   );
 };
 
