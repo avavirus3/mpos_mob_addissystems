@@ -4,7 +4,7 @@ export const fonts=StyleSheet.create({
 
     h1:{
         fontSize:20,
-        fontWeight:500
+        fontWeight:"500"
     },
     ptext:{
         fontSize:14

@@ -12,7 +12,7 @@ export const theme = {
     blue: "#3222C6",
     lighterGray:'#F9F7F7',
     white:'#fff',
-    lightPrimary:'rgba(215,26,98,0.1)'
+    lighterBlue:'rgba(50, 34, 198, 0.15)'
   },
 };
 export const color= {

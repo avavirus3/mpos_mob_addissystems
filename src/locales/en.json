@@ -1,4 +1,6 @@
 {
     "language": "language",
-    "changepassword":"Change Password"
+    "changepassword":"Change Password",
+    "currency":"currency"
+    
 }

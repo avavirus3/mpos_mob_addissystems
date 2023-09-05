@@ -23,6 +23,12 @@ import PhoneNumber from '../../../screens/Setting/PhoneNumber';
 import ActivationCode from '../../../screens/Setting/ActivationCode';
 import SyncScreen from '../../../screens/Setting/SyncScreen';
 import SyncHistory from '../../../screens/Setting/SyncHistory';
+import More from '../../../screens/Setting/More';
+import Content from '../../../screens/Setting/Content';
+import Security from '../../../screens/Setting/Security';
+import Preference from '../../../screens/Setting/Preference';
+import Setting from '../../../screens/Setting/Setting';
+import Premium from '../../../screens/Setting/Premium';
 
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +36,12 @@ const Stack = createNativeStackNavigator();
 const Settingtack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
+
+      <Stack.Screen name="More" component={More} />
+       <Stack.Screen name="Premium" component={Premium} /> 
+      <Stack.Screen name="Content" component={Content} />
+      <Stack.Screen name="Security" component={Security} />
+      <Stack.Screen name="Preference" component={Preference} />
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Edit"  component={Edit}/>
@@ -52,6 +64,7 @@ const Settingtack = () => {
       <Stack.Screen name="ActivationCode" component={ActivationCode} />
       <Stack.Screen name="SyncScreen" component={SyncScreen} />
       <Stack.Screen name="SyncHistory" component={SyncHistory} />
+      <Stack.Screen name="Settings" component={Setting}/>
 
     </Stack.Navigator>
   );

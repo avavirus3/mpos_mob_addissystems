@@ -7,7 +7,7 @@ import {
   Image,
   TextInput,
   NativeModules,
-  StatusBar
+  StatusBar,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {theme} from '../../styles/stylesheet';
@@ -22,7 +22,27 @@ import DismissKeyboardHOC from '../../components/DismissKeyboard';
 import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 import {createUser, isLicence, isTin} from '../../auth/api/fetchData';
-import { fonts } from '../../styles/unistyle';
+import {fonts} from '../../styles/unistyle';
+import {sendotp} from '../../auth/api/otpApi';
+import { Modal,ActivityIndicator } from 'react-native';
+
+const LoadingModal=({modalVisible})=>{
+  return(<Modal 
+  animationType='fade'
+  transparent={true}
+  visible={modalVisible}
+  statusBarTranslucent={true}
+  >
+    <View style={{justifyContent:'center',alignItems:'center',flex:1,backgroundColor: 'rgba(135, 135, 135,0.5)',}}>
+      <View style={styles.modalView}>
+        <ActivityIndicator size={"large"} color={theme.color.primary} />
+
+      </View>
+
+    </View>
+
+  </Modal>)
+}
 
 const SignUp = ({navigation}) => {
   const queryClient = useQueryClient();
@@ -42,7 +62,7 @@ const SignUp = ({navigation}) => {
   const [phoneCode, setPhoneCode] = useState(
     phoneData.find(d => d.dial_code == '+251'),
   );
-
+  //console.log(noL, noTin);
   useEffect(() => {
     return () => {
       clearTimeout(timeoutToClear);
@@ -59,25 +79,27 @@ const SignUp = ({navigation}) => {
       );
     };
   };
-
-  
-
+  const optMutation = useMutation(
+   sendotp,{onSuccess: data =>{
+    console.log(data)
+   }}
+  )
+  const handleOtp =async(name)=>{
+    await optMutation.mutateAsync(name)
+  }
+//console.log("otp:mutetion",optMutation.isLoading)
   const checkLicence = useMutation(isLicence, {
     onSuccess: data => {
       queryClient.invalidateQueries([``]);
-      data?setOrganization(data.TradeName):setOrganization("")
-      console.log(
-        data
-          ? data.TradeName
-          : '',
-      );
+      data ? setOrganization(data.TradeName) : setOrganization('');
+      console.log(data ? data.TradeName : '');
       data ? setNol(false) : setNol(true);
       data
         ? Toast.show({
-        type: 'success',
-        text1: 'correct License',
-        //text2: `this inputs are required ${fullname?"":"full"} ${email?"":"email"}, ${phoneNumber?"":"phone"}, ${password?"":"password"}`
-      })
+            type: 'success',
+            text1: 'correct License',
+            //text2: `this inputs are required ${fullname?"":"full"} ${email?"":"email"}, ${phoneNumber?"":"phone"}, ${password?"":"password"}`
+          })
         : Toast.show({
             type: 'error',
             text1: 'Wrong License',
@@ -85,19 +107,25 @@ const SignUp = ({navigation}) => {
           });
     },
   });
-  const createUserQuery = useMutation(createUser,{
-    onSuccess:data=>{
-      queryClient.invalidateQueries([''])
-      data?data.msg?Toast.show({
-        type:'error',
-        text1:data.msg
-      }):(Toast.show({
-        type:'success',
-        text1:'Done Check ur email'
-      })):null
-      data?console.log("data",data.msg?data.msg:data.token):console.log(data)
-    }
-  })
+  const createUserQuery = useMutation(createUser, {
+    onSuccess: data => {
+      queryClient.invalidateQueries(['']);
+      data
+        ? data.msg
+          ? Toast.show({
+              type: 'error',
+              text1: data.msg,
+            })
+          : Toast.show({
+              type: 'success',
+              text1: 'Done Check ur email',
+            })
+        : null;
+      data
+        ? console.log('data', data.msg ? data.msg : data.token)
+        : console.log(data);
+    },
+  });
   const checkTin = useMutation(isTin, {
     onSuccess: data => {
       queryClient.invalidateQueries([``]);
@@ -118,81 +146,108 @@ const SignUp = ({navigation}) => {
           });
     },
   });
- const hamdleUser=async(user)=>{
-  const newuser =user 
-  if(user) await createUserQuery.mutateAsync(newuser) 
- }
+  const hamdleUser = async user => {
+    const newuser = user;
+    if (user) await createUserQuery.mutateAsync(newuser);
+  };
   const handletin = async tin => {
     const newData = tin;
     //console.log(newData)
     if (tin) await checkTin.mutateAsync(newData);
   };
-  const debounceTin = debounce(handletin,(text => {
-    setNoTin(true), setTin(text);
-  }), 3000);
+  const debounceTin = debounce(
+    handletin,
+    text => {
+      setNoTin(true), setTin(text);
+    },
+    3000,
+  );
 
   const handleLicence = async licence => {
     const newData = licence;
     //console.log(newData)
     await checkLicence.mutateAsync(newData);
   };
-  const debounceLicence = debounce(handleLicence,(text => {
-    setNol(true), setLicense(text);
-  }), 3000);
-  
+  const debounceLicence = debounce(
+    handleLicence,
+    text => {
+      setNol(true), setLicense(text);
+    },
+    3000,
+  );
 
-  const onSignUp = () => {
-    if (  email  && phoneCode && phoneNumber&&organization) {
-      
-     const user= {
-      
-        "businessname": organization,
-        "Fname": "",
-        "Lname": "",
-        "email": email,
-        "phone": phoneCode.dial_code + phoneNumber,
-        "licence_no": license,
-        "Country": "Ethiopia",
-        "CityName": ""
-      
-     }
-      hamdleUser(user)
-      // return (
-      //   realm.write(() =>
-      //     realm.create('Profile', {
-      //       _id: uuid.v4(),
-      //       fullname: fullname,
-      //       email: email,
-      //       phone: phoneNumber,
-      //       license: license,
-      //       organization: organization,
-      //       tin: tin,
-      //       password: password,
-      //       phonecode: phoneCode.dial_code,
-      //     }),
-      //   ),
-      //   navigation.navigate('OTP')
-      // );
-    } else {
-      Toast.show({
+  const onSignUp = async () => {
+    // aandleOtp
+    if (email && phoneCode && phoneNumber && organization) {
+    const result = await sendotp({name: phoneCode.dial_code + phoneNumber});
+    console.log(result);
+    if (result.message != undefined){
+      const user={
+        _id: uuid.v4(),
+        email: email,
+        phone: phoneNumber,
+        license: license,
+        organization: organization,
+        tin: tin,
+        phonecode: phoneCode.dial_code,
+      }
+      return navigation.navigate('OTP', {data: result,user});}
+    else {
+      return Toast.show({
         type: 'error',
-        text1: 'Input required',
-        text2: `this inputs are required ${fullname ? '' : 'full'} ${
-          email ? '' : 'email'
-        }, ${phoneNumber ? '' : 'phone'}, ${password ? '' : 'password'}`,
+        text1: 'unknown phone number',
       });
-    }
+    }}
+    // if (email && phoneCode && phoneNumber && organization) {
+    //   const user = {
+    //     businessname: organization,
+    //     Fname: '',
+    //     Lname: '',
+    //     email: email,
+    //     phone: phoneCode.dial_code + phoneNumber,
+    //     licence_no: license,
+    //     Country: 'Ethiopia',
+    //     CityName: '',
+    //   };
+    //   // hamdleUser(user)
+
+    //   sendotp({name: phoneCode.dial_code + phoneNumber});
+    //   // return (
+    //   //   realm.write(() =>
+    //   //     realm.create('Profile', {
+    //   //       _id: uuid.v4(),
+    //   //       fullname: fullname,
+    //   //       email: email,
+    //   //       phone: phoneNumber,
+    //   //       license: license,
+    //   //       organization: organization,
+    //   //       tin: tin,
+    //   //       password: password,
+    //   //       phonecode: phoneCode.dial_code,
+    //   //     }),
+    //   //   ),
+    //   //   navigation.navigate('OTP')
+    //   // );
+    // } else {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'Input required',
+    //     text2: `this inputs are required ${fullname ? '' : 'full'} ${
+    //       email ? '' : 'email'
+    //     }, ${phoneNumber ? '' : 'phone'}, ${password ? '' : 'password'}`,
+    //   });
+    // }
   };
- 
 
   return (
     <DismissKeyboardHOC>
       <View style={{flex: 1, backgroundColor: theme.color.white}}>
-         <StatusBar
-        translucent={false}
-        backgroundColor={theme.color.white}
-        barStyle={'dark-content'}
-      />
+        <LoadingModal modalVisible={optMutation.isLoading} />
+        <StatusBar
+          translucent={false}
+          backgroundColor={theme.color.white}
+          barStyle={'dark-content'}
+        />
 
         <PhoneCode
           modalVisible={phoneModal}
@@ -283,11 +338,13 @@ const SignUp = ({navigation}) => {
                 </View> */}
                 <View style={{marginTop: verticalScale(15)}}>
                   <Text
-                    style={[{
-                   
-                      marginBottom: 6,
-                      color: '#cacaca',
-                    },fonts.ptext]}>
+                    style={[
+                      {
+                        marginBottom: 6,
+                        color: '#cacaca',
+                      },
+                      fonts.ptext,
+                    ]}>
                     {' '}
                     Email
                   </Text>
@@ -309,10 +366,13 @@ const SignUp = ({navigation}) => {
                     <TextInput
                       value={email}
                       onChangeText={text => setEmail(text)}
-                      style={[{
-                        flex: 1,
-                        color: 'black',
-                      },fonts.h3]}
+                      style={[
+                        {
+                          flex: 1,
+                          color: 'black',
+                        },
+                        fonts.h3,
+                      ]}
                       placeholder="Email"
                       placeholderTextColor={theme.color.gray}
                     />
@@ -362,11 +422,13 @@ const SignUp = ({navigation}) => {
 
                 <View style={{marginTop: verticalScale(15), width: '100%'}}>
                   <Text
-                    style={[{
-                  
-                      marginBottom: 6,
-                      color: theme.color.gray,
-                    },fonts.ptext]}>
+                    style={[
+                      {
+                        marginBottom: 6,
+                        color: theme.color.gray,
+                      },
+                      fonts.ptext,
+                    ]}>
                     Phone Number
                   </Text>
                   <Pressable
@@ -382,7 +444,7 @@ const SignUp = ({navigation}) => {
                     }}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       {<phoneCode.Flag />}
-                      <Text style={[{ paddingLeft: 9},fonts.ptext]}>
+                      <Text style={[{paddingLeft: 9}, fonts.ptext]}>
                         {phoneCode.dial_code}
                       </Text>
                       <Iconify icon="mdi:menu-down" size={18} />
@@ -390,14 +452,18 @@ const SignUp = ({navigation}) => {
 
                     <TextInput
                       value={phoneNumber}
-                      onChangeText={text =>{
-                        if (/^\d+$/.test(text)||text === '')setPhoneNumber(text);
+                      onChangeText={text => {
+                        if (/^\d+$/.test(text) || text === '')
+                          setPhoneNumber(text);
                       }}
-                      style={[{
-                        flex: 1,
-                        alignItems: 'center',
-                        color: 'black',
-                      },fonts.h3]}
+                      style={[
+                        {
+                          flex: 1,
+                          alignItems: 'center',
+                          color: 'black',
+                        },
+                        fonts.h3,
+                      ]}
                       keyboardType="numeric"
                       placeholderTextColor={theme.color.gray}
                       placeholder="911223344"
@@ -406,11 +472,13 @@ const SignUp = ({navigation}) => {
                 </View>
                 <View style={{marginTop: verticalScale(15)}}>
                   <Text
-                    style={[{
-                   
-                      marginBottom: 6,
-                      color: '#cacaca',
-                    },fonts.ptext]}>
+                    style={[
+                      {
+                        marginBottom: 6,
+                        color: '#cacaca',
+                      },
+                      fonts.ptext,
+                    ]}>
                     {' '}
                     Organization
                   </Text>
@@ -432,10 +500,13 @@ const SignUp = ({navigation}) => {
                     <TextInput
                       value={organization}
                       onChangeText={text => setOrganization(text)}
-                      style={[{
-                        flex: 1,
-                        color: 'black',
-                      },fonts.h3]}
+                      style={[
+                        {
+                          flex: 1,
+                          color: 'black',
+                        },
+                        fonts.h3,
+                      ]}
                       placeholder="organization"
                       placeholderTextColor={theme.color.gray}
                     />
@@ -443,12 +514,13 @@ const SignUp = ({navigation}) => {
                 </View>
                 <View style={{marginTop: verticalScale(15)}}>
                   <Text
-                    style={[{
-                    
-                   
-                      marginBottom: 6,
-                      color: '#cacaca',
-                    },fonts.ptext]}>
+                    style={[
+                      {
+                        marginBottom: 6,
+                        color: '#cacaca',
+                      },
+                      fonts.ptext,
+                    ]}>
                     {' '}
                     License
                   </Text>
@@ -470,11 +542,18 @@ const SignUp = ({navigation}) => {
                     <TextInput
                       value={license}
                       //keyboardType='numeric'
-                      onChangeText={debounceLicence}
-                      style={[{
-                        flex: 1,
-                        color: 'black',
-                      },fonts.h3]}
+                      onChangeText={text => {
+                        if (!text) setNol(true);
+                        if (text) setNol(false);
+                        setLicense(text);
+                      }} //debounceLicence //(text)=>{if(text)setNol(false)setLicense(text)}
+                      style={[
+                        {
+                          flex: 1,
+                          color: 'black',
+                        },
+                        fonts.h3,
+                      ]}
                       placeholder="license"
                       placeholderTextColor={theme.color.gray}
                     />
@@ -482,10 +561,13 @@ const SignUp = ({navigation}) => {
                 </View>
                 <View style={{marginTop: verticalScale(15)}}>
                   <Text
-                    style={[{
-                      marginBottom: 6,
-                      color: '#cacaca',
-                    },fonts.ptext]}>
+                    style={[
+                      {
+                        marginBottom: 6,
+                        color: '#cacaca',
+                      },
+                      fonts.ptext,
+                    ]}>
                     {' '}
                     TIN
                   </Text>
@@ -507,11 +589,18 @@ const SignUp = ({navigation}) => {
                     <TextInput
                       value={tin}
                       keyboardType="numeric"
-                      onChangeText={debounceTin}
-                      style={[{
-                        flex: 1,
-                        color: 'black',
-                      },fonts.h3]}
+                      onChangeText={text => {
+                       if(!text) setNoTin(true);
+                       if(text) setNoTin(false);
+                        setTin(text);
+                      }} //debounceTin //(text)=>{setNoTin(false);setTin(text)}
+                      style={[
+                        {
+                          flex: 1,
+                          color: 'black',
+                        },
+                        fonts.h3,
+                      ]}
                       placeholder="TIN"
                       placeholderTextColor={theme.color.gray}
                     />
@@ -520,22 +609,23 @@ const SignUp = ({navigation}) => {
 
                 <Pressable
                   onPress={() => {
-                    console.log(licensePH == license);
-                    !noL && !noTin && licensePH == license
-                      ? onSignUp()
-                      : Toast.show({
-                          type: 'error',
-                          text1: 'Check Your License',
-                          text2: 'wrong License or Wait until its verified',
-                        });
-                    //navigation.navigate("OTP")
+                    // console.log(licensePH == license);
+                    // !noL && !noTin // && licensePH == license
+                    //   ? onSignUp()
+                    //   : Toast.show({
+                    //       type: 'error',
+                    //       text1: 'Check Your License',
+                    //       text2: 'wrong License or Wait until its verified',
+                    //     });
+                    // handleOtp({name:phoneCode.dial_code+phoneNumber})
+                    navigation.navigate("OTP")
                   }}
                   style={{
                     borderRadius: 10,
                     backgroundColor:
-                    noL && noTin && licensePH != license
-                        ? theme.color.gray
-                        : theme.color.primary,
+                      !noL && !noTin //&& licensePH != license
+                        ? theme.color.primary
+                        : theme.color.gray,
                     paddingVertical: 18,
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -543,9 +633,7 @@ const SignUp = ({navigation}) => {
 
                     width: '100%',
                   }}>
-                  <Text style={[{color: 'white',},fonts.h1]}>
-                    SIGN UP
-                  </Text>
+                  <Text style={[{color: 'white'}, fonts.h1]}>SIGN UP</Text>
                 </Pressable>
                 <View
                   style={{
@@ -553,14 +641,15 @@ const SignUp = ({navigation}) => {
                     alignItems: 'center',
                     columnGap: scale(7),
                   }}>
-                  <Text style={[fonts.ptext]}>
-                    Have an account?
-                  </Text>
+                  <Text style={[fonts.ptext]}>Have an account?</Text>
                   <Pressable onPress={() => navigation.navigate('LogIn')}>
                     <Text
-                      style={[{
-                        color: theme.color.primary,
-                      },fonts.ptext]}>
+                      style={[
+                        {
+                          color: theme.color.primary,
+                        },
+                        fonts.ptext,
+                      ]}>
                       SIGN IN
                     </Text>
                   </Pressable>

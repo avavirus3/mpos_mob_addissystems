@@ -7,14 +7,32 @@ import { theme } from '../../styles/stylesheet'
 import { useState } from 'react'
 import {DoneModals,ComfirmationModal}from '../../components/modal/Modals'
 import { fonts } from '../../styles/unistyle'
+import DeviceInfo from 'react-native-device-info';
 
 const ActiveSessionsScreen = ({ navigation }) => {
     const [comfirm, setcomfirm] = useState(false)
     const [done, setdone] = useState(false)
+    const [ip,setIp] =useState("")
+    const [location,setLocation]= useState("")
+    const [dman,setDMan]=useState('')
+    const[deviceModel,setDeviceModel]=useState(DeviceInfo.getModel())
+    DeviceInfo.getDeviceName().then((deviceName) => {
+        // iOS: "Becca's iPhone 6"
+        // Android: ?
+        // Windows: ?
+        setDeviceModel(deviceName)
+      });
+    //setDeviceModel(DeviceInfo.getModel())//setDeviceModel(model)})
+    DeviceInfo.getIpAddress().then((ip) => {
+        setIp(ip)
+      })
+      DeviceInfo.getManufacturer().then((manufacturer) => {
+        setDMan(manufacturer)
+      })
     const phone = [{
-        ip: '127.0.0.1',
-        name: 'iPhone 14 Pro Max',
-        city: 'Addis Ababa Ethiopia',
+        ip: ip,
+        name: dman+" "+ deviceModel,
+        city:location?location:"",
         online: true
     },
     {
@@ -51,19 +69,7 @@ const ActiveSessionsScreen = ({ navigation }) => {
                         </View>}</View>
                     </View>
                     <Text style={[{color:theme.color.gray,marginVertical:16},fonts.h3]}>Active Sessions</Text>
-                    {phone.map((i)=>(<View key={i.name} style={{marginBottom:15,borderRadius:scale(10), paddingVertical: verticalScale(15), paddingHorizontal: scale(10), flexDirection: 'row', justifyContent: 'space-between', backgroundColor: theme.color.lighterGray, alignItems: 'center' }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Iconify icon='fluent:phone-24-filled' size={20} />
-                            <View style={{ paddingLeft: scale(5) }}><Text style={[fonts.ptext]}>{i.name}
-                            </Text>
-                                <Text style={[{ color: "#A8A8A8",},fonts.smText]}>{i.ip}  {i.city}</Text>
-                            </View>
-                        </View>
-                        <View>{!phone[0].online ? <Text style={{ color: theme.color.green }}>online</Text> : <View>
-                        <Text style={[{ color: "#A8A8A8",},fonts.smText]}>thu</Text>
-                           <Pressable onPress={()=>setcomfirm(true)}><Iconify icon='material-symbols:logout' color={theme.color.primary} size={24}/></Pressable>
-                        </View>}</View>
-                    </View>))}
+                    
                 </View>
             </View>
 

@@ -82,11 +82,10 @@ const Profile = ({navigation}) => {
           borderRadius: 10,
           marginVertical: 122,
           marginHorizontal: 25,
-          alignItems: 'center',
+          //alignItems: 'center',
           //paddingVertical:-10
-        }}>
-        <Image
-          source={{uri: imgdata?imgdata[0].uri:`https://robohash.org/${Math.random() * 100}=&size=400x400`}}
+        }}><View style={{width:"100%",alignItems:'center'}}><Image
+          source={{uri: imgdata?imgdata[0].uri:"https://robohash.org/${profiledata[0]._id}=&size=400x400"}}
           style={{
             height: 131,
             width: 131,
@@ -97,13 +96,14 @@ const Profile = ({navigation}) => {
             marginTop: -65,
             //marginBottom:20
           }}
-        />
-        <View style={{marginVertical: 20, height: verticalScale(27)}}>
+        /><View style={{marginVertical: 20,}}>
           <Text style={[fonts.h3]}>
             {profiledata ? profiledata[0].organization : 'ABC Plc'}
           </Text>
-        </View>
-        <View style={{paddingHorizontal: 0, marginLeft: -54}}>
+        </View></View>
+        
+        
+        <View style={{paddingHorizontal: 0,}}>
           <View style={{flexDirection: 'row', height: verticalScale(27)}}>
             <Iconify
               icon="mdi:person-outline"

@@ -8,6 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import notifee from '@notifee/react-native';
 // import logo from "../assets/image.png"
 // import bg from "../assets/welcomebg.png"
 // import fbg from "../assets/SplashScreen.png"
@@ -16,12 +17,48 @@ import {LinearTextGradient} from 'react-native-text-gradient';
 import {scale, verticalScale} from 'react-native-size-matters';
 import { getToken } from '../../auth/token/Token';
 import { fonts } from '../../styles/unistyle';
+import NotificationSounds,{ playSampleSound } from 'react-native-notification-sounds';
 
 
 const WelcomeScreen = ({navigation}) => {
   const [timeLeft, setTimeLeft] = useState(2);
   const intialBg = require('../../assets/images/welcomebg.png');
   const finalBg = require('../../assets/images/loginbg.png');
+
+
+  const onDisplayNotification= async()=> {
+    // Request permissions (required for iOS)
+    //await notifee.requestPermission()
+
+    // Create a channel (required for Android)
+    let soundsList
+ await NotificationSounds.getNotifications('notification').then(res=>{soundsList=res[1], console.log(res[4])}).catch(e=>console.log(e))
+      // if you want to stop any playing sound just call:
+      // stopSampleSound();}catch(e){console.log(e)}
+  console.log(soundsList.url)
+    // try{const soundsList = await NotificationSounds.getNotifications('notification');}catch(e){console.log(e)}
+   const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+      sound: soundsList.url,
+     
+     
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: 'Welcome to AddisSystem',
+      body: 'you can sign in or sign up',
+      android: {
+        channelId,
+        //smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  }
  
 
   useEffect(() => {
@@ -39,6 +76,7 @@ const WelcomeScreen = ({navigation}) => {
     // add timeLeft as a dependency to re-rerun the effect
     // when we update it
   }, [timeLeft]);
+  useEffect(()=>{if(!timeLeft)onDisplayNotification()},[timeLeft])
 
   //console.log(timeLeft)
   return (

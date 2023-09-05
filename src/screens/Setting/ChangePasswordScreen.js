@@ -5,7 +5,8 @@ import { verticalScale, scale } from "react-native-size-matters";
 import { theme } from "../../styles/stylesheet";
 import i18n from "../../language/i18n";
 import { fonts } from "../../styles/unistyle";
-const ChangePasswordScreen = ({ navigation }) => {
+const ChangePasswordScreen = ({ navigation,route }) => {
+  const {screen} = route.params;
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View
@@ -23,7 +24,7 @@ const ChangePasswordScreen = ({ navigation }) => {
           <Iconify icon="ion:chevron-back-outline" size={20} />
         </Pressable>
         <Text style={[fonts.h1]}>
-          {i18n.t("changepassword")}
+          {screen=="otp"?"Set Password":i18n.t("changepassword")}
         </Text>
         <View style={{ marginHorizontal: scale(25) }}></View>
       </View>
@@ -100,6 +101,7 @@ const ChangePasswordScreen = ({ navigation }) => {
           </View>
         </View>
         <Pressable
+        onPress={screen=="otp"?()=>navigation.navigate("MainStack"):()=>null}
               style={{
                 borderRadius: 10,
                 backgroundColor: theme.color.primary,

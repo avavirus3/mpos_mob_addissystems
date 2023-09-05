@@ -14,6 +14,7 @@ import { getToken,loadCredentials } from '../../auth/token/Token'
 import { fonts } from '../../styles/unistyle'
 
 const Main = ({navigation}) => {
+
   const [isEnabled, setIsEnabled] = useState(true)
   const [isEnabled2S, setIsEnabled2S] = useState(true)
   const toggleSwitch = () => setIsEnabled(previousState => !previousState)
@@ -23,6 +24,7 @@ const Main = ({navigation}) => {
    const[imgdata,setImgdata]=useState() //.filter(`_id==`)  
   const [token,setToken]= useState()
   const [profiledata, setProfiledata] = useState()
+  const [langs,setLangs]=useState()
   // const {data:profiledata,pending:pendingprofile} = useFetchRealm({uri:"Profile",id:token})
    
 
@@ -63,7 +65,14 @@ useFocusEffect(
     return () => loadCredentials().then(r => (r ? setProfiledata(r) : null));
   }, []),
 );
-  
+useFocusEffect(
+  React.useCallback(() => {
+    // Perform actions you want to happen when the screen is focused
+  setLangs(i18n)
+    console.log(i18n.t('changepassword'),i18n)
+
+    // You can fetch data, update state, or perform any other actions here
+  }, []))
   return (
     <View style={{flex: 1,backgroundColor:"white"}}>
       <Modal
@@ -216,7 +225,7 @@ useFocusEffect(
             </View>
           </Pressable> */}
           <Pressable
-          onPress={()=>navigation.navigate("ChangePassword")}
+          onPress={()=>navigation.navigate("ChangePassword",{screen:'setting'})}
             style={{
               backgroundColor: '#fff',
               paddingVertical:10,

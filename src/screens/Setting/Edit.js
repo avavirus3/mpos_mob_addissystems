@@ -137,7 +137,7 @@ const Edit = ({ navigation }) => {
       <ScrollView>
         <View style={{ alignItems: "center", marginHorizontal: scale(25) }}>
           <View><Image
-            source={{ uri: imgdata?imgdata[0].uri:`https://robohash.org/${Math.random() * 100}=&size=400x400` }}
+            source={{ uri: imgdata?imgdata[0].uri:"https://robohash.org/${profiledata[0]._id}=&size=400x400" }}
             style={{
               height: 131,
               width: 131,
