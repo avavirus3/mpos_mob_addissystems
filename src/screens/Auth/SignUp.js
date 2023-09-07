@@ -25,6 +25,7 @@ import {createUser, isLicence, isTin} from '../../auth/api/fetchData';
 import {fonts} from '../../styles/unistyle';
 import {sendotp} from '../../auth/api/otpApi';
 import { Modal,ActivityIndicator } from 'react-native';
+import { reglocal } from '../../auth/api/localReg';
 
 const LoadingModal=({modalVisible})=>{
   return(<Modal 
@@ -175,6 +176,18 @@ const SignUp = ({navigation}) => {
     },
     3000,
   );
+  const locReg=async()=>{
+    const user=  {
+      "Fname": "abebe",
+      "Lname": "lema",
+      "BusinessName": "ABC Plc.",
+      "password": "112233",
+      "phone": "1234567",
+      "PlanType": "basic",
+      "email": "abebes@gmail.com"
+    }
+   reglocal(user)
+  }
 
   const onSignUp = async () => {
     // aandleOtp
@@ -240,8 +253,9 @@ const SignUp = ({navigation}) => {
   };
 
   return (
-    <DismissKeyboardHOC>
+   
       <View style={{flex: 1, backgroundColor: theme.color.white}}>
+
         <LoadingModal modalVisible={optMutation.isLoading} />
         <StatusBar
           translucent={false}
@@ -255,6 +269,7 @@ const SignUp = ({navigation}) => {
           setResult={setPhoneCode}
         />
         <ScrollView>
+        <DismissKeyboardHOC>
           <View style={{marginBottom: 50}}>
             <View style={{padding: 20, width: '100%'}}>
               <View
@@ -618,7 +633,8 @@ const SignUp = ({navigation}) => {
                     //       text2: 'wrong License or Wait until its verified',
                     //     });
                     // handleOtp({name:phoneCode.dial_code+phoneNumber})
-                    navigation.navigate("OTP")
+                    locReg()
+                     navigation.navigate("OTP")
                   }}
                   style={{
                     borderRadius: 10,
@@ -657,9 +673,9 @@ const SignUp = ({navigation}) => {
               </View>
             </View>
           </View>
+          </DismissKeyboardHOC>
         </ScrollView>
       </View>
-    </DismissKeyboardHOC>
   );
 };
 

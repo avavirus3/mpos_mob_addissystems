@@ -32,10 +32,9 @@ const WelcomeScreen = ({navigation}) => {
 
     // Create a channel (required for Android)
     let soundsList
- await NotificationSounds.getNotifications('notification').then(res=>{soundsList=res[1], console.log(res[4])}).catch(e=>console.log(e))
+ await NotificationSounds.getNotifications('notification').then(res=>{soundsList=res[0]}).catch(e=>console.log(e))
       // if you want to stop any playing sound just call:
       // stopSampleSound();}catch(e){console.log(e)}
-  console.log(soundsList.url)
     // try{const soundsList = await NotificationSounds.getNotifications('notification');}catch(e){console.log(e)}
    const channelId = await notifee.createChannel({
       id: 'default',
@@ -44,7 +43,7 @@ const WelcomeScreen = ({navigation}) => {
      
      
     });
-
+    
     // Display a notification
     await notifee.displayNotification({
       title: 'Welcome to AddisSystem',
@@ -58,7 +57,8 @@ const WelcomeScreen = ({navigation}) => {
         },
       },
     });
-  }
+    await notifee.onBackgroundEvent(()=>(console.log("wait")));
+   }
  
 
   useEffect(() => {
